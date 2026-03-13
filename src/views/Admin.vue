@@ -17,10 +17,8 @@
       <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-bold text-gray-900">Product Details</h2>
-          <button @click="closeViewModal" class="text-gray-500 hover:text-gray-700">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
+          <button @click="closeViewModal" class="text-gray-500 hover:text-gray-700 font-medium">
+            Close
           </button>
         </div>
         
@@ -29,9 +27,7 @@
             <img v-if="viewingProduct.image" :src="viewingProduct.image" :alt="viewingProduct.name" 
                  class="w-full h-64 object-cover rounded-lg">
             <div v-else class="w-full h-64 bg-gray-200 rounded-lg flex items-center justify-center">
-              <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 013.657-3.828 2-2h3M6 18l-6-6m0 0l6 6"></path>
-              </svg>
+              <span class="text-gray-400">No Image</span>
             </div>
           </div>
           
@@ -70,10 +66,8 @@
       <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-bold text-gray-900">Edit Product</h2>
-          <button @click="closeEditModal" class="text-gray-500 hover:text-gray-700">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
+          <button @click="closeEditModal" class="text-gray-500 hover:text-gray-700 font-medium">
+            Cancel
           </button>
         </div>
         
@@ -110,9 +104,9 @@
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               >
                 <option value="">Select Category</option>
-                <option value="laptops">💻 Laptops</option>
-                <option value="phones">📱 Smartphones</option>
-                <option value="accessories">⌚ Accessories</option>
+                <option value="laptops">Laptops</option>
+                <option value="phones">Smartphones</option>
+                <option value="accessories">Accessories</option>
               </select>
             </div>
             
@@ -147,9 +141,6 @@
         <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
           <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-4">
             <h2 class="text-xl font-semibold flex items-center">
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-              </svg>
               Add New Product
             </h2>
           </div>
@@ -189,9 +180,9 @@
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                   >
                     <option value="">Select Category</option>
-                    <option value="laptops">💻 Laptops</option>
-                    <option value="phones">📱 Smartphones</option>
-                    <option value="accessories">⌚ Accessories</option>
+                    <option value="laptops">Laptops</option>
+                    <option value="phones">Smartphones</option>
+                    <option value="accessories">Accessories</option>
                   </select>
                 </div>
                 
@@ -269,17 +260,11 @@
       <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
         <div class="bg-gradient-to-r from-gray-700 to-gray-800 text-white px-6 py-4">
           <h2 class="text-xl font-semibold flex items-center">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-            </svg>
             Manage Products
           </h2>
         </div>
         
         <div v-if="products.length === 0" class="p-12 text-center">
-          <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 00-.293.707V17"></path>
-          </svg>
           <p class="text-gray-500 text-lg">No products available.</p>
           <p class="text-gray-400 mt-2">Add your first product using the form above.</p>
         </div>
@@ -322,30 +307,24 @@
                   <div class="flex items-center justify-center space-x-2">
                     <button
                       @click="viewProduct(product)"
-                      class="text-blue-600 hover:text-blue-900 font-medium text-sm transition-colors p-2 bg-blue-50 rounded"
+                      class="text-blue-600 hover:text-blue-900 font-medium text-sm transition-colors px-3 py-2 bg-blue-50 rounded"
                       title="View Product"
                     >
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm-2-3a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                      </svg>
+                      View
                     </button>
                     <button
                       @click="editProduct(product)"
-                      class="text-yellow-600 hover:text-yellow-900 font-medium text-sm transition-colors p-2 bg-yellow-50 rounded"
+                      class="text-yellow-600 hover:text-yellow-900 font-medium text-sm transition-colors px-3 py-2 bg-yellow-50 rounded"
                       title="Edit Product"
                     >
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-4h-4v4z"></path>
-                      </svg>
+                      Edit
                     </button>
                     <button
                       @click="removeProduct(index)"
-                      class="text-red-600 hover:text-red-900 font-medium text-sm transition-colors p-2 bg-red-50 rounded"
+                      class="text-red-600 hover:text-red-900 font-medium text-sm transition-colors px-3 py-2 bg-red-50 rounded"
                       title="Delete Product"
                     >
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0016 21H8a2 2 0 01-1.995-1.858L5 7m5 4v6m0 0l-4 4m4-4h4"></path>
-                      </svg>
+                      Delete
                     </button>
                   </div>
                 </td>
