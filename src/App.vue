@@ -1,21 +1,63 @@
 <template>
   <div id="app" class="min-h-screen flex flex-col">
     <!-- Header -->
-    <header class="bg-white shadow-md sticky top-0 z-40">
+    <header class="bg-white shadow-lg sticky top-0 z-40 border-b border-gray-200">
       <div class="container mx-auto px-4">
         <div class="flex justify-between items-center h-16">
-          <h1 class="text-2xl font-bold text-blue-600">KAFUKA E-commerce Store</h1>
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+              <span class="text-white font-bold text-lg">K</span>
+            </div>
+            <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">KAFUKA Store</h1>
+          </div>
           
           <!-- Desktop Navigation -->
-          <nav class="hidden md:flex space-x-6">
-            <router-link to="/admin" class="text-gray-700 hover:text-blue-600 transition-colors">Admin Panel</router-link>
-            <router-link to="/" class="text-gray-700 hover:text-blue-600 transition-colors">Home</router-link>
-            <router-link to="/cart" class="text-gray-700 hover:text-blue-600 transition-colors flex items-center">
-              Cart ({{ cartCount }})
+          <nav class="hidden md:flex items-center space-x-1">
+            <router-link to="/admin" class="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium">
+              <span class="flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572C18.375 12.838 20.05 11.507 20.05 9.5s-1.675-3.338-2.675-4.317c-.426-1.756-2.924-1.756-3.35 0a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065-2.572C12.838 18.375 11.507 20.05 9.5 20.05S6.162 18.375 5.183 17.017a1.724 1.724 0 00-2.572-1.065c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018 1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 002.573-1.066c1.543.94 3.31-.826 2.37-2.37a1.724 1.724 0 001.065-2.572c.426-1.756 2.924-1.756 3.35 0 .326.426.018.675.018 1.756 0 3.35-.018 1.756-2.924 0-3.35a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065-2.572C6.162 18.375 4.833 20.05 2.825 20.05S.675 18.375.675 16.983c-.426-1.756-2.924-1.756-3.35 0A1.724 1.724 0 001.825 16.917c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018z"></path>
+                </svg>
+                Admin
+              </span>
             </router-link>
-            <router-link to="/orders" class="text-gray-700 hover:text-blue-600 transition-colors">Order History</router-link>
-            <button @click="showWishlist" class="text-gray-700 hover:text-blue-600 transition-colors flex items-center">
-              Wishlist ({{ wishlist.length }})
+            <router-link to="/" class="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium">
+              <span class="flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2h-3a1 1 0 00-1 1v3m0 0l7-7 7 7m-7-7h-2"></path>
+                </svg>
+                Home
+              </span>
+            </router-link>
+            <router-link to="/cart" class="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium relative">
+              <span class="flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+                Cart
+                <span v-if="cartCount > 0" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                  {{ cartCount }}
+                </span>
+              </span>
+            </router-link>
+            <router-link to="/orders" class="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium">
+              <span class="flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                Orders
+              </span>
+            </router-link>
+            <button @click="showWishlist" class="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium relative">
+              <span class="flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 000-6.364L12 3.636a4.5 4.5 0 00-6.364 0L12 3.636l.682.682zM12 7.5a.5.5 0 100 1 0 .5.5.5 0 001 0z"></path>
+                </svg>
+                Wishlist
+                <span v-if="wishlist.length > 0" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                  {{ wishlist.length }}
+                </span>
+              </span>
             </button>
           </nav>
           
@@ -28,13 +70,48 @@
         </div>
         
         <!-- Mobile Navigation -->
-        <nav v-if="mobileMenuOpen" class="md:hidden py-4 border-t">
+        <nav v-if="mobileMenuOpen" class="md:hidden py-4 border-t bg-gray-50">
           <div class="flex flex-col space-y-2">
-            <router-link to="/admin" @click="toggleMobileMenu" class="text-gray-700 hover:text-blue-600 py-2">Admin Panel</router-link>
-            <router-link to="/" @click="toggleMobileMenu" class="text-gray-700 hover:text-blue-600 py-2">Home</router-link>
-            <router-link to="/cart" @click="toggleMobileMenu" class="text-gray-700 hover:text-blue-600 py-2">Cart ({{ cartCount }})</router-link>
-            <router-link to="/orders" @click="toggleMobileMenu" class="text-gray-700 hover:text-blue-600 py-2">Order History</router-link>
-            <button @click="showWishlist" class="text-gray-700 hover:text-blue-600 py-2 text-left">Wishlist ({{ wishlist.length }})</button>
+            <router-link to="/admin" @click="toggleMobileMenu" class="px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium">
+              <span class="flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573 1.066c-1.543.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065-2.572C18.375 12.838 20.05 11.507 20.05 9.5s-1.675-3.338-2.675-4.317c-.426-1.756-2.924-1.756-3.35 0a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065-2.572C12.838 18.375 11.507 20.05 9.5 20.05S6.162 18.375 5.183 17.017a1.724 1.724 0 00-2.572-1.065c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018 1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 002.573-1.066c1.543.94 3.31-.826 2.37-2.37a1.724 1.724 0 001.065-2.572c.426-1.756 2.924-1.756 3.35 0 .326.426.018.675.018 1.756 0 3.35-.018 1.756-2.924 0-3.35a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065-2.572C6.162 18.375 4.833 20.05 2.825 20.05S.675 18.375.675 16.983c-.426-1.756-2.924-1.756-3.35 0A1.724 1.724 0 001.825 16.917c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018z"></path>
+                </svg>
+                Admin Panel
+              </span>
+            </router-link>
+            <router-link to="/" @click="toggleMobileMenu" class="px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium">
+              <span class="flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2h-3a1 1 0 00-1 1v3m0 0l7-7 7 7m-7-7h-2"></path>
+                </svg>
+                Home
+              </span>
+            </router-link>
+            <router-link to="/cart" @click="toggleMobileMenu" class="px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium relative">
+              <span class="flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+                Cart ({{ cartCount }})
+              </span>
+            </router-link>
+            <router-link to="/orders" @click="toggleMobileMenu" class="px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium">
+              <span class="flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                Order History
+              </span>
+            </router-link>
+            <button @click="showWishlist" class="px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium text-left">
+              <span class="flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 000-6.364L12 3.636a4.5 4.5 0 00-6.364 0L12 3.636l.682.682zM12 7.5a.5.5 0 100 1 0 .5.5.5 0 001 0z"></path>
+                </svg>
+                Wishlist ({{ wishlist.length }})
+              </span>
+            </button>
           </div>
         </nav>
       </div>
