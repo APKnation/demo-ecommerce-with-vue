@@ -1,5 +1,12 @@
 <template>
   <div>
+    <!-- Vue Notification Component -->
+    <transition name="notification" appear>
+      <div v-if="showLocalNotification" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50">
+        {{ localNotification }}
+      </div>
+    </transition>
+
     <h1 class="text-3xl font-bold mb-8">Shopping Cart</h1>
     
     <div v-if="cart.length === 0" class="text-center py-12">
@@ -73,9 +80,17 @@
         <div class="flex space-x-4">
           <button
             @click="checkout"
-            class="btn btn-primary flex-grow"
+            :disabled="isProcessing"
+            class="btn btn-primary flex-grow disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Proceed to Checkout
+            <span v-if="isProcessing" class="flex items-center justify-center">
+              <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V8C4 10.09 4.91 12 6 12h4"></path>
+              </svg>
+              Processing...
+            </span>
+            <span v-else>Proceed to Checkout</span>
           </button>
           <button
             @click="clearCart"
@@ -99,6 +114,19 @@ export default {
     const router = useRouter()
     const cart = inject('cart', ref([]))
     const notification = inject('notification', ref(''))
+    const localNotification = ref('')
+    const showLocalNotification = ref(false)
+    const isProcessing = ref(false)
+
+    // Vue notification system
+    const showNotificationMessage = (message) => {
+      localNotification.value = message
+      showLocalNotification.value = true
+      setTimeout(() => {
+        showLocalNotification.value = false
+        localNotification.value = ''
+      }, 3000)
+    }
 
     const totalPrice = computed(() => {
       return cart.value.reduce((total, item) => total + (item.price * item.quantity), 0)
@@ -118,27 +146,25 @@ export default {
       const itemName = cart.value[index].name
       cart.value.splice(index, 1)
       saveCart()
-      showNotification(`${itemName} removed from cart`)
+      showNotificationMessage(`${itemName} removed from cart`)
     }
 
     const clearCart = () => {
-      if (confirm('Are you sure you want to clear your entire cart?')) {
-        cart.value = []
-        saveCart()
-        showNotification('Cart cleared successfully')
-      }
+      cart.value = []
+      saveCart()
+      showNotificationMessage('Cart cleared successfully')
     }
 
-    const checkout = () => {
+    const checkout = async () => {
       if (cart.value.length === 0) {
-        showNotification('Your cart is empty')
+        showNotificationMessage('Your cart is empty')
         return
       }
       
-      const total = totalPrice.value
-      const confirmation = confirm(`Total: Tsh ${total.toLocaleString()}\nProceed to checkout?`)
-
-      if (confirmation) {
+      isProcessing.value = true
+      try {
+        const total = totalPrice.value
+        
         // Save order to localStorage
         const orders = JSON.parse(localStorage.getItem('orders')) || []
         const order = {
@@ -151,14 +177,20 @@ export default {
         orders.push(order)
         localStorage.setItem('orders', JSON.stringify(orders))
 
-        showNotification('Order placed successfully! Thank you for your purchase.')
+        showNotificationMessage('Order placed successfully! Thank you for your purchase.')
         
         // Clear the cart
         cart.value = []
         saveCart()
         
         // Navigate to orders page
-        router.push('/orders')
+        setTimeout(() => {
+          router.push('/orders')
+        }, 1500)
+      } catch (error) {
+        showNotificationMessage('Error processing checkout')
+      } finally {
+        isProcessing.value = false
       }
     }
 
@@ -166,16 +198,12 @@ export default {
       localStorage.setItem('cart', JSON.stringify(cart.value))
     }
 
-    const showNotification = (message) => {
-      notification.value = message
-      setTimeout(() => {
-        notification.value = ''
-      }, 3000)
-    }
-
     return {
       cart,
       totalPrice,
+      isProcessing,
+      localNotification,
+      showLocalNotification,
       updateQuantity,
       removeFromCart,
       clearCart,
@@ -184,3 +212,35 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.notification-enter-active {
+  animation: slideIn 0.3s ease-out;
+}
+
+.notification-leave-active {
+  animation: slideOut 0.3s ease-in;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+</style>

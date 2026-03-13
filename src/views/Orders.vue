@@ -1,8 +1,22 @@
 <template>
   <div>
+    <!-- Vue Notification Component -->
+    <transition name="notification" appear>
+      <div v-if="showLocalNotification" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50">
+        {{ localNotification }}
+      </div>
+    </transition>
+
     <h1 class="text-3xl font-bold mb-8">Order History</h1>
     
-    <div v-if="orders.length === 0" class="text-center py-12">
+    <!-- Loading State -->
+    <div v-if="isLoading" class="text-center py-12">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <p class="text-gray-500 mt-4">Loading orders...</p>
+    </div>
+    
+    <!-- Empty State -->
+    <div v-else-if="orders.length === 0" class="text-center py-12">
       <div class="mb-8">
         <svg class="w-24 h-24 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -14,6 +28,7 @@
       </div>
     </div>
     
+    <!-- Orders Content -->
     <div v-else>
       <!-- Order Statistics -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -110,10 +125,31 @@ export default {
     const orders = ref([])
     const cart = inject('cart', ref([]))
     const notification = inject('notification', ref(''))
+    const localNotification = ref('')
+    const showLocalNotification = ref(false)
+    const isLoading = ref(true)
+
+    // Vue notification system
+    const showNotificationMessage = (message) => {
+      localNotification.value = message
+      showLocalNotification.value = true
+      setTimeout(() => {
+        showLocalNotification.value = false
+        localNotification.value = ''
+      }, 3000)
+    }
 
     // Load orders from localStorage
-    const loadOrders = () => {
-      orders.value = JSON.parse(localStorage.getItem('orders')) || []
+    const loadOrders = async () => {
+      isLoading.value = true
+      try {
+        orders.value = JSON.parse(localStorage.getItem('orders')) || []
+        showNotificationMessage('Orders loaded successfully')
+      } catch (error) {
+        showNotificationMessage('Error loading orders')
+      } finally {
+        isLoading.value = false
+      }
     }
 
     const totalSpent = computed(() => {
@@ -155,13 +191,11 @@ export default {
     }
 
     const cancelOrder = (orderId) => {
-      if (confirm('Are you sure you want to cancel this order?')) {
-        const orderIndex = orders.value.findIndex(order => order.id === orderId)
-        if (orderIndex !== -1) {
-          orders.value[orderIndex].status = 'Cancelled'
-          localStorage.setItem('orders', JSON.stringify(orders.value))
-          showNotification('Order cancelled successfully')
-        }
+      const orderIndex = orders.value.findIndex(order => order.id === orderId)
+      if (orderIndex !== -1) {
+        orders.value[orderIndex].status = 'Cancelled'
+        localStorage.setItem('orders', JSON.stringify(orders.value))
+        showNotificationMessage('Order cancelled successfully')
       }
     }
 
@@ -177,21 +211,20 @@ export default {
       // Save cart
       localStorage.setItem('cart', JSON.stringify(cart.value))
       
-      showNotification('Items added to cart successfully')
+      showNotificationMessage('Items added to cart successfully')
       router.push('/cart')
     }
 
-    const showNotification = (message) => {
-      notification.value = message
-      setTimeout(() => {
-        notification.value = ''
-      }, 3000)
-    }
-
-    loadOrders()
+    // Load orders on mount
+    onMounted(() => {
+      loadOrders()
+    })
 
     return {
       orders,
+      isLoading,
+      localNotification,
+      showLocalNotification,
       totalSpent,
       pendingOrders,
       sortedOrders,

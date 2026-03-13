@@ -1,5 +1,12 @@
 <template>
   <div>
+    <!-- Vue Notification Component -->
+    <transition name="notification" appear>
+      <div v-if="showNotification" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50">
+        {{ notification }}
+      </div>
+    </transition>
+
     <!-- Search and Filter Section -->
     <section class="mb-8">
       <div class="bg-white rounded-lg shadow-md p-6">
@@ -67,8 +74,20 @@
 
     <!-- Product Listing -->
     <section>
-      <div v-if="filteredProducts.length === 0" class="text-center py-12">
-        <p class="text-gray-500 text-lg">No products found matching your criteria.</p>
+      <!-- Loading State -->
+      <div v-if="isLoading" class="text-center py-12">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <p class="text-gray-500 mt-4">Loading products...</p>
+      </div>
+      
+      <!-- Empty State -->
+      <div v-else-if="filteredProducts.length === 0" class="text-center py-12">
+        <div class="mb-8">
+          <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 00-.293.707V17"></path>
+          </svg>
+          <p class="text-gray-500 text-lg">No products found matching your criteria.</p>
+        </div>
       </div>
       
       <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -125,25 +144,46 @@ export default {
     const priceFilter = ref('')
     const sortFilter = ref('')
     const products = ref([])
+    const isLoading = ref(true)
+    const notification = ref('')
+    const showNotification = ref(false)
+
+    // Vue notification system
+    const showNotificationMessage = (message) => {
+      notification.value = message
+      showNotification.value = true
+      setTimeout(() => {
+        showNotification.value = false
+        notification.value = ''
+      }, 3000)
+    }
     
     // Load products from localStorage or use defaults
-    const loadProducts = () => {
-      const savedProducts = localStorage.getItem('adminProducts')
-      if (savedProducts) {
-        products.value = JSON.parse(savedProducts)
-      } else {
-        // Default products
-        products.value = [
-          { name: 'Mac Book', price: 1000000, category: 'laptops', image: '/images/w.jpg' },
-          { name: 'HP-Brand', price: 150000, category: 'laptops', image: '/images/j.jpg' },
-          { name: 'Dell', price: 200000, category: 'laptops', image: '/images/k.jpg' },
-          { name: 'Apple', price: 1000000, category: 'phones', image: '/images/d.jpg' },
-          { name: 'HP-Elite', price: 1500000, category: 'laptops', image: '/images/a.jpg' },
-          { name: 'Sony', price: 200000, category: 'accessories', image: '/images/f.jpg' },
-          { name: 'Infinix', price: 400000, category: 'phones', image: '/images/g.jpg' },
-          { name: 'iPhone', price: 1500000, category: 'phones', image: '/images/p.jpg' },
-          { name: 'Samsung', price: 3000000, category: 'phones', image: '/images/l.jpg' }
-        ]
+    const loadProducts = async () => {
+      isLoading.value = true
+      try {
+        const savedProducts = localStorage.getItem('adminProducts')
+        if (savedProducts) {
+          products.value = JSON.parse(savedProducts)
+        } else {
+          // Default products
+          products.value = [
+            { name: 'Mac Book', price: 1000000, category: 'laptops', image: '/images/w.jpg' },
+            { name: 'HP-Brand', price: 150000, category: 'laptops', image: '/images/j.jpg' },
+            { name: 'Dell', price: 200000, category: 'laptops', image: '/images/k.jpg' },
+            { name: 'Apple', price: 1000000, category: 'phones', image: '/images/d.jpg' },
+            { name: 'HP-Elite', price: 1500000, category: 'laptops', image: '/images/a.jpg' },
+            { name: 'Sony', price: 200000, category: 'accessories', image: '/images/f.jpg' },
+            { name: 'Infinix', price: 400000, category: 'phones', image: '/images/g.jpg' },
+            { name: 'iPhone', price: 1500000, category: 'phones', image: '/images/p.jpg' },
+            { name: 'Samsung', price: 3000000, category: 'phones', image: '/images/l.jpg' }
+          ]
+        }
+        showNotificationMessage('Products loaded successfully!')
+      } catch (error) {
+        showNotificationMessage('Error loading products')
+      } finally {
+        isLoading.value = false
       }
     }
 
@@ -222,6 +262,10 @@ export default {
       categoryFilter,
       priceFilter,
       sortFilter,
+      products,
+      isLoading,
+      notification,
+      showNotification,
       filteredProducts,
       isInWishlist,
       isInCompare,
@@ -233,3 +277,35 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.notification-enter-active {
+  animation: slideIn 0.3s ease-out;
+}
+
+.notification-leave-active {
+  animation: slideOut 0.3s ease-in;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+</style>
