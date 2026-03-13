@@ -1,11 +1,9 @@
 <template>
   <div>
     <!-- Vue Notification Component -->
-    <transition name="notification" appear>
-      <div v-if="showNotification" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50">
-        {{ notification }}
-      </div>
-    </transition>
+    <div v-if="showNotification" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 transform">
+      {{ notification }}
+    </div>
 
     <!-- Search and Filter Section -->
     <section class="mb-8">
@@ -277,35 +275,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.notification-enter-active {
-  animation: slideIn 0.3s ease-out;
-}
-
-.notification-leave-active {
-  animation: slideOut 0.3s ease-in;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideOut {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-}
-</style>

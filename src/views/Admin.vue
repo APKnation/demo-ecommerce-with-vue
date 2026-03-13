@@ -336,44 +336,40 @@
     </div>
 
     <!-- Vue Notification Component -->
-    <transition name="notification" appear>
-      <div v-if="showNotification" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50">
-        {{ notification }}
-      </div>
-    </transition>
+    <div v-if="showNotification" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 transform">
+      {{ notification }}
+    </div>
 
     <!-- Vue Confirm Dialog -->
-    <transition name="modal" appear>
-      <div v-if="showConfirmDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
-          <div class="text-center">
-            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
-              <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 2.502-3.331 0-1.664-1.962-3.331-2.502-3.331m0 0h-13.856"></path>
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold text-gray-900 mb-2">Confirm Delete</h3>
-            <p class="text-gray-600 mb-6">
-              Are you sure you want to delete this product? This action cannot be undone.
-            </p>
-            <div class="flex space-x-3">
-              <button
-                @click="cancelDelete"
-                class="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                @click="executeDelete"
-                class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-              >
-                Delete
-              </button>
-            </div>
+    <div v-if="showConfirmDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-200">
+      <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4 transition-all duration-200 transform">
+        <div class="text-center">
+          <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 2.502-3.331 0-1.664-1.962-3.331-2.502-3.331m0 0h-13.856"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Confirm Delete</h3>
+          <p class="text-gray-600 mb-6">
+            Are you sure you want to delete this product? This action cannot be undone.
+          </p>
+          <div class="flex space-x-3">
+            <button
+              @click="cancelDelete"
+              class="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              @click="executeDelete"
+              class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+            >
+              Delete
+            </button>
           </div>
         </div>
       </div>
-    </transition>
+    </div>
   </div>
 </template>
 
@@ -550,61 +546,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.notification-enter-active {
-  animation: slideIn 0.3s ease-out;
-}
-
-.notification-leave-active {
-  animation: slideOut 0.3s ease-in;
-}
-
-.modal-enter-active {
-  animation: fadeIn 0.2s ease-out;
-}
-
-.modal-leave-active {
-  animation: fadeOut 0.2s ease-in;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideOut {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-</style>

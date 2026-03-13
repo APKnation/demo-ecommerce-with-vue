@@ -1,11 +1,9 @@
 <template>
   <div>
     <!-- Vue Notification Component -->
-    <transition name="notification" appear>
-      <div v-if="showLocalNotification" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50">
-        {{ localNotification }}
-      </div>
-    </transition>
+    <div v-if="showLocalNotification" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 transform">
+      {{ localNotification }}
+    </div>
 
     <h1 class="text-3xl font-bold mb-8">Order History</h1>
     
