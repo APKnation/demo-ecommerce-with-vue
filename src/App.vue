@@ -150,15 +150,6 @@ export default {
     const wishlistModalOpen = ref(false)
     const compareModalOpen = ref(false)
 
-    // Provide data to child components
-    provide('cart', cart)
-    provide('wishlist', wishlist)
-    provide('compareList', compareList)
-    provide('notification', notification)
-    provide('addToCart', addToCart)
-    provide('toggleWishlist', toggleWishlist)
-    provide('addToCompare', addToCompare)
-
     const cartCount = computed(() => {
       return cart.value.reduce((total, item) => total + item.quantity, 0)
     })
@@ -255,6 +246,15 @@ export default {
     onMounted(() => {
       loadData()
     })
+
+    // Provide data to child components
+    provide('cart', cart)
+    provide('wishlist', wishlist)
+    provide('compareList', compareList)
+    provide('notification', notification)
+    provide('addToCart', addToCart)
+    provide('toggleWishlist', toggleWishlist)
+    provide('addToCompare', addToCompare)
 
     return {
       cart,
