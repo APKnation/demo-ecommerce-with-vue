@@ -11,6 +11,134 @@
         <div class="text-sm text-blue-100">Total Products</div>
       </div>
     </div>
+
+    <!-- View Product Modal -->
+    <div v-if="viewingProduct" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-gray-900">Product Details</h2>
+          <button @click="closeViewModal" class="text-gray-500 hover:text-gray-700">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <img v-if="viewingProduct.image" :src="viewingProduct.image" :alt="viewingProduct.name" 
+                 class="w-full h-64 object-cover rounded-lg">
+            <div v-else class="w-full h-64 bg-gray-200 rounded-lg flex items-center justify-center">
+              <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 013.657-3.828 2-2h3M6 18l-6-6m0 0l6 6"></path>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ viewingProduct.name }}</h3>
+              <span class="px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-800">
+                {{ viewingProduct.category }}
+              </span>
+            </div>
+            
+            <div class="text-2xl font-bold text-blue-600">
+              Tsh {{ viewingProduct.price.toLocaleString() }}
+            </div>
+            
+            <div class="text-sm text-gray-600">
+              <p><strong>Status:</strong> <span class="px-2 py-1 rounded-full bg-green-100 text-green-800">Active</span></p>
+              <p><strong>Added:</strong> {{ formatDate(viewingProduct.addedDate) }}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="flex justify-end space-x-3 mt-6 pt-4 border-t">
+          <button @click="closeViewModal" class="btn btn-secondary">
+            Close
+          </button>
+          <button @click="editProduct(viewingProduct)" class="btn btn-primary">
+            Edit Product
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div v-if="editingProduct" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-gray-900">Edit Product</h2>
+          <button @click="closeEditModal" class="text-gray-500 hover:text-gray-700">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        
+        <form @submit.prevent="updateProduct" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Product Name</label>
+              <input
+                v-model="editingProduct.name"
+                type="text"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              >
+            </div>
+            
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Price (Tsh)</label>
+              <input
+                v-model.number="editingProduct.price"
+                type="number"
+                required
+                min="0"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              >
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Category</label>
+              <select
+                v-model="editingProduct.category"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              >
+                <option value="">Select Category</option>
+                <option value="laptops">💻 Laptops</option>
+                <option value="phones">📱 Smartphones</option>
+                <option value="accessories">⌚ Accessories</option>
+              </select>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Image URL</label>
+              <input
+                v-model="editingProduct.image"
+                type="text"
+                required
+                placeholder="/images/product.jpg"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              >
+            </div>
+          </div>
+          
+          <div class="flex space-x-3">
+            <button type="button" @click="closeEditModal" class="btn btn-secondary">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary">
+              Update Product
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
     
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
@@ -191,12 +319,35 @@
                   </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-center">
-                  <button
-                    @click="removeProduct(index)"
-                    class="text-red-600 hover:text-red-900 font-medium text-sm transition-colors"
-                  >
-                    Remove
-                  </button>
+                  <div class="flex items-center justify-center space-x-2">
+                    <button
+                      @click="viewProduct(product)"
+                      class="text-blue-600 hover:text-blue-900 font-medium text-sm transition-colors p-2 bg-blue-50 rounded"
+                      title="View Product"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm-2-3a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                      </svg>
+                    </button>
+                    <button
+                      @click="editProduct(product)"
+                      class="text-yellow-600 hover:text-yellow-900 font-medium text-sm transition-colors p-2 bg-yellow-50 rounded"
+                      title="Edit Product"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-4h-4v4z"></path>
+                      </svg>
+                    </button>
+                    <button
+                      @click="removeProduct(index)"
+                      class="text-red-600 hover:text-red-900 font-medium text-sm transition-colors p-2 bg-red-50 rounded"
+                      title="Delete Product"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0016 21H8a2 2 0 01-1.995-1.858L5 7m5 4v6m0 0l-4 4m4-4h4"></path>
+                      </svg>
+                    </button>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -220,6 +371,8 @@ export default {
       category: '',
       image: ''
     })
+    const editingProduct = ref(null)
+    const viewingProduct = ref(null)
 
     // Load data from localStorage
     const loadData = () => {
@@ -272,6 +425,50 @@ export default {
       return orders.value.filter(order => order.status === 'Pending').length
     })
 
+    // View product functions
+    const viewProduct = (product) => {
+      viewingProduct.value = { ...product, addedDate: new Date().toISOString() }
+    }
+
+    const closeViewModal = () => {
+      viewingProduct.value = null
+    }
+
+    // Edit product functions
+    const editProduct = (product) => {
+      editingProduct.value = { ...product }
+      closeViewModal()
+    }
+
+    const closeEditModal = () => {
+      editingProduct.value = null
+    }
+
+    const updateProduct = () => {
+      const index = products.value.findIndex(p => p.name === editingProduct.value.name)
+      if (index !== -1) {
+        products.value[index] = { ...editingProduct.value }
+        saveProducts()
+        closeEditModal()
+        alert('Product updated successfully!')
+      }
+    }
+
+    // Enhanced remove product function
+    const removeProduct = (index) => {
+      if (confirm('Are you sure you want to remove this product?')) {
+        const productName = products.value[index].name
+        products.value.splice(index, 1)
+        saveProducts()
+        alert(`${productName} removed successfully!`)
+      }
+    }
+
+    // Format date function
+    const formatDate = (dateString) => {
+      return new Date(dateString).toLocaleDateString()
+    }
+
     onMounted(() => {
       loadData()
     })
@@ -280,9 +477,18 @@ export default {
       products,
       orders,
       newProduct,
+      editingProduct,
+      viewingProduct,
       totalRevenue,
       pendingOrders,
-      addProduct
+      addProduct,
+      viewProduct,
+      closeViewModal,
+      editProduct,
+      closeEditModal,
+      updateProduct,
+      removeProduct,
+      formatDate
     }
   }
 }
