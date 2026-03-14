@@ -73,13 +73,6 @@
         </div>
         
         <form @submit.prevent="updateProduct" class="space-y-6">
-          <!-- Debug Info -->
-          <div class="mb-4 p-3 bg-gray-100 rounded text-sm">
-            <strong>Debug Info:</strong>
-            <p>editingProduct: {{ JSON.stringify(editingProduct) }}</p>
-            <p>isEditing: {{ isEditing }}</p>
-          </div>
-          
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-2">Product Name</label>
@@ -87,7 +80,6 @@
                 v-model="editingProduct.name"
                 type="text"
                 required
-                placeholder="Loading product data..."
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               >
             </div>
@@ -99,7 +91,6 @@
                 type="number"
                 required
                 min="0"
-                placeholder="Loading price..."
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               >
             </div>
@@ -113,7 +104,7 @@
                 required
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               >
-                <option value="" disabled>Select Category</option>
+                <option value="">Select Category</option>
                 <option value="laptops">Laptops</option>
                 <option value="phones">Smartphones</option>
                 <option value="accessories">Accessories</option>
@@ -126,7 +117,7 @@
                 v-model="editingProduct.image"
                 type="text"
                 required
-                placeholder="Loading image..."
+                placeholder="/images/product.jpg"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               >
             </div>
@@ -490,11 +481,9 @@ export default {
 
     // Edit product functions
     const editProduct = (product) => {
-      console.log('Edit product clicked:', product) // Debug log
-      editingProduct.value = { ...product }
+      editingProduct.value = JSON.parse(JSON.stringify(product))
       isEditing.value = true
       closeViewModal()
-      console.log('editingProduct after set:', editingProduct.value) // Debug log
     }
 
     const closeEditModal = () => {
@@ -503,12 +492,19 @@ export default {
     }
 
     const updateProduct = () => {
+      if (!editingProduct.value || !editingProduct.value.name) {
+        showNotificationMessage('No product to update')
+        return
+      }
+      
       const index = products.value.findIndex(p => p.name === editingProduct.value.name)
       if (index !== -1) {
-        products.value[index] = { ...editingProduct.value }
+        products.value[index] = JSON.parse(JSON.stringify(editingProduct.value))
         saveProducts()
         closeEditModal()
         showNotificationMessage('Product updated successfully!')
+      } else {
+        showNotificationMessage('Product not found')
       }
     }
 
