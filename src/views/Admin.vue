@@ -63,7 +63,7 @@
     </div>
 
     <!-- Edit Product Modal -->
-    <div v-if="editingProduct" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div v-if="isEditing" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-bold text-gray-900">Edit Product</h2>
@@ -80,6 +80,7 @@
                 v-model="editingProduct.name"
                 type="text"
                 required
+                :disabled="!editingProduct"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               >
             </div>
@@ -91,6 +92,7 @@
                 type="number"
                 required
                 min="0"
+                :disabled="!editingProduct"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               >
             </div>
@@ -102,6 +104,7 @@
               <select
                 v-model="editingProduct.category"
                 required
+                :disabled="!editingProduct"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               >
                 <option value="">Select Category</option>
@@ -117,6 +120,7 @@
                 v-model="editingProduct.image"
                 type="text"
                 required
+                :disabled="!editingProduct"
                 placeholder="/images/product.jpg"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               >
@@ -388,12 +392,8 @@ export default {
       category: '',
       image: ''
     })
-    const editingProduct = ref({
-      name: '',
-      price: 0,
-      category: '',
-      image: ''
-    })
+    const editingProduct = ref(null)
+    const isEditing = ref(false)
     const viewingProduct = ref(null)
     const notification = ref('')
     const showNotification = ref(false)
@@ -494,16 +494,13 @@ export default {
     // Edit product functions
     const editProduct = (product) => {
       editingProduct.value = { ...product }
+      isEditing.value = true
       closeViewModal()
     }
 
     const closeEditModal = () => {
-      editingProduct.value = {
-        name: '',
-        price: 0,
-        category: '',
-        image: ''
-      }
+      editingProduct.value = null
+      isEditing.value = false
     }
 
     const updateProduct = () => {
@@ -535,6 +532,7 @@ export default {
       orders,
       newProduct,
       editingProduct,
+      isEditing,
       viewingProduct,
       notification,
       showNotification,
