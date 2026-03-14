@@ -53,14 +53,14 @@
               
               <!-- Call-to-Action Buttons -->
               <div class="flex flex-col sm:flex-row gap-6 pt-4">
-                <button class="relative inline-flex items-center justify-center px-12 py-5 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold text-lg rounded-2xl hover:from-orange-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 shadow-2xl shadow-orange-500/30 hover:shadow-orange-600/40">
+                <router-link to="/cart" class="relative inline-flex items-center justify-center px-12 py-5 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold text-lg rounded-2xl hover:from-orange-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 shadow-2xl shadow-orange-500/30 hover:shadow-orange-600/40">
                   <span class="relative z-10">Shop Now</span>
                   <div class="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-                </button>
+                </router-link>
                 
-                <button class="relative inline-flex items-center justify-center px-12 py-5 bg-white/10 backdrop-blur-md text-white font-bold text-lg rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 border-2 border-white/30 hover:border-white/50 shadow-xl">
+                <router-link to="/admin" class="relative inline-flex items-center justify-center px-12 py-5 bg-white/10 backdrop-blur-md text-white font-bold text-lg rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 border-2 border-white/30 hover:border-white/50 shadow-xl">
                   <span class="relative z-10">Admin Panel</span>
-                </button>
+                </router-link>
               </div>
             </div>
             
