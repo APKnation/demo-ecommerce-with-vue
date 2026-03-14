@@ -5,78 +5,146 @@
       {{ notification }}
     </div>
 
-    <!-- Hero Section with Background -->
-    <section class="relative h-screen bg-cover bg-center bg-no-repeat" style="background-image: url('/images/w.jpg');">
-      <!-- Orange Overlay for better text readability -->
-      <div class="absolute inset-0 bg-gradient-to-r from-orange-600/95 via-orange-500/90 to-orange-600/95"></div>
+    <!-- Hero Section with Advanced Design -->
+    <section class="relative min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-100 overflow-hidden">
+      <!-- Background Pattern -->
+      <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-orange-200 to-orange-300"></div>
+        <div class="absolute top-10 left-10 w-32 h-32 bg-orange-300 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-10 right-10 w-48 h-48 bg-orange-400 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 left-1/4 w-24 h-24 bg-orange-200 rounded-full blur-2xl"></div>
+      </div>
+      
+      <!-- Advanced Grid Pattern -->
+      <div class="absolute inset-0 opacity-5">
+        <div class="h-full w-full" style="background-image: linear-gradient(rgba(251, 146, 60, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(251, 146, 60, 0.3) 1px, transparent 1px); background-size: 50px 50px;"></div>
+      </div>
       
       <!-- Hero Content -->
-      <div class="relative z-10 h-full flex items-center justify-center text-center px-4">
-        <div class="max-w-6xl mx-auto">
-          <!-- Main Title -->
-          <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
-            Welcome to
-            <br>
-            <span class="text-orange-100">KAFUKA Store</span>
-          </h1>
-          
-          <!-- Subtitle -->
-          <p class="text-xl md:text-3xl text-white/95 mb-12 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
-            Discover the latest electronics and gadgets at unbeatable prices. 
-            <br class="hidden md:block">
-            From smartphones to laptops, we have everything you need.
-          </p>
-          
-          <!-- Call-to-Action Buttons -->
-          <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <router-link 
-              to="/cart" 
-              class="inline-flex items-center px-10 py-5 bg-white text-orange-600 font-bold text-lg rounded-xl hover:bg-orange-50 transition-all duration-300 transform hover:scale-105 shadow-2xl border-2 border-white/50"
-            >
-              <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-              </svg>
-              View Cart
-            </router-link>
-            <router-link 
-              to="/admin" 
-              class="inline-flex items-center px-10 py-5 bg-transparent text-white font-bold text-lg rounded-xl hover:bg-white/10 transition-all duration-300 transform hover:scale-105 shadow-2xl border-2 border-white"
-            >
-              <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065 2.572C18.375 12.838 20.05 11.507 20.05 9.5s-1.675-3.338-2.675-4.317c-.426-1.756-2.924-1.756-3.35 0a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065 2.572C12.838 18.375 11.507 20.05 9.5 20.05S6.162 18.375 5.183 17.017a1.724 1.724 0 00-2.572-1.065c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018 1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 002.573-1.066c1.543.94 3.31-.826 2.37-2.37a1.724 1.724 0 00-1.065-2.572C6.162 18.375 4.833 20.05 2.825 20.05S.675 18.375.675 16.983c-.426-1.756-2.924-1.756-3.35 0A1.724 1.724 0 001.825 16.917c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018z"></path>
-              </svg>
-              Admin Panel
-            </router-link>
-          </div>
-          
-          <!-- Additional Features -->
-          <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div class="text-center">
-              <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      <div class="relative z-10 min-h-screen flex items-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            
+            <!-- Left Content -->
+            <div class="text-left space-y-8">
+              <!-- Badge -->
+              <div class="inline-flex items-center px-4 py-2 bg-orange-100 text-orange-600 rounded-full text-sm font-semibold">
+                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                 </svg>
+                Premium Electronics Store
               </div>
-              <h3 class="text-white font-bold text-lg mb-2">Quality Products</h3>
-              <p class="text-white/80 text-sm">Premium electronics guaranteed</p>
+              
+              <!-- Main Title -->
+              <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight">
+                Discover the
+                <br>
+                <span class="text-orange-500">Future of</span>
+                <br>
+                <span class="text-orange-600">Technology</span>
+              </h1>
+              
+              <!-- Description -->
+              <p class="text-xl text-gray-600 leading-relaxed max-w-lg">
+                Experience cutting-edge electronics and gadgets that transform your digital life. From smartphones to smart homes, we bring innovation to your fingertips.
+              </p>
+              
+              <!-- Stats -->
+              <div class="flex flex-wrap gap-8">
+                <div>
+                  <div class="text-3xl font-bold text-orange-600">500+</div>
+                  <div class="text-gray-600">Products</div>
+                </div>
+                <div>
+                  <div class="text-3xl font-bold text-orange-600">24/7</div>
+                  <div class="text-gray-600">Support</div>
+                </div>
+                <div>
+                  <div class="text-3xl font-bold text-orange-600">100%</div>
+                  <div class="text-gray-600">Quality</div>
+                </div>
+              </div>
+              
+              <!-- Call-to-Action Buttons -->
+              <div class="flex flex-col sm:flex-row gap-4">
+                <router-link 
+                  to="/cart" 
+                  class="inline-flex items-center px-8 py-4 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                >
+                  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                  </svg>
+                  Shop Now
+                </router-link>
+                <router-link 
+                  to="/admin" 
+                  class="inline-flex items-center px-8 py-4 bg-white text-orange-600 font-bold rounded-xl hover:bg-orange-50 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl border-2 border-orange-200"
+                >
+                  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065 2.572C18.375 12.838 20.05 11.507 20.05 9.5s-1.675-3.338-2.675-4.317c-.426-1.756-2.924-1.756-3.35 0a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065 2.572C12.838 18.375 11.507 20.05 9.5 20.05S6.162 18.375 5.183 17.017a1.724 1.724 0 00-2.572-1.065c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018 1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 002.573-1.066c1.543.94 3.31-.826 2.37-2.37a1.724 1.724 0 00-1.065-2.572C6.162 18.375 4.833 20.05 2.825 20.05S.675 18.375.675 16.983c-.426-1.756-2.924-1.756-3.35 0A1.724 1.724 0 001.825 16.917c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018z"></path>
+                  </svg>
+                  Admin Panel
+                </router-link>
+              </div>
             </div>
-            <div class="text-center">
-              <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                </svg>
+            
+            <!-- Right Content - Product Showcase -->
+            <div class="relative">
+              <!-- Main Product Image -->
+              <div class="relative z-10">
+                <img 
+                  src="/images/w.jpg" 
+                  alt="Featured Product" 
+                  class="w-full h-auto rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-500"
+                >
+                
+                <!-- Floating Cards -->
+                <div class="absolute -top-4 -right-4 bg-white rounded-xl shadow-xl p-4 transform hover:scale-110 transition-transform duration-300">
+                  <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                      <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="font-bold text-gray-900">Fast</div>
+                      <div class="text-sm text-gray-600">Delivery</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="absolute -bottom-4 -left-4 bg-white rounded-xl shadow-xl p-4 transform hover:scale-110 transition-transform duration-300">
+                  <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                      <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="font-bold text-gray-900">Premium</div>
+                      <div class="text-sm text-gray-600">Quality</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="absolute top-1/2 -right-8 bg-white rounded-xl shadow-xl p-4 transform hover:scale-110 transition-transform duration-300">
+                  <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                      <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="font-bold text-gray-900">Trusted</div>
+                      <div class="text-sm text-gray-600">Service</div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <h3 class="text-white font-bold text-lg mb-2">Fast Delivery</h3>
-              <p class="text-white/80 text-sm">Quick shipping to your door</p>
-            </div>
-            <div class="text-center">
-              <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                </svg>
-              </div>
-              <h3 class="text-white font-bold text-lg mb-2">Customer Support</h3>
-              <p class="text-white/80 text-sm">24/7 assistance available</p>
+              
+              <!-- Background Elements -->
+              <div class="absolute -top-20 -right-20 w-40 h-40 bg-orange-200 rounded-full opacity-20 blur-2xl"></div>
+              <div class="absolute -bottom-20 -left-20 w-32 h-32 bg-orange-300 rounded-full opacity-20 blur-2xl"></div>
             </div>
           </div>
         </div>
