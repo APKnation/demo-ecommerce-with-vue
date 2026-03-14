@@ -1,13 +1,51 @@
 <template>
   <div>
     <!-- Vue Notification Component -->
-    <div v-if="showNotification" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 transform">
+    <div v-if="showNotification" class="fixed top-4 right-4 bg-success-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 transform">
       {{ notification }}
     </div>
 
+    <!-- Hero Section with Background -->
+    <section class="relative h-96 bg-cover bg-center bg-no-repeat" style="background-image: url('/images/Computer.jpeg');">
+      <!-- Overlay for better text readability -->
+      <div class="absolute inset-0 bg-gradient-to-r from-primary-900/90 via-primary-800/80 to-secondary-900/90"></div>
+      
+      <!-- Hero Content -->
+      <div class="relative z-10 h-full flex items-center justify-center text-center px-4">
+        <div class="max-w-4xl mx-auto">
+          <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+            Welcome to KAFUKA Store
+          </h1>
+          <p class="text-xl md:text-2xl text-primary-100 mb-8 max-w-2xl mx-auto">
+            Discover the latest electronics and gadgets at unbeatable prices. From smartphones to laptops, we have everything you need.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <router-link 
+              to="/cart" 
+              class="inline-flex items-center px-8 py-4 bg-secondary-600 text-white font-semibold rounded-lg hover:bg-secondary-700 transition-all duration-300 transform hover:scale-105 shadow-xl"
+            >
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+              View Cart
+            </router-link>
+            <router-link 
+              to="/admin" 
+              class="inline-flex items-center px-8 py-4 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-all duration-300 transform hover:scale-105 shadow-xl"
+            >
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065 2.572C18.375 12.838 20.05 11.507 20.05 9.5s-1.675-3.338-2.675-4.317c-.426-1.756-2.924-1.756-3.35 0a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065 2.572C12.838 18.375 11.507 20.05 9.5 20.05S6.162 18.375 5.183 17.017a1.724 1.724 0 00-2.572-1.065c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018 1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 002.573-1.066c1.543.94 3.31-.826 2.37-2.37a1.724 1.724 0 00-1.065-2.572C6.162 18.375 4.833 20.05 2.825 20.05S.675 18.375.675 16.983c-.426-1.756-2.924-1.756-3.35 0A1.724 1.724 0 001.825 16.917c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018z"></path>
+              </svg>
+              Admin Panel
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Search and Filter Section -->
-    <section class="mb-8">
-      <div class="bg-white rounded-lg shadow-md p-6">
+    <section class="mb-8 -mt-16 relative z-20">
+      <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-xl p-6 border border-neutral-200">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <!-- Search Bar -->
           <div class="md:col-span-2">
@@ -16,14 +54,16 @@
                 v-model="searchTerm"
                 type="text"
                 placeholder="Search products..."
-                class="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="flex-grow px-4 py-3 border border-neutral-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 @input="filterProducts"
               >
               <button
                 @click="filterProducts"
-                class="btn btn-primary rounded-l-none"
+                class="px-6 py-3 bg-primary-600 text-white rounded-r-lg hover:bg-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
               >
-                Search
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
               </button>
             </div>
           </div>
@@ -31,7 +71,7 @@
           <!-- Category Filter -->
           <select
             v-model="categoryFilter"
-            class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             @change="filterProducts"
           >
             <option value="">All Categories</option>
@@ -43,7 +83,7 @@
           <!-- Price Filter -->
           <select
             v-model="priceFilter"
-            class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             @change="filterProducts"
           >
             <option value="">All Prices</option>
