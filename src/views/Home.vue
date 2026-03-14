@@ -6,38 +6,78 @@
     </div>
 
     <!-- Hero Section with Background -->
-    <section class="relative h-96 bg-cover bg-center bg-no-repeat" style="background-image: url('/images/w.jpg');">
-      <!-- Overlay for better text readability -->
-      <div class="absolute inset-0 bg-gradient-to-r from-primary-900/90 via-primary-800/80 to-secondary-900/90"></div>
+    <section class="relative h-screen bg-cover bg-center bg-no-repeat" style="background-image: url('/images/w.jpg');">
+      <!-- Orange Overlay for better text readability -->
+      <div class="absolute inset-0 bg-gradient-to-r from-orange-600/95 via-orange-500/90 to-orange-600/95"></div>
       
       <!-- Hero Content -->
       <div class="relative z-10 h-full flex items-center justify-center text-center px-4">
-        <div class="max-w-4xl mx-auto">
-          <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-            Welcome to KAFUKA Store
+        <div class="max-w-6xl mx-auto">
+          <!-- Main Title -->
+          <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
+            Welcome to
+            <br>
+            <span class="text-orange-100">KAFUKA Store</span>
           </h1>
-          <p class="text-xl md:text-2xl text-primary-100 mb-8 max-w-2xl mx-auto">
-            Discover the latest electronics and gadgets at unbeatable prices. From smartphones to laptops, we have everything you need.
+          
+          <!-- Subtitle -->
+          <p class="text-xl md:text-3xl text-white/95 mb-12 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
+            Discover the latest electronics and gadgets at unbeatable prices. 
+            <br class="hidden md:block">
+            From smartphones to laptops, we have everything you need.
           </p>
-          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          
+          <!-- Call-to-Action Buttons -->
+          <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <router-link 
               to="/cart" 
-              class="inline-flex items-center px-8 py-4 bg-secondary-600 text-white font-semibold rounded-lg hover:bg-secondary-700 transition-all duration-300 transform hover:scale-105 shadow-xl"
+              class="inline-flex items-center px-10 py-5 bg-white text-orange-600 font-bold text-lg rounded-xl hover:bg-orange-50 transition-all duration-300 transform hover:scale-105 shadow-2xl border-2 border-white/50"
             >
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
               </svg>
               View Cart
             </router-link>
             <router-link 
               to="/admin" 
-              class="inline-flex items-center px-8 py-4 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-all duration-300 transform hover:scale-105 shadow-xl"
+              class="inline-flex items-center px-10 py-5 bg-transparent text-white font-bold text-lg rounded-xl hover:bg-white/10 transition-all duration-300 transform hover:scale-105 shadow-2xl border-2 border-white"
             >
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065 2.572C18.375 12.838 20.05 11.507 20.05 9.5s-1.675-3.338-2.675-4.317c-.426-1.756-2.924-1.756-3.35 0a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065 2.572C12.838 18.375 11.507 20.05 9.5 20.05S6.162 18.375 5.183 17.017a1.724 1.724 0 00-2.572-1.065c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018 1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 002.573-1.066c1.543.94 3.31-.826 2.37-2.37a1.724 1.724 0 00-1.065-2.572C6.162 18.375 4.833 20.05 2.825 20.05S.675 18.375.675 16.983c-.426-1.756-2.924-1.756-3.35 0A1.724 1.724 0 001.825 16.917c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018z"></path>
               </svg>
               Admin Panel
             </router-link>
+          </div>
+          
+          <!-- Additional Features -->
+          <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div class="text-center">
+              <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <h3 class="text-white font-bold text-lg mb-2">Quality Products</h3>
+              <p class="text-white/80 text-sm">Premium electronics guaranteed</p>
+            </div>
+            <div class="text-center">
+              <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+              </div>
+              <h3 class="text-white font-bold text-lg mb-2">Fast Delivery</h3>
+              <p class="text-white/80 text-sm">Quick shipping to your door</p>
+            </div>
+            <div class="text-center">
+              <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </div>
+              <h3 class="text-white font-bold text-lg mb-2">Customer Support</h3>
+              <p class="text-white/80 text-sm">24/7 assistance available</p>
+            </div>
           </div>
         </div>
       </div>
@@ -45,7 +85,7 @@
 
     <!-- Search and Filter Section -->
     <section class="mb-8 -mt-16 relative z-20">
-      <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-xl p-6 border border-neutral-200">
+      <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-xl p-6 border-2 border-orange-200">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <!-- Search Bar -->
           <div class="md:col-span-2">
@@ -54,12 +94,12 @@
                 v-model="searchTerm"
                 type="text"
                 placeholder="Search products..."
-                class="flex-grow px-4 py-3 border border-neutral-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                class="flex-grow px-4 py-3 border-2 border-orange-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                 @input="filterProducts"
               >
               <button
                 @click="filterProducts"
-                class="px-6 py-3 bg-primary-600 text-white rounded-r-lg hover:bg-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+                class="px-6 py-3 bg-orange-500 text-white rounded-r-lg hover:bg-orange-600 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -71,7 +111,7 @@
           <!-- Category Filter -->
           <select
             v-model="categoryFilter"
-            class="px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            class="px-4 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
             @change="filterProducts"
           >
             <option value="">All Categories</option>
@@ -83,7 +123,7 @@
           <!-- Price Filter -->
           <select
             v-model="priceFilter"
-            class="px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            class="px-4 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
             @change="filterProducts"
           >
             <option value="">All Prices</option>
