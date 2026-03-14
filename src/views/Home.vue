@@ -227,35 +227,35 @@
         <div
           v-for="product in filteredProducts"
           :key="product.name"
-          class="card hover:shadow-lg transition-shadow duration-300"
+          class="card bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-2 group"
         >
           <img
             :src="product.image"
             :alt="product.name"
-            class="w-full h-48 object-cover rounded-t-lg mb-4"
+            class="w-full h-48 object-cover rounded-t-lg mb-4 group-hover:scale-110 transition-transform duration-500"
           >
-          <h3 class="text-xl font-semibold mb-2">{{ product.name }}</h3>
-          <p class="text-gray-600 mb-2">{{ product.category }}</p>
-          <p class="text-2xl font-bold text-blue-600 mb-4">Tsh {{ product.price.toLocaleString() }}</p>
+          <h3 class="text-xl font-semibold mb-2 group-hover:text-orange-600 transition-colors duration-300">{{ product.name }}</h3>
+          <p class="text-gray-600 mb-2 group-hover:text-orange-500 transition-colors duration-300">{{ product.category }}</p>
+          <p class="text-2xl font-bold text-blue-600 mb-4 group-hover:text-orange-500 transition-colors duration-300">Tsh {{ product.price.toLocaleString() }}</p>
           
           <div class="flex flex-wrap gap-2">
             <button
               @click="addToCart(product.name, product.price)"
-              class="btn btn-primary flex-grow"
+              class="btn btn-primary flex-grow group-hover:from-orange-600 group-hover:to-orange-700 transition-all duration-300"
             >
               Add to Cart
             </button>
             <button
               @click="toggleWishlist(product.name, product.price, product.image)"
-              :class="isInWishlist(product.name) ? 'bg-red-500 hover:bg-red-600' : 'bg-gray-200 hover:bg-gray-300'"
-              class="btn text-sm px-3"
+              :class="isInWishlist(product.name) ? 'bg-red-500 hover:bg-red-600' : 'bg-gray-200 hover:bg-gray-300 group-hover:bg-orange-200 group-hover:text-orange-700'"
+              class="btn text-sm px-3 transition-all duration-300"
             >
               {{ isInWishlist(product.name) ? '❤️' : '🤍' }}
             </button>
             <button
               @click="addToCompare(product.name, product.price)"
-              :class="isInCompare(product.name) ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white'"
-              class="btn text-sm px-3"
+              :class="isInCompare(product.name) ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white group-hover:bg-orange-500 group-hover:scale-110'"
+              class="btn text-sm px-3 transition-all duration-300"
             >
               ⚖️
             </button>
