@@ -396,4 +396,75 @@ export default {
 
 <style scoped>
 /* Navigation styles are now handled by Tailwind classes */
+
+/* SweetAlert Custom Styles */
+:global(.swal2-popup) {
+  border-radius: 16px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2) !important;
+}
+
+:global(.swal2-welcome-popup) {
+  border-radius: 20px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+:global(.swal2-welcome-popup .swal2-title) {
+  color: #1f2937 !important;
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 1rem !important;
+}
+
+:global(.swal2-welcome-popup .swal2-confirm) {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
+  color: white !important;
+  font-weight: 600 !important;
+  padding: 12px 24px !important;
+  border-radius: 12px !important;
+  border: none !important;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+:global(.swal2-welcome-popup .swal2-confirm:hover) {
+  background: linear-gradient(135deg, #ea580c 0%, #f97316 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4) !important;
+}
+
+:global(.swal2-welcome-popup .swal2-cancel) {
+  background: #6b7280 !important;
+  color: white !important;
+  font-weight: 500 !important;
+  padding: 12px 24px !important;
+  border-radius: 12px !important;
+  border: none !important;
+  box-shadow: 0 4px 15px rgba(107, 114, 128, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+:global(.swal2-welcome-popup .swal2-cancel:hover) {
+  background: #4b5563 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(75, 85, 99, 0.4) !important;
+}
+
+:global(.swal2-welcome-popup .swal2-html-container) {
+  color: #374151 !important;
+  font-size: 1.1rem !important;
+  line-height: 1.6 !important;
+  text-align: center !important;
+  margin-top: 1rem !important;
+}
+
+/* Ensure SweetAlert doesn't affect navbar z-index */
+.swal2-container {
+  z-index: 9999 !important;
+}
+
+/* Ensure navbar stays on top */
+nav {
+  z-index: 50 !important;
+}
 </style>
