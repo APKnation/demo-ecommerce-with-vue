@@ -155,21 +155,32 @@
     <!-- Compare Modal -->
     <div v-if="compareModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-2xl font-bold">Compare Products</h2>
-          <button @click="closeCompareModal" class="text-gray-500 hover:text-gray-700">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-          </button>
-        </div>
-        
-        <div class="overflow-x-auto">
-          <table class="w-full border-collapse">
-            <thead>
-              <tr class="border-b">
-                <th class="text-left p-2">Product</th>
-                <th class="text-left p-2">Price</th>
+        <template>
+          <div id="app" class="min-h-screen flex flex-col">
+            <div class="overflow-x-auto">
+              <table class="w-full border-collapse">
+                <thead>
+                  <tr class="border-b">
+                    <th class="text-left p-2">Product</th>
+                    <th class="text-left p-2">Price</th>
+                    <th class="text-left p-2">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in compareList" :key="item.name" class="border-b">
+                    <td class="p-2">{{ item.name }}</td>
+                    <td class="p-2">Tsh {{ item.price.toLocaleString() }}</td>
+                    <td class="p-2">
+                      <button @click="addToCart(item.name, item.price)" class="btn btn-primary text-sm">
+                        Add to Cart
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </template>
                 <th class="text-left p-2">Action</th>
               </tr>
             </thead>
@@ -192,8 +203,9 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, provide } from 'vue'
+import { ref, computed, inject, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import Swal from 'sweetalert2'
 
 export default {
   name: 'App',
@@ -202,7 +214,6 @@ export default {
     const cart = ref([])
     const wishlist = ref([])
     const compareList = ref([])
-    const notification = ref('')
     const mobileMenuOpen = ref(false)
     const wishlistModalOpen = ref(false)
     const compareModalOpen = ref(false)
@@ -226,12 +237,21 @@ export default {
       localStorage.setItem('compareList', JSON.stringify(compareList.value))
     }
 
-    // Show notification
-    const showNotificationMessage = (message) => {
-      notification.value = message
-      setTimeout(() => {
-        notification.value = ''
-      }, 3000)
+    // SweetAlert notification system
+    const showNotificationMessage = (message, type = 'success') => {
+      Swal.fire({
+        icon: type === 'success' ? 'success' : type === 'error' ? 'error' : 'info',
+        title: type === 'success' ? 'Success!' : type === 'error' ? 'Error!' : 'Notification',
+        text: message,
+        position: 'top-end',
+        timer: 3000,
+        toast: true,
+        showConfirmButton: false,
+        showCancelButton: false,
+        customClass: {
+          popup: 'swal2-popup'
+        }
+      })
     }
 
     // Cart functions
@@ -314,26 +334,28 @@ export default {
     provide('cart', cart)
     provide('wishlist', wishlist)
     provide('compareList', compareList)
-    provide('notification', notification)
     provide('addToCart', addToCart)
     provide('toggleWishlist', toggleWishlist)
     provide('addToCompare', addToCompare)
 
     return {
       cart,
+      cartCount,
       wishlist,
       compareList,
-      notification,
       mobileMenuOpen,
       wishlistModalOpen,
       compareModalOpen,
       profileMenuOpen,
-      cartCount,
+      saveData,
       addToCart,
+      removeFromCart,
+      updateQuantity,
+      clearCart,
       toggleWishlist,
       showWishlist,
-      closeWishlistModal,
       addToCompare,
+      removeFromCompare,
       closeCompareModal,
       toggleMobileMenu,
       toggleProfileMenu

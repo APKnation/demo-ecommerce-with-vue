@@ -1,14 +1,5 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
-    <!-- Vue Notification Component -->
-    <div v-if="showLocalNotification" class="fixed top-4 right-4 bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-xl shadow-2xl z-50 transition-all duration-300 transform hover:scale-105">
-      <div class="flex items-center">
-        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        {{ localNotification }}
-      </div>
-    </div>
 
     <!-- Cart Header -->
     <div class="bg-white shadow-sm border-b border-gray-200">
@@ -168,25 +159,30 @@
 <script>
 import { ref, computed, inject } from 'vue'
 import { useRouter } from 'vue-router'
+import Swal from 'sweetalert2'
 
 export default {
   name: 'Cart',
   setup() {
     const router = useRouter()
     const cart = inject('cart', ref([]))
-    const notification = inject('notification', ref(''))
-    const localNotification = ref('')
-    const showLocalNotification = ref(false)
     const isProcessing = ref(false)
 
-    // Vue notification system
-    const showNotificationMessage = (message) => {
-      localNotification.value = message
-      showLocalNotification.value = true
-      setTimeout(() => {
-        showLocalNotification.value = false
-        localNotification.value = ''
-      }, 3000)
+    // SweetAlert notification system
+    const showNotificationMessage = (message, type = 'success') => {
+      Swal.fire({
+        icon: type === 'success' ? 'success' : type === 'error' ? 'error' : 'info',
+        title: type === 'success' ? 'Success!' : type === 'error' ? 'Error!' : 'Notification',
+        text: message,
+        position: 'top-end',
+        timer: 3000,
+        toast: true,
+        showConfirmButton: false,
+        showCancelButton: false,
+        customClass: {
+          popup: 'swal2-popup'
+        }
+      })
     }
 
     const totalPrice = computed(() => {
@@ -286,8 +282,6 @@ export default {
       cart,
       totalPrice,
       isProcessing,
-      localNotification,
-      showLocalNotification,
       updateQuantity,
       removeFromCart,
       clearCart,

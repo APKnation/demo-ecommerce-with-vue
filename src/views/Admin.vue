@@ -423,45 +423,12 @@
         </div>
       </div>
     </div>
-
-    <!-- Vue Notification Component -->
-    <div v-if="showNotification" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 transform">
-      {{ notification }}
-    </div>
-
-    <!-- Vue Confirm Dialog -->
-    <div v-if="showConfirmDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-200">
-      <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4 transition-all duration-200 transform">
-        <div class="text-center">
-          <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
-            <span class="text-red-600 text-2xl">⚠️</span>
-          </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">Confirm Delete</h3>
-          <p class="text-gray-600 mb-6">
-            Are you sure you want to delete this product? This action cannot be undone.
-          </p>
-          <div class="flex space-x-3">
-            <button
-              @click="cancelDelete"
-              class="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
-            >
-              Cancel
-            </button>
-            <button
-              @click="executeDelete"
-              class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-            >
-              Delete
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, inject, onMounted } from 'vue'
+import Swal from 'sweetalert2'
 
 export default {
   name: 'Admin',
@@ -477,9 +444,6 @@ export default {
     const editingProduct = ref(null)
     const isEditing = ref(false)
     const viewingProduct = ref(null)
-    const notification = ref('')
-    const showNotification = ref(false)
-    const showConfirmDialog = ref(false)
     const productToDelete = ref(null)
     
     // New table functionality
@@ -488,14 +452,21 @@ export default {
     const selectedProducts = ref([])
     const currentFilter = ref('all')
 
-    // Reactive notification system
-    const showNotificationMessage = (message) => {
-      notification.value = message
-      showNotification.value = true
-      setTimeout(() => {
-        showNotification.value = false
-        notification.value = ''
-      }, 3000)
+    // SweetAlert notification system
+    const showNotificationMessage = (message, type = 'success') => {
+      Swal.fire({
+        icon: type === 'success' ? 'success' : type === 'error' ? 'error' : 'info',
+        title: type === 'success' ? 'Success!' : type === 'error' ? 'Error!' : 'Notification',
+        text: message,
+        position: 'top-end',
+        timer: 3000,
+        toast: true,
+        showConfirmButton: false,
+        showCancelButton: false,
+        customClass: {
+          popup: 'swal2-popup'
+        }
+      })
     }
 
     // Vue confirm dialog
@@ -669,18 +640,14 @@ export default {
       editingProduct,
       isEditing,
       viewingProduct,
-      notification,
-      showNotification,
-      showConfirmDialog,
       productToDelete,
-      totalRevenue,
-      pendingOrders,
-      // New table functionality
       searchQuery,
       filterDropdownOpen,
       selectedProducts,
       currentFilter,
+      totalRevenue,
       filteredProducts,
+      saveProducts,
       addProduct,
       viewProduct,
       closeViewModal,
@@ -692,7 +659,6 @@ export default {
       cancelDelete,
       executeDelete,
       formatDate,
-      // New table methods
       toggleFilterDropdown,
       setFilter,
       toggleSelectAll
