@@ -6,11 +6,11 @@
     </div>
 
     <!-- Hero Section with Premium Design -->
-    <section class="relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden">
+    <section class="relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden rounded-b-3xl">
       <!-- Animated Background Elements -->
       <div class="absolute inset-0">
         <!-- Gradient Mesh -->
-        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-orange-500/20"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-orange-500/20 rounded-3xl"></div>
         
         <!-- Floating Particles -->
         <div class="absolute top-20 left-20 w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
@@ -227,38 +227,66 @@
         <div
           v-for="product in filteredProducts"
           :key="product.name"
-          class="card bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-2 group"
+          class="card bg-white rounded-xl shadow-md hover:shadow-2xl hover:bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100 transition-all duration-300 transform hover:scale-105 hover:-translate-y-2 hover:rotate-1 group border-2 border-transparent hover:border-orange-300"
         >
-          <img
-            :src="product.image"
-            :alt="product.name"
-            class="w-full h-48 object-cover rounded-t-lg mb-4 group-hover:scale-110 transition-transform duration-500"
-          >
-          <h3 class="text-xl font-semibold mb-2 group-hover:text-orange-600 transition-colors duration-300">{{ product.name }}</h3>
-          <p class="text-gray-600 mb-2 group-hover:text-orange-500 transition-colors duration-300">{{ product.category }}</p>
-          <p class="text-2xl font-bold text-blue-600 mb-4 group-hover:text-orange-500 transition-colors duration-300">Tsh {{ product.price.toLocaleString() }}</p>
-          
-          <div class="flex flex-wrap gap-2">
-            <button
-              @click="addToCart(product.name, product.price)"
-              class="btn btn-primary flex-grow group-hover:from-orange-600 group-hover:to-orange-700 transition-all duration-300"
+          <div class="relative overflow-hidden rounded-t-lg">
+            <img
+              :src="product.image"
+              :alt="product.name"
+              class="w-full h-48 object-cover rounded-t-lg mb-4 group-hover:scale-110 transition-transform duration-500"
             >
-              Add to Cart
-            </button>
-            <button
-              @click="toggleWishlist(product.name, product.price, product.image)"
-              :class="isInWishlist(product.name) ? 'bg-red-500 hover:bg-red-600' : 'bg-gray-200 hover:bg-gray-300 group-hover:bg-orange-200 group-hover:text-orange-700'"
-              class="btn text-sm px-3 transition-all duration-300"
-            >
-              {{ isInWishlist(product.name) ? '❤️' : '🤍' }}
-            </button>
-            <button
-              @click="addToCompare(product.name, product.price)"
-              :class="isInCompare(product.name) ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white group-hover:bg-orange-500 group-hover:scale-110'"
-              class="btn text-sm px-3 transition-all duration-300"
-            >
-              ⚖️
-            </button>
+            <!-- Image Overlay Effect -->
+            <div class="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-orange-200/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-t-lg"></div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-xl font-semibold mb-2 text-gray-800 group-hover:text-orange-600 transition-colors duration-300">{{ product.name }}</h3>
+            <p class="text-gray-600 mb-2 group-hover:text-orange-500 transition-colors duration-300">{{ product.category }}</p>
+            <div class="flex items-center justify-between mb-4">
+              <p class="text-2xl font-bold text-blue-600 group-hover:text-orange-500 transition-colors duration-300">Tsh {{ product.price.toLocaleString() }}</p>
+              <div class="w-8 h-8 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center group-hover:from-green-500 group-hover:to-green-600 transition-all duration-300">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 9"></path>
+                </svg>
+              </div>
+            </div>
+            
+            <div class="flex flex-wrap gap-2">
+              <button
+                @click="addToCart(product.name, product.price)"
+                class="btn btn-primary flex-grow bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 hover:shadow-lg hover:scale-105 transform transition-all duration-300"
+              >
+                <span class="flex items-center justify-center">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                  </svg>
+                  Add to Cart
+                </span>
+              </button>
+              <button
+                @click="toggleWishlist(product.name, product.price, product.image)"
+                :class="isInWishlist(product.name) ? 'bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white' : 'bg-gradient-to-r from-gray-200 to-gray-300 hover:from-gray-300 hover:to-gray-400 text-gray-700 hover:text-white'"
+                class="btn text-sm px-3 transition-all duration-300 hover:scale-110 hover:shadow-lg"
+              >
+                <span class="flex items-center justify-center">
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                  </svg>
+                  {{ isInWishlist(product.name) ? '❤️' : '🤍' }}
+                </span>
+              </button>
+              <button
+                @click="addToCompare(product.name, product.price)"
+                :class="isInCompare(product.name) ? 'bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white' : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white hover:scale-110'"
+                class="btn text-sm px-3 transition-all duration-300 hover:shadow-lg"
+              >
+                <span class="flex items-center justify-center">
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002-2v2a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2H9z"></path>
+                  </svg>
+                  ⚖️
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
