@@ -254,6 +254,7 @@
         </div>
       </div>
     </div>
+    </div>
     
     <!-- Manage Products Section -->
     <div class="mt-8">
