@@ -86,7 +86,6 @@
                 type="text"
                 required
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
-                :value="editingProduct?.name || ''"
               >
             </div>
             
@@ -98,7 +97,6 @@
                 required
                 min="0"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
-                :value="editingProduct?.price || 0"
               >
             </div>
           </div>
@@ -112,9 +110,9 @@
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
               >
                 <option value="">Select Category</option>
-                <option value="laptops" :selected="editingProduct?.category === 'laptops'">Laptops</option>
-                <option value="phones" :selected="editingProduct?.category === 'phones'">Smartphones</option>
-                <option value="accessories" :selected="editingProduct?.category === 'accessories'">Accessories</option>
+                <option value="laptops">Laptops</option>
+                <option value="phones">Smartphones</option>
+                <option value="accessories">Accessories</option>
               </select>
             </div>
             
@@ -126,7 +124,6 @@
                 required
                 placeholder="/images/product.jpg"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
-                :value="editingProduct?.image || ''"
               >
             </div>
           </div>
