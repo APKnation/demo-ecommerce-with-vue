@@ -80,7 +80,6 @@
                 v-model="editingProduct.name"
                 type="text"
                 required
-                :disabled="!editingProduct"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               >
             </div>
@@ -92,7 +91,6 @@
                 type="number"
                 required
                 min="0"
-                :disabled="!editingProduct"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               >
             </div>
@@ -104,7 +102,6 @@
               <select
                 v-model="editingProduct.category"
                 required
-                :disabled="!editingProduct"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               >
                 <option value="">Select Category</option>
@@ -120,7 +117,6 @@
                 v-model="editingProduct.image"
                 type="text"
                 required
-                :disabled="!editingProduct"
                 placeholder="/images/product.jpg"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               >
