@@ -39,14 +39,14 @@
               
               <!-- Main Title -->
               <div class="space-y-6">
-                <h2 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white/95 leading-tight">
+                <h2 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white/95 leading-tight italic">
                   Where Innovation
                   <br>
                   Meets
                   <br>
-                  <span class="bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent drop-shadow-lg">Excellence</span>
+                  <span class="bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent drop-shadow-lg italic">Excellence</span>
                 </h2>
-                <p class="text-xl md:text-2xl text-gray-300 leading-relaxed max-w-xl font-light">
+                <p class="text-xl md:text-2xl text-gray-300 leading-relaxed max-w-xl font-light italic">
                   Discover cutting-edge electronics and premium gadgets that redefine your digital experience. Quality, innovation, and service delivered.
                 </p>
               </div>
