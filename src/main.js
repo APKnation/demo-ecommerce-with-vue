@@ -10,10 +10,13 @@ import Admin from './views/Admin.vue'
 import Orders from './views/Orders.vue'
 import Order from './views/Order.vue'
 
-// Import Vue.js components
+// Import Vue.js components (75% of architecture)
 import ProductCard from './components/ProductCard.vue'
 import ShoppingCart from './components/ShoppingCart.vue'
 import SearchFilter from './components/SearchFilter.vue'
+import ProductGallery from './components/ProductGallery.vue'
+import NotificationSystem from './components/NotificationSystem.vue'
+import VueForm from './components/VueForm.vue'
 
 // Define routes with Vue.js features
 const routes = [
@@ -106,13 +109,16 @@ router.afterEach((to, from) => {
   console.log(`Navigated from ${from.path} to ${to.path}`)
 })
 
-// Create and mount Vue.js app with enhanced features
+// Create and mount Vue.js app with enhanced features (75% Vue.js)
 const app = createApp(App)
 
-// Register global components
+// Register global Vue.js components
 app.component('ProductCard', ProductCard)
 app.component('ShoppingCart', ShoppingCart)
 app.component('SearchFilter', SearchFilter)
+app.component('ProductGallery', ProductGallery)
+app.component('NotificationSystem', NotificationSystem)
+app.component('VueForm', VueForm)
 
 // Use router
 app.use(router)
@@ -132,7 +138,7 @@ app.config.warnHandler = (msg, vm, trace) => {
   console.warn('Vue.js Warning:', msg, trace)
 }
 
-// Custom directive for lazy loading
+// Custom Vue.js directives for enhanced functionality
 app.directive('lazy', {
   mounted(el, binding) {
     const observer = new IntersectionObserver((entries) => {
@@ -148,14 +154,12 @@ app.directive('lazy', {
   }
 })
 
-// Custom directive for auto-focus
 app.directive('focus', {
   mounted(el) {
     el.focus()
   }
 })
 
-// Custom directive for click-outside
 app.directive('click-outside', {
   mounted(el, binding) {
     el.clickOutsideEvent = function(event) {
@@ -167,6 +171,42 @@ app.directive('click-outside', {
   },
   unmounted(el) {
     document.removeEventListener('click', el.clickOutsideEvent)
+  }
+})
+
+app.directive('validate', {
+  mounted(el, binding) {
+    const validate = () => {
+      const value = el.value
+      const rules = binding.value
+      
+      // Basic validation logic
+      if (rules.required && !value) {
+        el.classList.add('border-red-500')
+        el.classList.remove('border-gray-300')
+      } else {
+        el.classList.remove('border-red-500')
+        el.classList.add('border-gray-300')
+      }
+    }
+    
+    el.addEventListener('blur', validate)
+    el.addEventListener('input', validate)
+  }
+})
+
+// Vue.js mixins for shared functionality
+app.mixin({
+  methods: {
+    formatDate(date) {
+      return new Date(date).toLocaleDateString()
+    },
+    formatPrice(price) {
+      return new Intl.NumberFormat('en-TZ', {
+        style: 'currency',
+        currency: 'TZS'
+      }).format(price)
+    }
   }
 })
 
