@@ -63,7 +63,7 @@
     </div>
 
     <!-- Edit Product Modal -->
-    <div v-if="isEditing" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div v-if="isEditing && editingProduct" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-bold text-gray-900">Edit Product</h2>
@@ -80,6 +80,7 @@
                 v-model="editingProduct.name"
                 type="text"
                 required
+                placeholder="Loading product data..."
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               >
             </div>
@@ -91,6 +92,7 @@
                 type="number"
                 required
                 min="0"
+                placeholder="Loading price..."
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               >
             </div>
@@ -104,7 +106,7 @@
                 required
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               >
-                <option value="">Select Category</option>
+                <option value="" disabled>Select Category</option>
                 <option value="laptops">Laptops</option>
                 <option value="phones">Smartphones</option>
                 <option value="accessories">Accessories</option>
@@ -117,7 +119,7 @@
                 v-model="editingProduct.image"
                 type="text"
                 required
-                placeholder="/images/product.jpg"
+                placeholder="Loading image..."
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               >
             </div>
