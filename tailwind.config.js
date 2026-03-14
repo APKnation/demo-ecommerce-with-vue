@@ -106,6 +106,16 @@ export default {
         heading: '#111827',
         body: '#6b7280',
         default: '#d1d5db'
+      },
+      // Custom spacing for zoom modal
+      spacing: {
+        '90': '22.5rem', // 360px
+        '5xl': '16rem'    // 256px
+      },
+      // Custom max-width for zoom modal
+      maxWidth: {
+        '90': '22.5rem', // 360px
+        '5xl': '16rem'    // 256px
       }
     },
   },
