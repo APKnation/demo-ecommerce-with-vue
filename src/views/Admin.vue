@@ -73,6 +73,13 @@
         </div>
         
         <form @submit.prevent="updateProduct" class="space-y-6">
+          <!-- Debug Info -->
+          <div class="mb-4 p-3 bg-gray-100 rounded text-sm">
+            <strong>Debug Info:</strong>
+            <p>editingProduct: {{ JSON.stringify(editingProduct) }}</p>
+            <p>isEditing: {{ isEditing }}</p>
+          </div>
+          
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-2">Product Name</label>
@@ -483,9 +490,11 @@ export default {
 
     // Edit product functions
     const editProduct = (product) => {
+      console.log('Edit product clicked:', product) // Debug log
       editingProduct.value = { ...product }
       isEditing.value = true
       closeViewModal()
+      console.log('editingProduct after set:', editingProduct.value) // Debug log
     }
 
     const closeEditModal = () => {
