@@ -11,6 +11,54 @@
           <span class="self-center text-xl text-neutral-900 font-semibold whitespace-nowrap">KAFUKA Store</span>
         </router-link>
         
+        <!-- Profile Section -->
+        <div class="hidden md:flex items-center space-x-3">
+          <div class="relative">
+            <img 
+              src="/images/IMG-20240518-WA0002.jpg" 
+              alt="User Profile" 
+              class="w-10 h-10 rounded-full object-cover border-2 border-neutral-200 shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+              @click="toggleProfileMenu"
+            >
+            <div class="absolute bottom-0 right-0 w-3 h-3 bg-success-500 rounded-full border-2 border-white"></div>
+          </div>
+          <!-- Profile Dropdown Menu -->
+          <div v-if="profileMenuOpen" class="absolute top-full right-0 mt-2 bg-white border border-neutral-200 rounded-lg shadow-lg w-48 z-50">
+            <div class="p-2">
+              <div class="flex items-center space-x-3 px-3 py-2 border-b border-neutral-100">
+                <img 
+                  src="/images/IMG-20240518-WA0002.jpg" 
+                  alt="User Profile" 
+                  class="w-8 h-8 rounded-full object-cover"
+                >
+                <div>
+                  <div class="font-medium text-neutral-900">Admin User</div>
+                  <div class="text-sm text-neutral-500">admin@kafuka.com</div>
+                </div>
+              </div>
+              <router-link 
+                to="/admin" 
+                class="flex items-center px-3 py-2 text-neutral-700 hover:bg-neutral-100 rounded-md transition-colors"
+                @click="profileMenuOpen = false"
+              >
+                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065 2.572C18.375 12.838 20.05 11.507 20.05 9.5s-1.675-3.338-2.675-4.317c-.426-1.756-2.924-1.756-3.35 0a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065 2.572C12.838 18.375 11.507 20.05 9.5 20.05S6.162 18.375 5.183 17.017a1.724 1.724 0 00-2.572-1.065c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018 1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 002.573-1.066c1.543.94 3.31-.826 2.37-2.37a1.724 1.724 0 00-1.065-2.572C6.162 18.375 4.833 20.05 2.825 20.05S.675 18.375.675 16.983c-.426-1.756-2.924-1.756-3.35 0A1.724 1.724 0 001.825 16.917c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018z"></path>
+                </svg>
+                Admin Dashboard
+              </router-link>
+              <button 
+                class="flex items-center px-3 py-2 text-neutral-700 hover:bg-neutral-100 rounded-md transition-colors w-full text-left"
+                @click="logout"
+              >
+                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4 4m4-4H3m2 4h1a3 3 0 003-3V7a3 3 0 00-3-3H7a3 3 0 00-3 3v10a3 3 0 003 3h1"></path>
+                </svg>
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+        
         <!-- Mobile Menu Toggle -->
         <button @click="toggleMobileMenu" data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-neutral-500 rounded-lg md:hidden hover:bg-neutral-100 hover:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-200" aria-controls="navbar-default" aria-expanded="false">
           <span class="sr-only">Open main menu</span>
@@ -197,6 +245,7 @@ export default {
     const mobileMenuOpen = ref(false)
     const wishlistModalOpen = ref(false)
     const compareModalOpen = ref(false)
+    const profileMenuOpen = ref(false)
 
     const cartCount = computed(() => {
       return cart.value.reduce((total, item) => total + item.quantity, 0)
@@ -291,6 +340,26 @@ export default {
       mobileMenuOpen.value = !mobileMenuOpen.value
     }
 
+    // Profile menu
+    const toggleProfileMenu = () => {
+      profileMenuOpen.value = !profileMenuOpen.value
+    }
+
+    const logout = () => {
+      // Clear all data
+      localStorage.clear()
+      cart.value = []
+      wishlist.value = []
+      compareList.value = []
+      profileMenuOpen.value = false
+      
+      // Show notification
+      showNotificationMessage('Logged out successfully')
+      
+      // Redirect to home
+      router.push('/')
+    }
+
     onMounted(() => {
       loadData()
     })
@@ -312,6 +381,7 @@ export default {
       mobileMenuOpen,
       wishlistModalOpen,
       compareModalOpen,
+      profileMenuOpen,
       cartCount,
       addToCart,
       toggleWishlist,
@@ -319,7 +389,9 @@ export default {
       closeWishlistModal,
       addToCompare,
       closeCompareModal,
-      toggleMobileMenu
+      toggleMobileMenu,
+      toggleProfileMenu,
+      logout
     }
   }
 }

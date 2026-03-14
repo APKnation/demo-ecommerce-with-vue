@@ -1,11 +1,22 @@
 <template>
   <div>
-    <!-- Admin Header -->
+    <!-- Admin Header with Profile -->
     <div class="bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded-lg shadow-xl p-8 mb-8">
     <div class="flex items-center justify-between">
-      <div>
-        <h1 class="text-4xl font-bold mb-2">Admin Dashboard</h1>
-        <p class="text-primary-100">Manage your e-commerce store</p>
+      <div class="flex items-center space-x-4">
+        <!-- Profile Image -->
+        <div class="relative">
+          <img 
+            src="/images/IMG-20240518-WA0002.jpg" 
+            alt="Admin Profile" 
+            class="w-16 h-16 rounded-full object-cover border-3 border-white shadow-lg"
+          >
+          <div class="absolute bottom-0 right-0 w-4 h-4 bg-success-500 rounded-full border-2 border-white"></div>
+        </div>
+        <div>
+          <h1 class="text-4xl font-bold mb-2">Admin Dashboard</h1>
+          <p class="text-primary-100">Manage your e-commerce store</p>
+        </div>
       </div>
       <div class="text-right">
         <div class="text-3xl font-bold">{{ products.length }}</div>
