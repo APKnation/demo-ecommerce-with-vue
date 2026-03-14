@@ -555,5 +555,4 @@ export default {
     }
   }
 }
-</template>
 </script>
