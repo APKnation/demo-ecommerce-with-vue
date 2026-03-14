@@ -84,8 +84,8 @@
                 </div>
               </div>
               
-              <!-- Floating Cards - Outside Image -->
-              <div class="absolute -top-6 -right-6 bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-4 transform hover:scale-110 transition-all duration-300 border border-white/20">
+              <!-- Floating Cards - Extending from Image -->
+              <div class="absolute top-0 -right-6 bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-4 transform hover:scale-110 transition-all duration-300 border border-white/20">
                 <div class="flex items-center space-x-3">
                   <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -99,7 +99,7 @@
                 </div>
               </div>
               
-              <div class="absolute -bottom-6 -left-6 bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-4 transform hover:scale-110 transition-all duration-300 border border-white/20">
+              <div class="absolute bottom-0 -left-6 bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-4 transform hover:scale-110 transition-all duration-300 border border-white/20">
                 <div class="flex items-center space-x-3">
                   <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
