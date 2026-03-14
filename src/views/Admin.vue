@@ -218,9 +218,7 @@
                 <p class="text-3xl font-bold text-blue-600 mt-1">{{ products.length }}</p>
               </div>
               <div class="bg-blue-100 p-3 rounded-lg">
-                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4M16 7l-4 4m0 0l-4-4m4 4V3m0 0v4m0 0l4 4m-4-4h8m-8 0v8m0 0h8m-8 0l4 4m0-4l-4 4"></path>
-                </svg>
+                <span class="text-blue-600 font-bold text-xl">📦</span>
               </div>
             </div>
           </div>
@@ -232,9 +230,7 @@
                 <p class="text-3xl font-bold text-green-600 mt-1">{{ orders.length }}</p>
               </div>
               <div class="bg-green-100 p-3 rounded-lg">
-                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                </svg>
+                <span class="text-green-600 font-bold text-xl">📋</span>
               </div>
             </div>
           </div>
@@ -246,9 +242,7 @@
                 <p class="text-3xl font-bold text-yellow-600 mt-1">Tsh {{ totalRevenue.toLocaleString() }}</p>
               </div>
               <div class="bg-yellow-100 p-3 rounded-lg">
-                <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2-1.343-2-3-2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1l-2.599-1.599M5 13h14"></path>
-                </svg>
+                <span class="text-yellow-600 font-bold text-xl">💰</span>
               </div>
             </div>
           </div>
@@ -346,9 +340,7 @@
       <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4 transition-all duration-200 transform">
         <div class="text-center">
           <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
-            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 2.502-3.331 0-1.664-1.962-3.331-2.502-3.331m0 0h-13.856"></path>
-            </svg>
+            <span class="text-red-600 text-2xl">⚠️</span>
           </div>
           <h3 class="text-lg font-semibold text-gray-900 mb-2">Confirm Delete</h3>
           <p class="text-gray-600 mb-6">
