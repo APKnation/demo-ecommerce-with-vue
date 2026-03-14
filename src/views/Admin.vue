@@ -66,8 +66,13 @@
     <div v-if="isEditing && editingProduct" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
         <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold text-gray-900">Edit Product</h2>
-          <button @click="closeEditModal" class="text-gray-500 hover:text-gray-700 font-medium">
+          <h2 class="text-2xl font-bold text-gray-900 mb-4">Edit Product</h2>
+          <div class="flex items-center space-x-2">
+            <div class="flex items-center">
+              <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+              <span class="text-sm text-green-600 font-medium">Editing Mode</span>
+            </div>
+            <button @click="closeEditModal" class="text-gray-500 hover:text-gray-700 font-medium">
             Cancel
           </button>
         </div>
