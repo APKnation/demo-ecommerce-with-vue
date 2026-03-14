@@ -20,6 +20,19 @@
     </div>
     
     <div v-else>
+      <!-- Cart Header with Explanation -->
+      <div class="mb-6 p-4 bg-blue-50 rounded-lg">
+        <div class="flex items-start space-x-3">
+          <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h6a1 1 0 001-1V9a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+          </svg>
+          <div>
+            <h3 class="font-semibold text-blue-800 mb-1">Direct Checkout Process</h3>
+            <p class="text-sm text-blue-700">Clicking "Place Order" will immediately process your order and save it to your order history. No additional payment steps required.</p>
+          </div>
+        </div>
+      </div>
+      
       <!-- Cart Items -->
       <div class="space-y-4 mb-8">
         <div
@@ -88,7 +101,7 @@
               </svg>
               Processing...
             </span>
-            <span v-else>Proceed to Checkout</span>
+            <span v-else>Place Order</span>
           </button>
           <button
             @click="clearCart"
@@ -205,7 +218,7 @@ export default {
             router.push('/orders')
           }, 1500)
         } else {
-          showNotificationMessage('Error: Order could not be saved')
+          showNotificationMessage('Error: Order could not be placed')
         }
       } catch (error) {
         console.error('Checkout error:', error)
