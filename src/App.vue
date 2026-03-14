@@ -155,32 +155,12 @@
     <!-- Compare Modal -->
     <div v-if="compareModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4">
-        <template>
-          <div id="app" class="min-h-screen flex flex-col">
-            <div class="overflow-x-auto">
-              <table class="w-full border-collapse">
-                <thead>
-                  <tr class="border-b">
-                    <th class="text-left p-2">Product</th>
-                    <th class="text-left p-2">Price</th>
-                    <th class="text-left p-2">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="item in compareList" :key="item.name" class="border-b">
-                    <td class="p-2">{{ item.name }}</td>
-                    <td class="p-2">Tsh {{ item.price.toLocaleString() }}</td>
-                    <td class="p-2">
-                      <button @click="addToCart(item.name, item.price)" class="btn btn-primary text-sm">
-                        Add to Cart
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </template>
+        <div class="overflow-x-auto">
+          <table class="w-full border-collapse">
+            <thead>
+              <tr class="border-b">
+                <th class="text-left p-2">Product</th>
+                <th class="text-left p-2">Price</th>
                 <th class="text-left p-2">Action</th>
               </tr>
             </thead>
@@ -203,7 +183,7 @@
 </template>
 
 <script>
-import { ref, computed, inject, onMounted } from 'vue'
+import { ref, computed, inject, onMounted, provide } from 'vue'
 import { useRouter } from 'vue-router'
 import Swal from 'sweetalert2'
 
@@ -266,6 +246,29 @@ export default {
       showNotificationMessage(`${name} added to cart!`)
     }
 
+    const removeFromCart = (index) => {
+      const itemName = cart.value[index].name
+      cart.value.splice(index, 1)
+      saveData()
+      showNotificationMessage(`${itemName} removed from cart`)
+    }
+
+    const updateQuantity = (index, change) => {
+      cart.value[index].quantity += change
+      
+      if (cart.value[index].quantity <= 0) {
+        removeFromCart(index)
+      } else {
+        saveData()
+      }
+    }
+
+    const clearCart = () => {
+      cart.value = []
+      saveData()
+      showNotificationMessage('Cart cleared successfully')
+    }
+
     // Wishlist functions
     const toggleWishlist = (name, price, image) => {
       const existingIndex = wishlist.value.findIndex(item => item.name === name)
@@ -310,6 +313,13 @@ export default {
       if (compareList.value.length >= 2) {
         compareModalOpen.value = true
       }
+    }
+
+    const removeFromCompare = (index) => {
+      const itemName = compareList.value[index].name
+      compareList.value.splice(index, 1)
+      saveData()
+      showNotificationMessage(`${itemName} removed from comparison`)
     }
 
     const closeCompareModal = () => {
