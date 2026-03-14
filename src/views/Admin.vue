@@ -189,6 +189,8 @@
                     <option value="laptops">Laptops</option>
                     <option value="phones">Smartphones</option>
                     <option value="accessories">Accessories</option>
+                    <option value="headphones">Headphones</option>
+                    <option value="speakers">Speakers</option>
                   </select>
                 </div>
                 
