@@ -48,15 +48,6 @@
                 </svg>
                 Admin Dashboard
               </router-link>
-              <button 
-                class="flex items-center px-3 py-2 text-neutral-700 hover:bg-neutral-100 rounded-md transition-colors w-full text-left"
-                @click="logout"
-              >
-                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4 4m4-4H3m2 4h1a3 3 0 003-3V7a3 3 0 00-3-3H7a3 3 0 00-3 3v10a3 3 0 003 3h1"></path>
-                </svg>
-                Logout
-              </button>
             </div>
           </div>
         </div>
@@ -347,21 +338,6 @@ export default {
       profileMenuOpen.value = !profileMenuOpen.value
     }
 
-    const logout = () => {
-      // Clear all data
-      localStorage.clear()
-      cart.value = []
-      wishlist.value = []
-      compareList.value = []
-      profileMenuOpen.value = false
-      
-      // Show notification
-      showNotificationMessage('Logged out successfully')
-      
-      // Redirect to home
-      router.push('/')
-    }
-
     onMounted(() => {
       loadData()
     })
@@ -392,8 +368,7 @@ export default {
       addToCompare,
       closeCompareModal,
       toggleMobileMenu,
-      toggleProfileMenu,
-      logout
+      toggleProfileMenu
     }
   }
 }
