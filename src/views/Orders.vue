@@ -180,10 +180,15 @@ export default {
     const loadOrders = async () => {
       isLoading.value = true
       try {
-        orders.value = JSON.parse(localStorage.getItem('orders')) || []
-        showNotificationMessage('Orders loaded successfully')
+        const savedOrders = localStorage.getItem('orders')
+        if (savedOrders) {
+          orders.value = JSON.parse(savedOrders)
+        } else {
+          orders.value = []
+        }
       } catch (error) {
-        showNotificationMessage('Error loading orders')
+        console.error('Error loading orders:', error)
+        orders.value = []
       } finally {
         isLoading.value = false
       }

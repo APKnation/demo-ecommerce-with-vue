@@ -163,8 +163,18 @@ export default {
       try {
         const total = totalPrice.value
         
-        // Save order to localStorage
-        const orders = JSON.parse(localStorage.getItem('orders')) || []
+        // Get existing orders
+        let orders = []
+        try {
+          const savedOrders = localStorage.getItem('orders')
+          if (savedOrders) {
+            orders = JSON.parse(savedOrders)
+          }
+        } catch (error) {
+          console.error('Error reading existing orders:', error)
+        }
+        
+        // Create new order
         const order = {
           id: 'ORD' + Date.now(),
           items: [...cart.value],
@@ -172,20 +182,33 @@ export default {
           date: new Date().toISOString(),
           status: 'Pending'
         }
+        
+        // Add order to list
         orders.push(order)
+        
+        // Save orders to localStorage
         localStorage.setItem('orders', JSON.stringify(orders))
-
-        showNotificationMessage('Order placed successfully! Thank you for your purchase.')
         
-        // Clear the cart
-        cart.value = []
-        saveCart()
+        // Verify order was saved
+        const verifyOrders = JSON.parse(localStorage.getItem('orders'))
+        const wasSaved = verifyOrders.some(o => o.id === order.id)
         
-        // Navigate to orders page
-        setTimeout(() => {
-          router.push('/orders')
-        }, 1500)
+        if (wasSaved) {
+          showNotificationMessage('Order placed successfully! Thank you for your purchase.')
+          
+          // Clear the cart
+          cart.value = []
+          saveCart()
+          
+          // Navigate to orders page after delay
+          setTimeout(() => {
+            router.push('/orders')
+          }, 1500)
+        } else {
+          showNotificationMessage('Error: Order could not be saved')
+        }
       } catch (error) {
+        console.error('Checkout error:', error)
         showNotificationMessage('Error processing checkout')
       } finally {
         isProcessing.value = false
