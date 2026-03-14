@@ -1,6 +1,7 @@
 <template>
-  <!-- Admin Header -->
-  <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg shadow-xl p-8 mb-8">
+  <div>
+    <!-- Admin Header -->
+    <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg shadow-xl p-8 mb-8">
     <div class="flex items-center justify-between">
       <div>
         <h1 class="text-4xl font-bold mb-2">Admin Dashboard</h1>
