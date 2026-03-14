@@ -388,7 +388,12 @@ export default {
       category: '',
       image: ''
     })
-    const editingProduct = ref(null)
+    const editingProduct = ref({
+      name: '',
+      price: 0,
+      category: '',
+      image: ''
+    })
     const viewingProduct = ref(null)
     const notification = ref('')
     const showNotification = ref(false)
@@ -493,7 +498,12 @@ export default {
     }
 
     const closeEditModal = () => {
-      editingProduct.value = null
+      editingProduct.value = {
+        name: '',
+        price: 0,
+        category: '',
+        image: ''
+      }
     }
 
     const updateProduct = () => {
