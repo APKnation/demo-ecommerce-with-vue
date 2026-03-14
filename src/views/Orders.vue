@@ -107,8 +107,18 @@
           
           <!-- Order Items -->
           <div class="border-t pt-4">
-            <h4 class="font-semibold mb-3">Order Items:</h4>
-            <div class="space-y-2">
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="font-semibold">Order Items:</h4>
+              <button
+                @click="toggleOrderDetails(order.id)"
+                class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+              >
+                {{ expandedOrders.includes(order.id) ? 'Hide Details' : 'Show Details' }}
+              </button>
+            </div>
+            
+            <!-- Expandable Order Details -->
+            <div v-show="expandedOrders.includes(order.id)" class="space-y-2">
               <div
                 v-for="(item, index) in (order?.items || [])"
                 :key="index"
@@ -127,12 +137,6 @@
           
           <!-- Order Actions -->
           <div class="flex justify-end space-x-3 mt-6 pt-4 border-t">
-            <router-link
-              :to="`/order/${order.id}`"
-              class="btn btn-secondary"
-            >
-              View Details
-            </router-link>
             <button
               v-if="order.status === 'Pending'"
               @click="cancelOrder(order.id)"
@@ -144,7 +148,7 @@
               @click="reorder(order.items)"
               class="btn btn-primary"
             >
-              Reorder
+              Reorder Items
             </button>
           </div>
         </div>
@@ -167,6 +171,7 @@ export default {
     const localNotification = ref('')
     const showLocalNotification = ref(false)
     const isLoading = ref(true)
+    const expandedOrders = ref([])
 
     // Vue notification system
     const showNotificationMessage = (message) => {
@@ -272,6 +277,15 @@ export default {
       router.push('/cart')
     }
 
+    const toggleOrderDetails = (orderId) => {
+      const index = expandedOrders.value.indexOf(orderId)
+      if (index > -1) {
+        expandedOrders.value.push(orderId)
+      } else {
+        expandedOrders.value.splice(index, 1)
+      }
+    }
+
     // Load orders on mount
     onMounted(() => {
       loadOrders()
@@ -282,13 +296,15 @@ export default {
       isLoading,
       localNotification,
       showLocalNotification,
+      expandedOrders,
       totalSpent,
       pendingOrders,
       sortedOrders,
       formatDate,
       getStatusClass,
       cancelOrder,
-      reorder
+      reorder,
+      toggleOrderDetails
     }
   }
 }
