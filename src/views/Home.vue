@@ -6,7 +6,7 @@
     </div>
 
     <!-- Hero Section with Background -->
-    <section class="relative h-96 bg-cover bg-center bg-no-repeat" style="background-image: url('/images/Computer.jpeg');">
+    <section class="relative h-96 bg-cover bg-center bg-no-repeat" style="background-image: url('/images/w.jpg');">
       <!-- Overlay for better text readability -->
       <div class="absolute inset-0 bg-gradient-to-r from-primary-900/90 via-primary-800/80 to-secondary-900/90"></div>
       
