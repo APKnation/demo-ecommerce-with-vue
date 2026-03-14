@@ -270,59 +270,147 @@
           <p class="text-gray-400 mt-2">Add your first product using the form above.</p>
         </div>
         
-        <div v-else class="overflow-x-auto">
-          <table class="w-full">
-            <thead class="bg-gray-50 border-b border-gray-200">
+        <div v-else class="relative overflow-x-auto bg-gray-50 shadow-xs rounded-lg border border-gray-200">
+          <!-- Table Header with Search and Filter -->
+          <div class="p-4 flex items-center justify-between space-x-4">
+            <label for="input-group-1" class="sr-only">Search</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
+                </svg>
+              </div>
+              <input 
+                type="text" 
+                id="input-group-1" 
+                class="block w-full max-w-96 ps-9 pe-3 py-2 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-xs placeholder:text-gray-500" 
+                placeholder="Search products..."
+                v-model="searchQuery"
+              >
+            </div>
+            <button 
+              @click="toggleFilterDropdown" 
+              class="shrink-0 inline-flex items-center justify-center text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 hover:text-gray-900 focus:ring-4 focus:ring-gray-300 shadow-xs font-medium leading-5 rounded-lg text-sm px-3 py-2 focus:outline-none" 
+              type="button"
+            >
+              <svg class="w-4 h-4 me-1.5 -ms-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z"/>
+              </svg>
+              Filter by
+              <svg class="w-4 h-4 ms-1.5 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/>
+              </svg>
+            </button>
+            <!-- Dropdown menu -->
+            <div v-if="filterDropdownOpen" class="z-10 absolute top-full right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg w-32">
+              <ul class="p-2 text-sm text-gray-700 font-medium" aria-labelledby="dropdownDefaultButton">
+                <li>
+                  <button @click="setFilter('category')" class="inline-flex items-center w-full p-2 hover:bg-gray-100 hover:text-gray-900 rounded">
+                    Category
+                  </button>
+                </li>
+                <li>
+                  <button @click="setFilter('price')" class="inline-flex items-center w-full p-2 hover:bg-gray-100 hover:text-gray-900 rounded">
+                    Price
+                  </button>
+                </li>
+                <li>
+                  <button @click="setFilter('all')" class="inline-flex items-center w-full p-2 hover:bg-gray-100 hover:text-gray-900 rounded">
+                    All
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <!-- Table -->
+          <table class="w-full text-sm text-left rtl:text-right text-gray-700">
+            <thead class="text-sm text-gray-700 bg-gray-100 border-b border-t border-gray-300">
               <tr>
-                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th class="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th scope="col" class="p-4">
+                  <div class="flex items-center">
+                    <input 
+                      id="table-checkbox-all" 
+                      type="checkbox" 
+                      value="" 
+                      class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-2 focus:ring-blue-500"
+                      @change="toggleSelectAll"
+                    >
+                    <label for="table-checkbox-all" class="sr-only">Table checkbox</label>
+                  </div>
+                </th>
+                <th scope="col" class="px-6 py-3 font-medium">
+                  Product name
+                </th>
+                <th scope="col" class="px-6 py-3 font-medium">
+                  Category
+                </th>
+                <th scope="col" class="px-6 py-3 font-medium">
+                  Price
+                </th>
+                <th scope="col" class="px-6 py-3 font-medium">
+                  Status
+                </th>
+                <th scope="col" class="px-6 py-3 font-medium">
+                  Action
+                </th>
               </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="(product, index) in products" :key="index" class="hover:bg-gray-50 transition-colors">
-                <td class="px-6 py-4 whitespace-nowrap">
+            <tbody>
+              <tr v-for="(product, index) in filteredProducts" :key="index" class="bg-white border-b border-gray-200 hover:bg-gray-50">
+                <td class="w-4 p-4">
+                  <div class="flex items-center">
+                    <input 
+                      :id="`table-checkbox-${index}`" 
+                      type="checkbox" 
+                      value="" 
+                      class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-2 focus:ring-blue-500"
+                      v-model="selectedProducts"
+                      :value="index"
+                    >
+                    <label :for="`table-checkbox-${index}`" class="sr-only">Table checkbox</label>
+                  </div>
+                </td>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                   <div class="flex items-center">
                     <img v-if="product.image" :src="product.image" :alt="product.name" class="w-10 h-10 rounded-lg object-cover mr-3">
                     <div>
                       <div class="text-sm font-medium text-gray-900">{{ product.name }}</div>
                     </div>
                   </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                </th>
+                <td class="px-6 py-4">
                   <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
                     {{ product.category }}
                   </span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900 font-semibold">Tsh {{ product.price.toLocaleString() }}</div>
+                <td class="px-6 py-4">
+                  Tsh {{ product.price.toLocaleString() }}
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 py-4">
                   <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">
                     Active
                   </span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-center">
-                  <div class="flex items-center justify-center space-x-2">
+                <td class="px-6 py-4">
+                  <div class="flex items-center space-x-2">
                     <button
                       @click="viewProduct(product)"
-                      class="text-blue-600 hover:text-blue-900 font-medium text-sm transition-colors px-3 py-2 bg-blue-50 rounded"
+                      class="font-medium text-blue-600 hover:underline"
                       title="View Product"
                     >
                       View
                     </button>
                     <button
                       @click="editProduct(product)"
-                      class="text-yellow-600 hover:text-yellow-900 font-medium text-sm transition-colors px-3 py-2 bg-yellow-50 rounded"
+                      class="font-medium text-blue-600 hover:underline"
                       title="Edit Product"
                     >
                       Edit
                     </button>
                     <button
                       @click="removeProduct(index)"
-                      class="text-red-600 hover:text-red-900 font-medium text-sm transition-colors px-3 py-2 bg-red-50 rounded"
+                      class="font-medium text-red-600 hover:underline"
                       title="Delete Product"
                     >
                       Delete
@@ -393,6 +481,12 @@ export default {
     const showNotification = ref(false)
     const showConfirmDialog = ref(false)
     const productToDelete = ref(null)
+    
+    // New table functionality
+    const searchQuery = ref('')
+    const filterDropdownOpen = ref(false)
+    const selectedProducts = ref([])
+    const currentFilter = ref('all')
 
     // Reactive notification system
     const showNotificationMessage = (message) => {
@@ -476,6 +570,28 @@ export default {
       return orders.value.filter(order => order.status === 'Pending').length
     })
 
+    // Filtered products based on search and filter
+    const filteredProducts = computed(() => {
+      let filtered = products.value
+
+      // Apply search filter
+      if (searchQuery.value) {
+        filtered = filtered.filter(product => 
+          product.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+          product.category.toLowerCase().includes(searchQuery.value.toLowerCase())
+        )
+      }
+
+      // Apply category filter
+      if (currentFilter.value === 'category') {
+        filtered = filtered.sort((a, b) => a.category.localeCompare(b.category))
+      } else if (currentFilter.value === 'price') {
+        filtered = filtered.sort((a, b) => a.price - b.price)
+      }
+
+      return filtered
+    })
+
     // View product functions
     const viewProduct = (product) => {
       viewingProduct.value = { ...product, addedDate: new Date().toISOString() }
@@ -524,6 +640,24 @@ export default {
       return new Date(dateString).toLocaleDateString()
     }
 
+    // New table functionality methods
+    const toggleFilterDropdown = () => {
+      filterDropdownOpen.value = !filterDropdownOpen.value
+    }
+
+    const setFilter = (filter) => {
+      currentFilter.value = filter
+      filterDropdownOpen.value = false
+    }
+
+    const toggleSelectAll = (event) => {
+      if (event.target.checked) {
+        selectedProducts.value = filteredProducts.value.map((_, index) => index)
+      } else {
+        selectedProducts.value = []
+      }
+    }
+
     onMounted(() => {
       loadData()
     })
@@ -541,6 +675,12 @@ export default {
       productToDelete,
       totalRevenue,
       pendingOrders,
+      // New table functionality
+      searchQuery,
+      filterDropdownOpen,
+      selectedProducts,
+      currentFilter,
+      filteredProducts,
       addProduct,
       viewProduct,
       closeViewModal,
@@ -551,7 +691,11 @@ export default {
       confirmDelete,
       cancelDelete,
       executeDelete,
-      formatDate
+      formatDate,
+      // New table methods
+      toggleFilterDropdown,
+      setFilter,
+      toggleSelectAll
     }
   }
 }
