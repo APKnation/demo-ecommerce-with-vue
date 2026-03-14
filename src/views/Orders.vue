@@ -98,9 +98,9 @@
               <p class="text-gray-600">{{ formatDate(order.date) }}</p>
             </div>
             <div class="text-right">
-              <p class="text-2xl font-bold text-blue-600">Tsh {{ order.total.toLocaleString() }}</p>
-              <span :class="getStatusClass(order.status)" class="inline-block text-sm px-3 py-1 rounded-full mt-2">
-                {{ order.status }}
+              <p class="text-2xl font-bold text-blue-600">Tsh {{ (order?.total || 0).toLocaleString() }}</p>
+              <span :class="getStatusClass(order?.status || 'Unknown')" class="inline-block text-sm px-3 py-1 rounded-full mt-2">
+                {{ order?.status || 'Unknown' }}
               </span>
             </div>
           </div>
@@ -110,15 +110,17 @@
             <h4 class="font-semibold mb-3">Order Items:</h4>
             <div class="space-y-2">
               <div
-                v-for="(item, index) in order.items"
+                v-for="(item, index) in (order?.items || [])"
                 :key="index"
                 class="flex justify-between items-center p-3 bg-gray-50 rounded"
               >
                 <div>
-                  <span class="font-medium">{{ item.name }}</span>
-                  <span class="text-gray-600 ml-2">x{{ item.quantity }}</span>
+                  <span class="font-medium">{{ item?.name || 'Unknown item' }}</span>
+                  <span class="text-gray-600 ml-2">x{{ item?.quantity || 0 }}</span>
                 </div>
-                <span class="font-semibold">Tsh {{ (item.price * item.quantity).toLocaleString() }}</span>
+                <div class="text-right">
+                  <p class="font-semibold">Tsh {{ ((item?.price || 0) * (item?.quantity || 0)).toLocaleString() }}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -195,26 +197,32 @@ export default {
     }
 
     const totalSpent = computed(() => {
-      return orders.value.reduce((total, order) => total + order.total, 0)
+      return orders.value.reduce((total, order) => total + (order?.total || 0), 0)
     })
 
     const pendingOrders = computed(() => {
-      return orders.value.filter(order => order.status === 'Pending').length
+      return orders.value.filter(order => order?.status === 'Pending').length
     })
 
     const sortedOrders = computed(() => {
-      return [...orders.value].sort((a, b) => new Date(b.date) - new Date(a.date))
+      return [...orders.value].sort((a, b) => new Date(b?.date || 0) - new Date(a?.date || 0))
     })
 
     const formatDate = (dateString) => {
-      const date = new Date(dateString)
-      return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      })
+      if (!dateString) return 'Unknown date'
+      try {
+        const date = new Date(dateString)
+        if (isNaN(date.getTime())) return 'Invalid date'
+        return date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+      } catch (error) {
+        return 'Invalid date'
+      }
     }
 
     const getStatusClass = (status) => {
@@ -242,12 +250,19 @@ export default {
     }
 
     const reorder = (items) => {
+      if (!items || !Array.isArray(items)) {
+        showNotificationMessage('No items to reorder')
+        return
+      }
+      
       // Clear existing cart
       cart.value = []
       
       // Add items from order to cart
       items.forEach(item => {
-        cart.value.push({ ...item })
+        if (item && item.name) {
+          cart.value.push({ ...item })
+        }
       })
       
       // Save cart
