@@ -340,7 +340,7 @@ export default {
             { name: 'Samsung', price: 3000000, category: 'phones', image: '/images/l.jpg' }
           ]
         }
-        showNotificationMessage('Welcome to Kafuka Electronics Store!')
+        showNotificationMessage('Welcome to Kafuka Electronics Store!', 'info', true)
       } catch (error) {
         showNotificationMessage('Error loading products')
       } finally {

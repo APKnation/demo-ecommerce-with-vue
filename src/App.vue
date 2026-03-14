@@ -218,20 +218,40 @@ export default {
     }
 
     // SweetAlert notification system
-    const showNotificationMessage = (message, type = 'success') => {
-      Swal.fire({
-        icon: type === 'success' ? 'success' : type === 'error' ? 'error' : 'info',
-        title: type === 'success' ? 'Success!' : type === 'error' ? 'Error!' : 'Notification',
-        text: message,
-        position: 'top-end',
-        timer: 3000,
-        toast: true,
-        showConfirmButton: false,
-        showCancelButton: false,
-        customClass: {
-          popup: 'swal2-popup'
-        }
-      })
+    const showNotificationMessage = (message, type = 'success', isPopup = false) => {
+      if (isPopup) {
+        // Popup with colors for welcome message
+        Swal.fire({
+          icon: type === 'success' ? 'success' : type === 'error' ? 'error' : 'info',
+          title: type === 'success' ? 'Welcome!' : type === 'error' ? 'Error!' : 'Hello!',
+          text: message,
+          position: 'center',
+          showConfirmButton: true,
+          confirmButtonText: 'Get Started',
+          confirmButtonColor: '#f97316',
+          cancelButtonColor: '#6b7280',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          color: '#ffffff',
+          customClass: {
+            popup: 'swal2-welcome-popup'
+          }
+        })
+      } else {
+        // Toast for regular notifications
+        Swal.fire({
+          icon: type === 'success' ? 'success' : type === 'error' ? 'error' : 'info',
+          title: type === 'success' ? 'Success!' : type === 'error' ? 'Error!' : 'Notification',
+          text: message,
+          position: 'top-end',
+          timer: 3000,
+          toast: true,
+          showConfirmButton: false,
+          showCancelButton: false,
+          customClass: {
+            popup: 'swal2-popup'
+          }
+        })
+      }
     }
 
     // Cart functions
