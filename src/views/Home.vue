@@ -65,7 +65,7 @@
             </div>
             
             <!-- Right Content - 3D Product Showcase -->
-            <div class="relative">
+            <div class="relative scale-110 lg:scale-125">
               <!-- Glow Effect -->
               <div class="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-purple-500/20 rounded-3xl blur-3xl transform scale-110"></div>
               
@@ -76,7 +76,7 @@
                   <img 
                     src="/images/w.jpg" 
                     alt="Featured Product" 
-                    class="w-full h-auto rounded-3xl shadow-2xl transform transition-all duration-500 group-hover:scale-105 group-hover:rotate-1"
+                    class="w-full h-auto max-w-2xl mx-auto rounded-3xl shadow-2xl transform transition-all duration-500 group-hover:scale-105 group-hover:rotate-1"
                   >
                   
                   <!-- Image Overlay Gradient -->
