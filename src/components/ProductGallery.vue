@@ -281,7 +281,7 @@ export default {
 }
 
 .zoom-image {
-  @apply max-w-90 max-h-90 object-contain;
+  @apply max-w-5xl max-h-5xl object-contain;
 }
 
 .zoom-close-btn {
