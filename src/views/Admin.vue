@@ -1,15 +1,15 @@
 <template>
   <div>
     <!-- Admin Header -->
-    <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg shadow-xl p-8 mb-8">
+    <div class="bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded-lg shadow-xl p-8 mb-8">
     <div class="flex items-center justify-between">
       <div>
         <h1 class="text-4xl font-bold mb-2">Admin Dashboard</h1>
-        <p class="text-blue-100">Manage your e-commerce store</p>
+        <p class="text-primary-100">Manage your e-commerce store</p>
       </div>
       <div class="text-right">
         <div class="text-3xl font-bold">{{ products.length }}</div>
-        <div class="text-sm text-blue-100">Total Products</div>
+        <div class="text-sm text-primary-100">Total Products</div>
       </div>
     </div>
 
@@ -270,27 +270,27 @@
           <p class="text-gray-400 mt-2">Add your first product using the form above.</p>
         </div>
         
-        <div v-else class="relative overflow-x-auto bg-gray-50 shadow-xs rounded-lg border border-gray-200">
+        <div v-else class="relative overflow-x-auto bg-neutral-50 shadow-xs rounded-lg border border-neutral-200">
           <!-- Table Header with Search and Filter -->
           <div class="p-4 flex items-center justify-between space-x-4">
             <label for="input-group-1" class="sr-only">Search</label>
             <div class="relative">
               <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 text-neutral-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                   <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
                 </svg>
               </div>
               <input 
                 type="text" 
                 id="input-group-1" 
-                class="block w-full max-w-96 ps-9 pe-3 py-2 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-xs placeholder:text-gray-500" 
+                class="block w-full max-w-96 ps-9 pe-3 py-2 bg-white border border-neutral-300 text-neutral-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 shadow-xs placeholder:text-neutral-500" 
                 placeholder="Search products..."
                 v-model="searchQuery"
               >
             </div>
             <button 
               @click="toggleFilterDropdown" 
-              class="shrink-0 inline-flex items-center justify-center text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 hover:text-gray-900 focus:ring-4 focus:ring-gray-300 shadow-xs font-medium leading-5 rounded-lg text-sm px-3 py-2 focus:outline-none" 
+              class="shrink-0 inline-flex items-center justify-center text-neutral-700 bg-white border border-neutral-300 hover:bg-neutral-100 hover:text-neutral-900 focus:ring-4 focus:ring-neutral-300 shadow-xs font-medium leading-5 rounded-lg text-sm px-3 py-2 focus:outline-none" 
               type="button"
             >
               <svg class="w-4 h-4 me-1.5 -ms-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -302,20 +302,20 @@
               </svg>
             </button>
             <!-- Dropdown menu -->
-            <div v-if="filterDropdownOpen" class="z-10 absolute top-full right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg w-32">
-              <ul class="p-2 text-sm text-gray-700 font-medium" aria-labelledby="dropdownDefaultButton">
+            <div v-if="filterDropdownOpen" class="z-10 absolute top-full right-0 mt-2 bg-white border border-neutral-300 rounded-lg shadow-lg w-32">
+              <ul class="p-2 text-sm text-neutral-700 font-medium" aria-labelledby="dropdownDefaultButton">
                 <li>
-                  <button @click="setFilter('category')" class="inline-flex items-center w-full p-2 hover:bg-gray-100 hover:text-gray-900 rounded">
+                  <button @click="setFilter('category')" class="inline-flex items-center w-full p-2 hover:bg-neutral-100 hover:text-neutral-900 rounded">
                     Category
                   </button>
                 </li>
                 <li>
-                  <button @click="setFilter('price')" class="inline-flex items-center w-full p-2 hover:bg-gray-100 hover:text-gray-900 rounded">
+                  <button @click="setFilter('price')" class="inline-flex items-center w-full p-2 hover:bg-neutral-100 hover:text-neutral-900 rounded">
                     Price
                   </button>
                 </li>
                 <li>
-                  <button @click="setFilter('all')" class="inline-flex items-center w-full p-2 hover:bg-gray-100 hover:text-gray-900 rounded">
+                  <button @click="setFilter('all')" class="inline-flex items-center w-full p-2 hover:bg-neutral-100 hover:text-neutral-900 rounded">
                     All
                   </button>
                 </li>
@@ -324,8 +324,8 @@
           </div>
           
           <!-- Table -->
-          <table class="w-full text-sm text-left rtl:text-right text-gray-700">
-            <thead class="text-sm text-gray-700 bg-gray-100 border-b border-t border-gray-300">
+          <table class="w-full text-sm text-left rtl:text-right text-neutral-700">
+            <thead class="text-sm text-neutral-700 bg-neutral-100 border-b border-t border-neutral-300">
               <tr>
                 <th scope="col" class="p-4">
                   <div class="flex items-center">
@@ -333,7 +333,7 @@
                       id="table-checkbox-all" 
                       type="checkbox" 
                       value="" 
-                      class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-2 focus:ring-blue-500"
+                      class="w-4 h-4 border border-neutral-300 rounded bg-neutral-50 focus:ring-2 focus:ring-primary-500"
                       @change="toggleSelectAll"
                     >
                     <label for="table-checkbox-all" class="sr-only">Table checkbox</label>
@@ -357,30 +357,30 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(product, index) in filteredProducts" :key="index" class="bg-white border-b border-gray-200 hover:bg-gray-50">
+              <tr v-for="(product, index) in filteredProducts" :key="index" class="bg-white border-b border-neutral-200 hover:bg-neutral-50">
                 <td class="w-4 p-4">
                   <div class="flex items-center">
                     <input 
                       :id="`table-checkbox-${index}`" 
                       type="checkbox" 
                       value="" 
-                      class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-2 focus:ring-blue-500"
+                      class="w-4 h-4 border border-neutral-300 rounded bg-neutral-50 focus:ring-2 focus:ring-primary-500"
                       v-model="selectedProducts"
                       :value="index"
                     >
                     <label :for="`table-checkbox-${index}`" class="sr-only">Table checkbox</label>
                   </div>
                 </td>
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                <th scope="row" class="px-6 py-4 font-medium text-neutral-900 whitespace-nowrap">
                   <div class="flex items-center">
                     <img v-if="product.image" :src="product.image" :alt="product.name" class="w-10 h-10 rounded-lg object-cover mr-3">
                     <div>
-                      <div class="text-sm font-medium text-gray-900">{{ product.name }}</div>
+                      <div class="text-sm font-medium text-neutral-900">{{ product.name }}</div>
                     </div>
                   </div>
                 </th>
                 <td class="px-6 py-4">
-                  <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
+                  <span class="px-2 py-1 text-xs rounded-full bg-primary-100 text-primary-800">
                     {{ product.category }}
                   </span>
                 </td>
@@ -388,7 +388,7 @@
                   Tsh {{ product.price.toLocaleString() }}
                 </td>
                 <td class="px-6 py-4">
-                  <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">
+                  <span class="px-2 py-1 text-xs rounded-full bg-success-100 text-success-800">
                     Active
                   </span>
                 </td>
@@ -396,21 +396,21 @@
                   <div class="flex items-center space-x-2">
                     <button
                       @click="viewProduct(product)"
-                      class="font-medium text-blue-600 hover:underline"
+                      class="font-medium text-primary-600 hover:underline"
                       title="View Product"
                     >
                       View
                     </button>
                     <button
                       @click="editProduct(product)"
-                      class="font-medium text-blue-600 hover:underline"
+                      class="font-medium text-primary-600 hover:underline"
                       title="Edit Product"
                     >
                       Edit
                     </button>
                     <button
                       @click="removeProduct(index)"
-                      class="font-medium text-red-600 hover:underline"
+                      class="font-medium text-error-600 hover:underline"
                       title="Delete Product"
                     >
                       Delete

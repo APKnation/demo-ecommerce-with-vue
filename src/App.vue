@@ -1,44 +1,44 @@
 <template>
   <div id="app" class="min-h-screen flex flex-col">
     <!-- Header -->
-    <nav class="bg-white fixed w-full z-20 top-0 start-0 border-b border-gray-200 shadow-lg">
+    <nav class="bg-white fixed w-full z-20 top-0 start-0 border-b border-neutral-200 shadow-lg">
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <!-- Logo Section -->
         <router-link to="/" class="flex items-center space-x-3 rtl:space-x-reverse">
-          <div class="w-8 h-8 bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700 rounded-lg flex items-center justify-center">
+          <div class="w-8 h-8 bg-gradient-to-br from-primary-600 via-secondary-600 to-primary-700 rounded-lg flex items-center justify-center">
             <span class="text-white font-bold text-sm">K</span>
           </div>
-          <span class="self-center text-xl text-gray-900 font-semibold whitespace-nowrap">KAFUKA Store</span>
+          <span class="self-center text-xl text-neutral-900 font-semibold whitespace-nowrap">KAFUKA Store</span>
         </router-link>
         
         <!-- Mobile Menu Toggle -->
-        <button @click="toggleMobileMenu" data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-default" aria-expanded="false">
+        <button @click="toggleMobileMenu" data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-neutral-500 rounded-lg md:hidden hover:bg-neutral-100 hover:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-200" aria-controls="navbar-default" aria-expanded="false">
           <span class="sr-only">Open main menu</span>
           <div class="w-6 h-6 flex flex-col justify-center space-y-1">
-            <div class="w-6 h-0.5 bg-gray-600 rounded-full"></div>
-            <div class="w-6 h-0.5 bg-gray-600 rounded-full"></div>
-            <div class="w-6 h-0.5 bg-gray-600 rounded-full"></div>
+            <div class="w-6 h-0.5 bg-neutral-600 rounded-full"></div>
+            <div class="w-6 h-0.5 bg-neutral-600 rounded-full"></div>
+            <div class="w-6 h-0.5 bg-neutral-600 rounded-full"></div>
           </div>
         </button>
         
         <!-- Desktop Navigation -->
         <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-          <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-200 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white">
+          <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-neutral-200 rounded-lg bg-neutral-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white">
             <!-- Home Link -->
             <li>
-              <router-link to="/" class="block py-2 px-3 text-white bg-blue-600 rounded md:bg-transparent md:text-blue-600 md:p-0" aria-current="page">Home</router-link>
+              <router-link to="/" class="block py-2 px-3 text-white bg-primary-600 rounded md:bg-transparent md:text-primary-600 md:p-0" aria-current="page">Home</router-link>
             </li>
             
             <!-- Admin Link -->
             <li>
-              <router-link to="/admin" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0">Admin</router-link>
+              <router-link to="/admin" class="block py-2 px-3 text-neutral-900 rounded hover:bg-neutral-100 md:hover:bg-transparent md:border-0 md:hover:text-primary-600 md:p-0">Admin</router-link>
             </li>
             
             <!-- Cart Link -->
             <li class="relative">
-              <router-link to="/cart" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0">
+              <router-link to="/cart" class="block py-2 px-3 text-neutral-900 rounded hover:bg-neutral-100 md:hover:bg-transparent md:border-0 md:hover:text-primary-600 md:p-0">
                 Cart
-                <span v-if="cartCount > 0" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                <span v-if="cartCount > 0" class="absolute -top-1 -right-1 bg-error-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
                   {{ cartCount }}
                 </span>
               </router-link>
@@ -46,14 +46,14 @@
             
             <!-- Orders Link -->
             <li>
-              <router-link to="/orders" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0">Orders</router-link>
+              <router-link to="/orders" class="block py-2 px-3 text-neutral-900 rounded hover:bg-neutral-100 md:hover:bg-transparent md:border-0 md:hover:text-primary-600 md:p-0">Orders</router-link>
             </li>
             
             <!-- Wishlist Link -->
             <li class="relative">
-              <button @click="showWishlist" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0">
+              <button @click="showWishlist" class="block py-2 px-3 text-neutral-900 rounded hover:bg-neutral-100 md:hover:bg-transparent md:border-0 md:hover:text-primary-600 md:p-0">
                 Wishlist
-                <span v-if="wishlist.length > 0" class="absolute -top-1 -right-1 bg-pink-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                <span v-if="wishlist.length > 0" class="absolute -top-1 -right-1 bg-secondary-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
                   {{ wishlist.length }}
                 </span>
               </button>
@@ -63,24 +63,24 @@
       </div>
       
       <!-- Mobile Menu -->
-      <div v-if="mobileMenuOpen" class="md:hidden bg-white border-t border-gray-200">
+      <div v-if="mobileMenuOpen" class="md:hidden bg-white border-t border-neutral-200">
         <ul class="font-medium flex flex-col p-4 space-y-2">
           <li>
-            <router-link to="/" @click="toggleMobileMenu" class="block py-2 px-3 text-white bg-blue-600 rounded">Home</router-link>
+            <router-link to="/" @click="toggleMobileMenu" class="block py-2 px-3 text-white bg-primary-600 rounded">Home</router-link>
           </li>
           <li>
-            <router-link to="/admin" @click="toggleMobileMenu" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100">Admin</router-link>
+            <router-link to="/admin" @click="toggleMobileMenu" class="block py-2 px-3 text-neutral-900 rounded hover:bg-neutral-100">Admin</router-link>
           </li>
           <li>
-            <router-link to="/cart" @click="toggleMobileMenu" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100">
+            <router-link to="/cart" @click="toggleMobileMenu" class="block py-2 px-3 text-neutral-900 rounded hover:bg-neutral-100">
               Cart ({{ cartCount }})
             </router-link>
           </li>
           <li>
-            <router-link to="/orders" @click="toggleMobileMenu" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100">Orders</router-link>
+            <router-link to="/orders" @click="toggleMobileMenu" class="block py-2 px-3 text-neutral-900 rounded hover:bg-neutral-100">Orders</router-link>
           </li>
           <li>
-            <button @click="showWishlist" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 text-left">
+            <button @click="showWishlist" class="block py-2 px-3 text-neutral-900 rounded hover:bg-neutral-100 text-left">
               Wishlist ({{ wishlist.length }})
             </button>
           </li>

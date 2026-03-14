@@ -1,19 +1,19 @@
 <template>
   <div>
     <!-- Vue Notification Component -->
-    <div v-if="showLocalNotification" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 transform">
+    <div v-if="showLocalNotification" class="fixed top-4 right-4 bg-success-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 transform">
       {{ localNotification }}
     </div>
 
-    <h1 class="text-3xl font-bold mb-8">Shopping Cart</h1>
+    <h1 class="text-3xl font-bold mb-8 text-neutral-900">Shopping Cart</h1>
     
     <div v-if="cart.length === 0" class="text-center py-12">
       <div class="mb-8">
-        <svg class="w-24 h-24 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-24 h-24 mx-auto text-neutral-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
         </svg>
-        <p class="text-gray-500 text-lg mb-4">Your cart is empty</p>
-        <router-link to="/" class="btn btn-primary">
+        <p class="text-neutral-500 text-lg mb-4">Your cart is empty</p>
+        <router-link to="/" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
           Continue Shopping
         </router-link>
       </div>
