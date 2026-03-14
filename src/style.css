@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-white text-gray-900;
   }
 }
 
@@ -30,7 +30,7 @@
   }
   
   .notification {
-    @apply fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-pulse;
+    @apply fixed top-20 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-pulse;
   }
 }
 
@@ -47,4 +47,9 @@
 
 .slide-in {
   animation: slideIn 0.3s ease-out;
+}
+
+/* Flowbite navigation styles */
+.rounded-base {
+  border-radius: 0.375rem;
 }
