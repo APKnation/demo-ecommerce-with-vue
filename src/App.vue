@@ -1,154 +1,95 @@
 <template>
   <div id="app" class="min-h-screen flex flex-col">
     <!-- Header -->
-    <header class="bg-white shadow-lg sticky top-0 z-40 border-b border-gray-200 backdrop-blur-lg bg-opacity-95">
-      <div class="container mx-auto px-4">
-        <div class="flex justify-between items-center h-16">
-          <!-- Logo Section -->
-          <div class="flex items-center space-x-3">
-            <div class="relative group">
-              <div class="w-10 h-10 bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700 rounded-xl flex items-center justify-center transform transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg">
-                <span class="text-white font-bold text-lg tracking-tight">K</span>
-                <div class="absolute inset-0 rounded-xl bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-              </div>
-              <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent tracking-tight">KAFUKA Store</h1>
-            </div>
+    <nav class="bg-white fixed w-full z-20 top-0 start-0 border-b border-gray-200 shadow-lg">
+      <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <!-- Logo Section -->
+        <router-link to="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+          <div class="w-8 h-8 bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700 rounded-lg flex items-center justify-center">
+            <span class="text-white font-bold text-sm">K</span>
           </div>
-          
-          <!-- Desktop Navigation -->
-          <nav class="hidden md:flex items-center space-x-1">
-            <!-- Admin Link -->
-            <router-link to="/admin" class="nav-link group">
-              <div class="flex items-center px-4 py-2 rounded-xl bg-gray-50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 border border border-transparent hover:border-blue-200 transition-all duration-300">
-                <div class="w-2 h-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mr-2 group-hover:scale-110 transition-transform duration-300"></div>
-                <span class="font-medium text-gray-700 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300">
-                  Admin
-                </span>
-              </div>
-            </router-link>
-            
+          <span class="self-center text-xl text-gray-900 font-semibold whitespace-nowrap">KAFUKA Store</span>
+        </router-link>
+        
+        <!-- Mobile Menu Toggle -->
+        <button @click="toggleMobileMenu" data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-default" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <div class="w-6 h-6 flex flex-col justify-center space-y-1">
+            <div class="w-6 h-0.5 bg-gray-600 rounded-full"></div>
+            <div class="w-6 h-0.5 bg-gray-600 rounded-full"></div>
+            <div class="w-6 h-0.5 bg-gray-600 rounded-full"></div>
+          </div>
+        </button>
+        
+        <!-- Desktop Navigation -->
+        <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+          <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-200 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white">
             <!-- Home Link -->
-            <router-link to="/" class="nav-link group">
-              <div class="flex items-center px-4 py-2 rounded-xl bg-gray-50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 border border border-transparent hover:border-blue-200 transition-all duration-300">
-                <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 mr-2 flex items-center justify-center group-hover:from-blue-100 group-hover:to-blue-200 transition-all duration-300">
-                  <div class="w-3 h-3 bg-gray-600 rounded-sm group-hover:bg-blue-600 transition-colors duration-300"></div>
-                </div>
-                <span class="font-medium text-gray-700 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300">
-                  Home
-                </span>
-              </div>
-            </router-link>
+            <li>
+              <router-link to="/" class="block py-2 px-3 text-white bg-blue-600 rounded md:bg-transparent md:text-blue-600 md:p-0" aria-current="page">Home</router-link>
+            </li>
+            
+            <!-- Admin Link -->
+            <li>
+              <router-link to="/admin" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0">Admin</router-link>
+            </li>
             
             <!-- Cart Link -->
-            <router-link to="/cart" class="nav-link group relative">
-              <div class="flex items-center px-4 py-2 rounded-xl bg-gray-50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 border border border-transparent hover:border-blue-200 transition-all duration-300">
-                <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-green-100 to-emerald-100 mr-2 flex items-center justify-center group-hover:from-blue-100 group-hover:to-blue-200 transition-all duration-300">
-                  <div class="w-4 h-4 bg-green-600 rounded group-hover:bg-blue-600 transition-colors duration-300"></div>
-                </div>
-                <span class="font-medium text-gray-700 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300">
-                  Cart
-                </span>
-                <span v-if="cartCount > 0" class="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold shadow-lg animate-pulse">
+            <li class="relative">
+              <router-link to="/cart" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0">
+                Cart
+                <span v-if="cartCount > 0" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
                   {{ cartCount }}
                 </span>
-              </div>
-            </router-link>
+              </router-link>
+            </li>
             
             <!-- Orders Link -->
-            <router-link to="/orders" class="nav-link group">
-              <div class="flex items-center px-4 py-2 rounded-xl bg-gray-50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 border border border-transparent hover:border-blue-200 transition-all duration-300">
-                <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-orange-100 to-amber-100 mr-2 flex items-center justify-center group-hover:from-blue-100 group-hover:to-blue-200 transition-all duration-300">
-                  <div class="w-4 h-1 bg-orange-600 rounded-full group-hover:bg-blue-600 transition-all duration-300"></div>
-                </div>
-                <span class="font-medium text-gray-700 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300">
-                  Orders
-                </span>
-              </div>
-            </router-link>
+            <li>
+              <router-link to="/orders" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0">Orders</router-link>
+            </li>
             
-            <!-- Wishlist Button -->
-            <button @click="showWishlist" class="nav-link group relative">
-              <div class="flex items-center px-4 py-2 rounded-xl bg-gray-50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 border border border-transparent hover:border-blue-200 transition-all duration-300">
-                <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-pink-100 to-rose-100 mr-2 flex items-center justify-center group-hover:from-blue-100 group-hover:to-blue-200 transition-all duration-300">
-                  <div class="w-4 h-4 bg-pink-600 rounded-lg group-hover:bg-blue-600 transition-colors duration-300"></div>
-                </div>
-                <span class="font-medium text-gray-700 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300">
-                  Wishlist
-                </span>
-                <span v-if="wishlist.length > 0" class="absolute -top-1 -right-1 bg-gradient-to-r from-pink-500 to-rose-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold shadow-lg animate-pulse">
+            <!-- Wishlist Link -->
+            <li class="relative">
+              <button @click="showWishlist" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0">
+                Wishlist
+                <span v-if="wishlist.length > 0" class="absolute -top-1 -right-1 bg-pink-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
                   {{ wishlist.length }}
                 </span>
-              </div>
-            </button>
-          </nav>
-          
-          <!-- Mobile Menu Toggle -->
-          <button @click="toggleMobileMenu" class="md:hidden p-2 rounded-xl hover:bg-gray-100 transition-all duration-300">
-            <div class="w-6 h-6 flex flex-col justify-center space-y-1">
-              <div class="w-6 h-0.5 bg-gray-600 rounded-full transition-all duration-300"></div>
-              <div class="w-6 h-0.5 bg-gray-600 rounded-full transition-all duration-300"></div>
-              <div class="w-6 h-0.5 bg-gray-600 rounded-full transition-all duration-300"></div>
-            </div>
-          </button>
+              </button>
+            </li>
+          </ul>
         </div>
-        
-        <!-- Mobile Navigation -->
-        <nav v-if="mobileMenuOpen" class="md:hidden py-4 border-t bg-gray-50">
-          <div class="flex flex-col space-y-2">
-            <!-- Mobile Admin -->
-            <router-link to="/admin" @click="toggleMobileMenu" class="mobile-nav-link">
-              <div class="flex items-center">
-                <div class="w-2 h-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mr-3"></div>
-                <span class="font-medium">Admin Panel</span>
-              </div>
-            </router-link>
-            
-            <!-- Mobile Home -->
-            <router-link to="/" @click="toggleMobileMenu" class="mobile-nav-link">
-              <div class="flex items-center">
-                <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 mr-3 flex items-center justify-center">
-                  <div class="w-3 h-3 bg-gray-600 rounded-sm"></div>
-                </div>
-                <span class="font-medium">Shop Home</span>
-              </div>
-            </router-link>
-            
-            <!-- Mobile Cart -->
-            <router-link to="/cart" @click="toggleMobileMenu" class="mobile-nav-link relative">
-              <div class="flex items-center">
-                <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-green-100 to-emerald-100 mr-3 flex items-center justify-center">
-                  <div class="w-4 h-4 bg-green-600 rounded"></div>
-                </div>
-                <span class="font-medium">Shopping Cart ({{ cartCount }})</span>
-              </div>
-            </router-link>
-            
-            <!-- Mobile Orders -->
-            <router-link to="/orders" @click="toggleMobileMenu" class="mobile-nav-link">
-              <div class="flex items-center">
-                <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-orange-100 to-amber-100 mr-3 flex items-center justify-center">
-                  <div class="w-4 h-1 bg-orange-600 rounded-full"></div>
-                </div>
-                <span class="font-medium">Order History</span>
-              </div>
-            </router-link>
-            
-            <!-- Mobile Wishlist -->
-            <button @click="showWishlist" class="mobile-nav-link text-left">
-              <div class="flex items-center">
-                <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-pink-100 to-rose-100 mr-3 flex items-center justify-center">
-                  <div class="w-4 h-4 bg-pink-600 rounded-lg"></div>
-                </div>
-                <span class="font-medium">My Wishlist ({{ wishlist.length }})</span>
-              </div>
-            </button>
-          </div>
-        </nav>
       </div>
-    </header>
+      
+      <!-- Mobile Menu -->
+      <div v-if="mobileMenuOpen" class="md:hidden bg-white border-t border-gray-200">
+        <ul class="font-medium flex flex-col p-4 space-y-2">
+          <li>
+            <router-link to="/" @click="toggleMobileMenu" class="block py-2 px-3 text-white bg-blue-600 rounded">Home</router-link>
+          </li>
+          <li>
+            <router-link to="/admin" @click="toggleMobileMenu" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100">Admin</router-link>
+          </li>
+          <li>
+            <router-link to="/cart" @click="toggleMobileMenu" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100">
+              Cart ({{ cartCount }})
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/orders" @click="toggleMobileMenu" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100">Orders</router-link>
+          </li>
+          <li>
+            <button @click="showWishlist" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 text-left">
+              Wishlist ({{ wishlist.length }})
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
 
     <!-- Main Content -->
-    <main class="flex-grow container mx-auto px-4 py-8">
+    <main class="flex-grow container mx-auto px-4 pt-24 pb-8">
       <router-view />
     </main>
 
@@ -385,79 +326,5 @@ export default {
 </script>
 
 <style scoped>
-.nav-link {
-  @apply relative overflow-hidden;
-}
-
-.mobile-nav-link {
-  @apply flex items-center px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 font-medium;
-}
-
-/* Custom animations */
-@keyframes slideIn {
-  from {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.notification {
-  animation: slideIn 0.3s ease-out;
-}
-
-/* Enhanced hover effects */
-.group:hover .group-hover\:scale-105 {
-  transform: scale(1.05);
-}
-
-.group:hover .group-hover\:scale-110 {
-  transform: scale(1.1);
-}
-
-/* Gradient text effects */
-.group:hover .group-hover\:text-transparent {
-  color: transparent;
-}
-
-.group:hover .group-hover\:bg-gradient-to-r {
-  background: linear-gradient(to right, theme('colors.blue.600'), theme('colors.purple.600'));
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-
-.group:hover .group-hover\:from-blue-600 {
-  color: theme('colors.blue.600');
-}
-
-.group:hover .group-hover\:to-purple-600 {
-  color: theme('colors.purple.600');
-}
-
-/* Mobile menu improvements */
-.md\:hidden {
-  @apply md:hidden;
-}
-
-/* Backdrop blur effect */
-.backdrop-blur-lg {
-  backdrop-filter: blur(16px);
-}
-
-/* Enhanced badge animations */
-.animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
+/* Navigation styles are now handled by Tailwind classes */
 </style>
