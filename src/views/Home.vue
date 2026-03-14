@@ -32,44 +32,34 @@
             <!-- Left Content -->
             <div class="space-y-8">
               <!-- Badge -->
-              <div class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-full text-sm font-bold shadow-lg shadow-orange-500/25">
-                <div class="w-2 h-2 bg-white rounded-full mr-3 animate-pulse"></div>
-                WELCOME TO KAFUKA STORE
+              <div class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-orange-500 via-orange-600 to-orange-700 text-white rounded-full text-lg font-bold shadow-xl shadow-orange-500/30 transform hover:scale-105 transition-all duration-300">
+                <div class="w-3 h-3 bg-white rounded-full mr-4 animate-pulse"></div>
+                <span class="tracking-wide">WELCOME TO KAFUKA STORE</span>
               </div>
               
               <!-- Main Title -->
-              <div class="space-y-4">
-                <h2 class="text-4xl md:text-5xl font-bold text-white/90 leading-tight">
+              <div class="space-y-6">
+                <h2 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white/95 leading-tight">
                   Where Innovation
                   <br>
                   Meets
                   <br>
-                  <span class="bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent">Excellence</span>
+                  <span class="bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent drop-shadow-lg">Excellence</span>
                 </h2>
-                <p class="text-xl text-gray-300 leading-relaxed max-w-lg">
+                <p class="text-xl md:text-2xl text-gray-300 leading-relaxed max-w-xl font-light">
                   Discover cutting-edge electronics and premium gadgets that redefine your digital experience. Quality, innovation, and service delivered.
                 </p>
               </div>
               
               <!-- Call-to-Action Buttons -->
-              <div class="flex flex-col sm:flex-row gap-4">
-                <button class="group relative inline-flex items-center px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 shadow-xl shadow-orange-500/25">
-                  <span class="relative z-10 flex items-center">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                    </svg>
-                    Shop Now
-                  </span>
-                  <div class="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div class="flex flex-col sm:flex-row gap-6 pt-4">
+                <button class="relative inline-flex items-center justify-center px-12 py-5 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold text-lg rounded-2xl hover:from-orange-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 shadow-2xl shadow-orange-500/30 hover:shadow-orange-600/40">
+                  <span class="relative z-10">Shop Now</span>
+                  <div class="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
                 </button>
                 
-                <button class="group relative inline-flex items-center px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-bold rounded-xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 border border-white/20">
-                  <span class="relative z-10 flex items-center">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065 2.572C18.375 12.838 20.05 11.507 20.05 9.5s-1.675-3.338-2.675-4.317c-.426-1.756-2.924-1.756-3.35 0a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065 2.572C12.838 18.375 11.507 20.05 9.5 20.05S6.162 18.375 5.183 17.017a1.724 1.724 0 00-2.572-1.065c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018 1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 002.573-1.066c1.543.94 3.31-.826 2.37-2.37a1.724 1.724 0 00-1.065-2.572C6.162 18.375 4.833 20.05 2.825 20.05S.675 18.375.675 16.983c-.426-1.756-2.924-1.756-3.35 0A1.724 1.724 0 001.825 16.917c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018z"></path>
-                    </svg>
-                    Admin Panel
-                  </span>
+                <button class="relative inline-flex items-center justify-center px-12 py-5 bg-white/10 backdrop-blur-md text-white font-bold text-lg rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 border-2 border-white/30 hover:border-white/50 shadow-xl">
+                  <span class="relative z-10">Admin Panel</span>
                 </button>
               </div>
             </div>
