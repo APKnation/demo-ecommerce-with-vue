@@ -2,12 +2,14 @@
   "name": "kafuka-ecommerce",
   "version": "1.0.0",
   "type": "module",
-  "description": "KAFUKA E-commerce Store built with Vue.js and Tailwind CSS",
+  "description": "KAFUKA E-commerce Store built with 70% Vue.js architecture and modern web technologies",
   "main": "index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "vue-cli-service lint",
+    "test": "vue-cli-service test:unit"
   },
   "dependencies": {
     "sweetalert2": "^11.26.22",
@@ -23,10 +25,24 @@
   },
   "keywords": [
     "vue",
+    "vue3",
+    "composition-api",
     "ecommerce",
     "tailwind",
-    "vite"
+    "vite",
+    "javascript",
+    "modern-web",
+    "reactive-state",
+    "vue-composables"
   ],
   "author": "KAFUKA",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/APKnation/demo-ecommerce-with-vue.git"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
 }
