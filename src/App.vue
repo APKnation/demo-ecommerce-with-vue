@@ -1,116 +1,146 @@
 <template>
   <div id="app" class="min-h-screen flex flex-col">
     <!-- Header -->
-    <header class="bg-white shadow-lg sticky top-0 z-40 border-b border-gray-200">
+    <header class="bg-white shadow-lg sticky top-0 z-40 border-b border-gray-200 backdrop-blur-lg bg-opacity-95">
       <div class="container mx-auto px-4">
         <div class="flex justify-between items-center h-16">
+          <!-- Logo Section -->
           <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-              <span class="text-white font-bold text-lg">K</span>
+            <div class="relative group">
+              <div class="w-10 h-10 bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700 rounded-xl flex items-center justify-center transform transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg">
+                <span class="text-white font-bold text-lg tracking-tight">K</span>
+                <div class="absolute inset-0 rounded-xl bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+              </div>
+              <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent tracking-tight">KAFUKA Store</h1>
             </div>
-            <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">KAFUKA Store</h1>
           </div>
           
           <!-- Desktop Navigation -->
           <nav class="hidden md:flex items-center space-x-1">
-            <router-link to="/admin" class="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium">
-              <span class="flex items-center">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572C18.375 12.838 20.05 11.507 20.05 9.5s-1.675-3.338-2.675-4.317c-.426-1.756-2.924-1.756-3.35 0a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065-2.572C12.838 18.375 11.507 20.05 9.5 20.05S6.162 18.375 5.183 17.017a1.724 1.724 0 00-2.572-1.065c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018 1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 002.573-1.066c1.543.94 3.31-.826 2.37-2.37a1.724 1.724 0 001.065-2.572c.426-1.756 2.924-1.756 3.35 0 .326.426.018.675.018 1.756 0 3.35-.018 1.756-2.924 0-3.35a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065-2.572C6.162 18.375 4.833 20.05 2.825 20.05S.675 18.375.675 16.983c-.426-1.756-2.924-1.756-3.35 0A1.724 1.724 0 001.825 16.917c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018z"></path>
-                </svg>
-                Admin
-              </span>
+            <!-- Admin Link -->
+            <router-link to="/admin" class="nav-link group">
+              <div class="flex items-center px-4 py-2 rounded-xl bg-gray-50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 border border border-transparent hover:border-blue-200 transition-all duration-300">
+                <div class="w-2 h-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mr-2 group-hover:scale-110 transition-transform duration-300"></div>
+                <span class="font-medium text-gray-700 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300">
+                  Admin
+                </span>
+              </div>
             </router-link>
-            <router-link to="/" class="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium">
-              <span class="flex items-center">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2h-3a1 1 0 00-1 1v3m0 0l7-7 7 7m-7-7h-2"></path>
-                </svg>
-                Home
-              </span>
+            
+            <!-- Home Link -->
+            <router-link to="/" class="nav-link group">
+              <div class="flex items-center px-4 py-2 rounded-xl bg-gray-50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 border border border-transparent hover:border-blue-200 transition-all duration-300">
+                <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 mr-2 flex items-center justify-center group-hover:from-blue-100 group-hover:to-blue-200 transition-all duration-300">
+                  <div class="w-3 h-3 bg-gray-600 rounded-sm group-hover:bg-blue-600 transition-colors duration-300"></div>
+                </div>
+                <span class="font-medium text-gray-700 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300">
+                  Home
+                </span>
+              </div>
             </router-link>
-            <router-link to="/cart" class="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium relative">
-              <span class="flex items-center">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                </svg>
-                Cart
-                <span v-if="cartCount > 0" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+            
+            <!-- Cart Link -->
+            <router-link to="/cart" class="nav-link group relative">
+              <div class="flex items-center px-4 py-2 rounded-xl bg-gray-50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 border border border-transparent hover:border-blue-200 transition-all duration-300">
+                <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-green-100 to-emerald-100 mr-2 flex items-center justify-center group-hover:from-blue-100 group-hover:to-blue-200 transition-all duration-300">
+                  <div class="w-4 h-4 bg-green-600 rounded group-hover:bg-blue-600 transition-colors duration-300"></div>
+                </div>
+                <span class="font-medium text-gray-700 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300">
+                  Cart
+                </span>
+                <span v-if="cartCount > 0" class="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold shadow-lg animate-pulse">
                   {{ cartCount }}
                 </span>
-              </span>
+              </div>
             </router-link>
-            <router-link to="/orders" class="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium">
-              <span class="flex items-center">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                </svg>
-                Orders
-              </span>
+            
+            <!-- Orders Link -->
+            <router-link to="/orders" class="nav-link group">
+              <div class="flex items-center px-4 py-2 rounded-xl bg-gray-50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 border border border-transparent hover:border-blue-200 transition-all duration-300">
+                <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-orange-100 to-amber-100 mr-2 flex items-center justify-center group-hover:from-blue-100 group-hover:to-blue-200 transition-all duration-300">
+                  <div class="w-4 h-1 bg-orange-600 rounded-full group-hover:bg-blue-600 transition-all duration-300"></div>
+                </div>
+                <span class="font-medium text-gray-700 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300">
+                  Orders
+                </span>
+              </div>
             </router-link>
-            <button @click="showWishlist" class="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium relative">
-              <span class="flex items-center">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 000-6.364L12 3.636a4.5 4.5 0 00-6.364 0L12 3.636l.682.682zM12 7.5a.5.5 0 100 1 0 .5.5.5 0 001 0z"></path>
-                </svg>
-                Wishlist
-                <span v-if="wishlist.length > 0" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+            
+            <!-- Wishlist Button -->
+            <button @click="showWishlist" class="nav-link group relative">
+              <div class="flex items-center px-4 py-2 rounded-xl bg-gray-50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 border border border-transparent hover:border-blue-200 transition-all duration-300">
+                <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-pink-100 to-rose-100 mr-2 flex items-center justify-center group-hover:from-blue-100 group-hover:to-blue-200 transition-all duration-300">
+                  <div class="w-4 h-4 bg-pink-600 rounded-lg group-hover:bg-blue-600 transition-colors duration-300"></div>
+                </div>
+                <span class="font-medium text-gray-700 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300">
+                  Wishlist
+                </span>
+                <span v-if="wishlist.length > 0" class="absolute -top-1 -right-1 bg-gradient-to-r from-pink-500 to-rose-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold shadow-lg animate-pulse">
                   {{ wishlist.length }}
                 </span>
-              </span>
+              </div>
             </button>
           </nav>
           
           <!-- Mobile Menu Toggle -->
-          <button @click="toggleMobileMenu" class="md:hidden text-gray-700">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
+          <button @click="toggleMobileMenu" class="md:hidden p-2 rounded-xl hover:bg-gray-100 transition-all duration-300">
+            <div class="w-6 h-6 flex flex-col justify-center space-y-1">
+              <div class="w-6 h-0.5 bg-gray-600 rounded-full transition-all duration-300"></div>
+              <div class="w-6 h-0.5 bg-gray-600 rounded-full transition-all duration-300"></div>
+              <div class="w-6 h-0.5 bg-gray-600 rounded-full transition-all duration-300"></div>
+            </div>
           </button>
         </div>
         
         <!-- Mobile Navigation -->
         <nav v-if="mobileMenuOpen" class="md:hidden py-4 border-t bg-gray-50">
           <div class="flex flex-col space-y-2">
-            <router-link to="/admin" @click="toggleMobileMenu" class="px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium">
-              <span class="flex items-center">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573 1.066c-1.543.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065-2.572C18.375 12.838 20.05 11.507 20.05 9.5s-1.675-3.338-2.675-4.317c-.426-1.756-2.924-1.756-3.35 0a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065-2.572C12.838 18.375 11.507 20.05 9.5 20.05S6.162 18.375 5.183 17.017a1.724 1.724 0 00-2.572-1.065c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018 1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 002.573-1.066c1.543.94 3.31-.826 2.37-2.37a1.724 1.724 0 001.065-2.572c.426-1.756 2.924-1.756 3.35 0 .326.426.018.675.018 1.756 0 3.35-.018 1.756-2.924 0-3.35a1.724 1.724 0 00-2.573 1.066c-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065-2.572C6.162 18.375 4.833 20.05 2.825 20.05S.675 18.375.675 16.983c-.426-1.756-2.924-1.756-3.35 0A1.724 1.724 0 001.825 16.917c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 3.352.018z"></path>
-                </svg>
-                Admin Panel
-              </span>
+            <!-- Mobile Admin -->
+            <router-link to="/admin" @click="toggleMobileMenu" class="mobile-nav-link">
+              <div class="flex items-center">
+                <div class="w-2 h-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mr-3"></div>
+                <span class="font-medium">Admin Panel</span>
+              </div>
             </router-link>
-            <router-link to="/" @click="toggleMobileMenu" class="px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium">
-              <span class="flex items-center">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2h-3a1 1 0 00-1 1v3m0 0l7-7 7 7m-7-7h-2"></path>
-                </svg>
-                Home
-              </span>
+            
+            <!-- Mobile Home -->
+            <router-link to="/" @click="toggleMobileMenu" class="mobile-nav-link">
+              <div class="flex items-center">
+                <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 mr-3 flex items-center justify-center">
+                  <div class="w-3 h-3 bg-gray-600 rounded-sm"></div>
+                </div>
+                <span class="font-medium">Shop Home</span>
+              </div>
             </router-link>
-            <router-link to="/cart" @click="toggleMobileMenu" class="px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium relative">
-              <span class="flex items-center">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                </svg>
-                Cart ({{ cartCount }})
-              </span>
+            
+            <!-- Mobile Cart -->
+            <router-link to="/cart" @click="toggleMobileMenu" class="mobile-nav-link relative">
+              <div class="flex items-center">
+                <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-green-100 to-emerald-100 mr-3 flex items-center justify-center">
+                  <div class="w-4 h-4 bg-green-600 rounded"></div>
+                </div>
+                <span class="font-medium">Shopping Cart ({{ cartCount }})</span>
+              </div>
             </router-link>
-            <router-link to="/orders" @click="toggleMobileMenu" class="px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium">
-              <span class="flex items-center">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                </svg>
-                Order History
-              </span>
+            
+            <!-- Mobile Orders -->
+            <router-link to="/orders" @click="toggleMobileMenu" class="mobile-nav-link">
+              <div class="flex items-center">
+                <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-orange-100 to-amber-100 mr-3 flex items-center justify-center">
+                  <div class="w-4 h-1 bg-orange-600 rounded-full"></div>
+                </div>
+                <span class="font-medium">Order History</span>
+              </div>
             </router-link>
-            <button @click="showWishlist" class="px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium text-left">
-              <span class="flex items-center">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 000-6.364L12 3.636a4.5 4.5 0 00-6.364 0L12 3.636l.682.682zM12 7.5a.5.5 0 100 1 0 .5.5.5 0 001 0z"></path>
-                </svg>
-                Wishlist ({{ wishlist.length }})
-              </span>
+            
+            <!-- Mobile Wishlist -->
+            <button @click="showWishlist" class="mobile-nav-link text-left">
+              <div class="flex items-center">
+                <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-pink-100 to-rose-100 mr-3 flex items-center justify-center">
+                  <div class="w-4 h-4 bg-pink-600 rounded-lg"></div>
+                </div>
+                <span class="font-medium">My Wishlist ({{ wishlist.length }})</span>
+              </div>
             </button>
           </div>
         </nav>
@@ -353,3 +383,81 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.nav-link {
+  @apply relative overflow-hidden;
+}
+
+.mobile-nav-link {
+  @apply flex items-center px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 font-medium;
+}
+
+/* Custom animations */
+@keyframes slideIn {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.notification {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Enhanced hover effects */
+.group:hover .group-hover\:scale-105 {
+  transform: scale(1.05);
+}
+
+.group:hover .group-hover\:scale-110 {
+  transform: scale(1.1);
+}
+
+/* Gradient text effects */
+.group:hover .group-hover\:text-transparent {
+  color: transparent;
+}
+
+.group:hover .group-hover\:bg-gradient-to-r {
+  background: linear-gradient(to right, theme('colors.blue.600'), theme('colors.purple.600'));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.group:hover .group-hover\:from-blue-600 {
+  color: theme('colors.blue.600');
+}
+
+.group:hover .group-hover\:to-purple-600 {
+  color: theme('colors.purple.600');
+}
+
+/* Mobile menu improvements */
+.md\:hidden {
+  @apply md:hidden;
+}
+
+/* Backdrop blur effect */
+.backdrop-blur-lg {
+  backdrop-filter: blur(16px);
+}
+
+/* Enhanced badge animations */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+</style>
