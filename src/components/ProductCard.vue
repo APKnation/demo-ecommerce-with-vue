@@ -1,33 +1,38 @@
 <template>
-  <div class="product-card" :class="cardClasses">
-    <div class="product-image-container">
+  <div class="product-card card card-interactive overflow-hidden group" :class="cardClasses">
+    <div class="relative overflow-hidden">
       <img 
         :src="product.image" 
         :alt="product.name"
-        class="product-image"
+        class="product-image w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
         @error="handleImageError"
       >
-      <div class="product-badges">
-        <span v-if="product.isNew" class="badge badge-new">New</span>
-        <span v-if="product.discount" class="badge badge-discount">-{{ product.discount }}%</span>
+      <div class="absolute top-2 left-2 flex gap-2">
+        <span v-if="product.isNew" class="badge badge-accent">New</span>
+        <span v-if="product.discount" class="badge badge-error">-{{ product.discount }}%</span>
       </div>
     </div>
     
-    <div class="product-info">
-      <h3 class="product-title">{{ product.name }}</h3>
-      <p class="product-category">{{ product.category }}</p>
-      <div class="product-price">
-        <span v-if="product.discount" class="original-price">Tsh {{ product.price.toLocaleString() }}</span>
-        <span class="current-price">Tsh {{ discountedPrice.toLocaleString() }}</span>
+    <div class="p-4">
+      <h3 class="product-title text-lg font-semibold text-neutral-900 mb-2">{{ product.name }}</h3>
+      <p class="product-category text-sm text-neutral-500 mb-3">{{ product.category }}</p>
+      <div class="product-price mb-4">
+        <span v-if="product.discount" class="original-price text-sm text-neutral-500 line-through mr-2">Tsh {{ product.price.toLocaleString() }}</span>
+        <span class="current-price text-2xl font-bold text-primary-600">Tsh {{ discountedPrice.toLocaleString() }}</span>
       </div>
-    </div>
-    
-    <div class="product-actions">
-      <button 
-        @click="$emit('add-to-cart', product)" 
-        class="btn btn-primary btn-sm"
-        :disabled="!inStock"
-      >
+      
+      <div class="flex items-center justify-between">
+        <div class="flex items-center text-sm text-neutral-500">
+          <span class="text-warning-500">★</span>
+          <span class="ml-1">{{ product.rating || 4.5 }}</span>
+          <span class="ml-1">({{ product.reviews || 23 }})</span>
+        </div>
+        <div class="flex gap-2">
+          <button 
+            @click="$emit('add-to-cart', product)" 
+            class="btn btn-primary btn-sm"
+            :disabled="!inStock"
+          >
         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
         </svg>
@@ -36,23 +41,14 @@
       
       <button 
         @click="$emit('toggle-wishlist', product)" 
-        class="btn btn-secondary btn-sm"
+        class="btn btn-ghost btn-sm"
         :class="{ 'text-red-500': isInWishlist }"
       >
         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
           <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
         </svg>
       </button>
-      
-      <button 
-        @click="$emit('add-to-compare', product)" 
-        class="btn btn-secondary btn-sm"
-        :disabled="isInCompare"
-      >
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-        </svg>
-      </button>
+    </div>
     </div>
   </div>
 </template>

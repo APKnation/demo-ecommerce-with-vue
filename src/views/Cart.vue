@@ -1,40 +1,40 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+  <div class="min-h-screen bg-section">
 
     <!-- Cart Header -->
-    <div class="bg-white shadow-sm border-b border-gray-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="bg-white shadow-sm border-b border-neutral-200">
+      <div class="container py-6">
         <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-gradient-to-br from-accent-500 to-accent-600 rounded-xl flex items-center justify-center shadow-lg">
               <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
               </svg>
             </div>
-            <h1 class="text-3xl font-bold bg-gradient-to-r from-orange-600 to-orange-700 bg-clip-text text-transparent">Shopping Cart</h1>
+            <h1 class="text-3xl font-bold text-gradient">Shopping Cart</h1>
           </div>
-          <div class="flex items-center space-x-2">
-            <span class="text-gray-500">{{ cart.length }} item{{ cart.length !== 1 ? 's' : '' }}</span>
-            <span class="text-gray-400">•</span>
-            <span class="font-semibold text-gray-700">Tsh {{ totalPrice.toLocaleString() }}</span>
+          <div class="flex items-center gap-2">
+            <span class="text-neutral-500">{{ cart.length }} item{{ cart.length !== 1 ? 's' : '' }}</span>
+            <span class="text-neutral-400">•</span>
+            <span class="font-semibold text-neutral-700">Tsh {{ totalPrice.toLocaleString() }}</span>
           </div>
         </div>
       </div>
     </div>
     
     <!-- Main Content -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="container py-8">
       <!-- Empty State -->
       <div v-if="cart.length === 0" class="text-center py-16">
-        <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md mx-auto">
-          <div class="w-24 h-24 mx-auto bg-gradient-to-br from-orange-100 to-orange-200 rounded-full flex items-center justify-center mb-6">
-            <svg class="w-12 h-12 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="card card-elevated p-8 max-w-md mx-auto">
+          <div class="w-24 h-24 mx-auto bg-gradient-to-br from-accent-100 to-accent-200 rounded-full flex items-center justify-center mb-6">
+            <svg class="w-12 h-12 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
             </svg>
           </div>
-          <h2 class="text-2xl font-bold text-gray-800 mb-4">Your cart is empty</h2>
-          <p class="text-gray-600 mb-6">Start shopping to add some amazing products to your cart!</p>
-          <router-link to="/" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
+          <h2 class="text-2xl font-bold text-neutral-800 mb-4">Your cart is empty</h2>
+          <p class="text-neutral-600 mb-6">Start shopping to add some amazing products to your cart!</p>
+          <router-link to="/" class="btn btn-primary">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
             </svg>
