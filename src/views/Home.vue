@@ -6,7 +6,7 @@
     </div>
 
     <!-- Hero Section with Premium Design -->
-    <section class="relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden rounded-3xl mx-4 mt-4">
+    <section class="relative min-h-screen overflow-hidden rounded-3xl mx-4 mt-4">
       <!-- Animated Background Elements -->
       <div class="absolute inset-0">
         <!-- Gradient Mesh -->
