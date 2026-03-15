@@ -6,11 +6,11 @@
     </div>
 
     <!-- Hero Section with Premium Design -->
-    <section class="relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden rounded-b-3xl">
+    <section class="relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden rounded-3xl mx-4 mt-4">
       <!-- Animated Background Elements -->
       <div class="absolute inset-0">
         <!-- Gradient Mesh -->
-        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-orange-500/20 rounded-3xl"></div>
+        <div class="absolute inset-4 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-orange-500/20 rounded-3xl"></div>
         
         <!-- Floating Particles -->
         <div class="absolute top-20 left-20 w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
