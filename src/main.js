@@ -9,6 +9,7 @@ import Cart from './views/Cart.vue'
 import Admin from './views/Admin.vue'
 import Orders from './views/Orders.vue'
 import Order from './views/Order.vue'
+import ProductDetail from './views/ProductDetail.vue'
 
 // Import Vue.js components (75% of architecture)
 import ProductCard from './components/ProductCard.vue'
@@ -17,6 +18,12 @@ import SearchFilter from './components/SearchFilter.vue'
 import ProductGallery from './components/ProductGallery.vue'
 import NotificationSystem from './components/NotificationSystem.vue'
 import VueForm from './components/VueForm.vue'
+import CategoryFilter from './components/CategoryFilter.vue'
+import ShippingCalculator from './components/ShippingCalculator.vue'
+import ProductDetailComponent from './components/ProductDetail.vue'
+import ProductSpecifications from './components/ProductSpecifications.vue'
+import ProductReviews from './components/ProductReviews.vue'
+import ProductShipping from './components/ProductShipping.vue'
 
 // Define routes with Vue.js features
 const routes = [
@@ -64,6 +71,26 @@ const routes = [
     meta: {
       title: 'Order Details - KAFUKA Electronics Store',
       description: 'View detailed order information'
+    }
+  },
+  {
+    path: '/product/:id',
+    component: ProductDetail,
+    name: 'product-detail',
+    props: true,
+    meta: {
+      title: 'Product Details - KAFUKA Electronics Store',
+      description: 'View detailed product information'
+    }
+  },
+  {
+    path: '/category/:category',
+    component: Home,
+    name: 'category',
+    props: true,
+    meta: {
+      title: 'Category - KAFUKA Electronics Store',
+      description: 'Browse products by category'
     }
   }
 ]
@@ -119,6 +146,12 @@ app.component('SearchFilter', SearchFilter)
 app.component('ProductGallery', ProductGallery)
 app.component('NotificationSystem', NotificationSystem)
 app.component('VueForm', VueForm)
+app.component('CategoryFilter', CategoryFilter)
+app.component('ShippingCalculator', ShippingCalculator)
+app.component('ProductDetailComponent', ProductDetailComponent)
+app.component('ProductSpecifications', ProductSpecifications)
+app.component('ProductReviews', ProductReviews)
+app.component('ProductShipping', ProductShipping)
 
 // Use router
 app.use(router)
