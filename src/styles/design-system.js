@@ -227,7 +227,7 @@ export const COMPONENT_STYLES = {
   button: {
     primary: 'bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
     secondary: 'bg-secondary-600 hover:bg-secondary-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2',
-    accent: 'bg-accent-600 hover:bg-accent-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2',
+    accent: 'bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2',
     outline: 'border-2 border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
     ghost: 'text-primary-600 hover:bg-primary-50 font-semibold py-3 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
   },
@@ -250,7 +250,7 @@ export const COMPONENT_STYLES = {
   badge: {
     primary: 'bg-primary-100 text-primary-800 text-xs font-semibold px-2.5 py-0.5 rounded-full',
     secondary: 'bg-secondary-100 text-secondary-800 text-xs font-semibold px-2.5 py-0.5 rounded-full',
-    accent: 'bg-accent-100 text-accent-800 text-xs font-semibold px-2.5 py-0.5 rounded-full',
+    accent: 'bg-orange-100 text-orange-800 text-xs font-semibold px-2.5 py-0.5 rounded-full',
     success: 'bg-success-100 text-success-800 text-xs font-semibold px-2.5 py-0.5 rounded-full',
     warning: 'bg-warning-100 text-warning-800 text-xs font-semibold px-2.5 py-0.5 rounded-full',
     error: 'bg-error-100 text-error-800 text-xs font-semibold px-2.5 py-0.5 rounded-full',
@@ -275,21 +275,21 @@ export const LAYOUT_STYLES = {
 export const UTILITIES = {
   text: {
     gradient: 'bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent',
-    gradientAccent: 'bg-gradient-to-r from-accent-500 to-primary-600 bg-clip-text text-transparent',
+    gradientAccent: 'bg-gradient-to-r from-orange-500 to-primary-600 bg-clip-text text-transparent',
     heading: 'text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900',
     subheading: 'text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-800',
     body: 'text-base text-neutral-600 leading-relaxed',
     small: 'text-sm text-neutral-500',
   },
   background: {
-    hero: 'bg-gradient-to-br from-primary-600 via-secondary-600 to-accent-600',
+    hero: 'bg-gradient-to-br from-primary-600 via-secondary-600 to-orange-600',
     section: 'bg-neutral-50',
     card: 'bg-white',
     overlay: 'bg-black/50 backdrop-blur-sm',
   },
   border: {
     base: 'border border-neutral-200',
-    accent: 'border-2 border-accent-500',
+    accent: 'border-2 border-orange-500',
     focus: 'ring-2 ring-primary-500 ring-offset-2',
   }
 }
