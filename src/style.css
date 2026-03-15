@@ -286,7 +286,7 @@
   
   /* Product Cards */
   .product-card {
-    @apply card card-interactive overflow-hidden group;
+    @apply card card-interactive overflow-hidden;
   }
   
   .product-image {
