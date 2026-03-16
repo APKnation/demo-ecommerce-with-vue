@@ -263,20 +263,20 @@
                 </span>
               </button>
               <button
-                @click="toggleWishlist(product.name, product.price, product.image)"
-                :class="isInWishlist(product.name) ? 'bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white' : 'bg-gradient-to-r from-gray-200 to-gray-300 hover:from-gray-300 hover:to-gray-400 text-gray-700 hover:text-white'"
+                @click="toggleWishlist(product)"
+                :class="isInWishlist(product) ? 'bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white' : 'bg-gradient-to-r from-gray-200 to-gray-300 hover:from-gray-300 hover:to-gray-400 text-gray-700 hover:text-white'"
                 class="btn text-sm px-3 transition-all duration-300 hover:scale-110 hover:shadow-lg"
               >
                 <span class="flex items-center justify-center">
                   <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                   </svg>
-                  {{ isInWishlist(product.name) ? '❤️' : '🤍' }}
+                  {{ isInWishlist(product) ? '❤️' : '🤍' }}
                 </span>
               </button>
               <button
-                @click="addToCompare(product.name, product.price)"
-                :class="isInCompare(product.name) ? 'bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white' : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white hover:scale-110'"
+                @click="addToCompare(product)"
+                :class="isInCompare(product) ? 'bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white' : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white hover:scale-110'"
                 class="btn text-sm px-3 transition-all duration-300 hover:shadow-lg"
               >
                 <span class="flex items-center justify-center">
@@ -305,6 +305,7 @@
 import { ref, computed, inject, onMounted } from 'vue'
 import ProductComparison from '@/components/ProductComparison.vue'
 import { useProductComparison } from '@/composables/useProductComparison'
+import { useWishlist } from '@/composables/useWishlist'
 
 export default {
   name: 'Home',
@@ -317,6 +318,13 @@ export default {
       clearCompareList, 
       isInCompareList 
     } = useProductComparison()
+    
+    // Wishlist functionality
+    const { 
+      wishlist, 
+      toggleWishlist, 
+      isInWishlist: isInWishlistProduct 
+    } = useWishlist()
     
     const searchTerm = ref('')
     const categoryFilter = ref('')
@@ -372,12 +380,8 @@ export default {
     })
 
     // Inject parent data and methods
-    const wishlist = inject('wishlist', ref([]))
-    const compareList = inject('compareList', ref([]))
     const cart = inject('cart', ref([]))
     const addToCart = inject('addToCart')
-    const toggleWishlist = inject('toggleWishlist')
-    const addToCompare = inject('addToCompare')
 
     // Cart total computed property
     const cartTotal = computed(() => {
@@ -427,11 +431,6 @@ export default {
       return filtered
     })
 
-    // Check if product is in wishlist
-    const isInWishlist = (productName) => {
-      return wishlist.value.some(item => item.name === productName)
-    }
-
     // Check if product is in compare list
     const isInCompare = (productName) => {
       return compareList.value.some(item => item.name === productName)
@@ -454,7 +453,7 @@ export default {
       cart,
       cartTotal,
       filteredProducts,
-      isInWishlist,
+      isInWishlist: isInWishlistProduct,
       isInCompare: isInCompareList,
       compareList,
       filterProducts,
