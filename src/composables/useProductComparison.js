@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue'
-import { useStorage } from './useStorage'
+import { useStorage } from './useStorage.js'
 
 export function useProductComparison() {
   const compareList = useStorage('product-compare-list', [])

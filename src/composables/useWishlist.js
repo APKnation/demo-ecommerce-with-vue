@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue'
-import { useStorage } from './useStorage'
+import { useStorage } from './useStorage.js'
 
 export function useWishlist() {
   const wishlist = useStorage('wishlist', [])
