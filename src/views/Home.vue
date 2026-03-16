@@ -291,15 +291,33 @@
         </div>
       </div>
     </section>
+    
+    <!-- Product Comparison Component -->
+    <ProductComparison 
+      :compare-list="compareList"
+      @remove-from-compare="removeFromCompare"
+      @clear-compare="clearCompareList"
+    />
   </div>
 </template>
 
 <script>
 import { ref, computed, inject, onMounted } from 'vue'
+import ProductComparison from '@/components/ProductComparison.vue'
+import { useProductComparison } from '@/composables/useProductComparison'
 
 export default {
   name: 'Home',
   setup() {
+    // Product comparison functionality
+    const { 
+      compareList, 
+      addToCompare, 
+      removeFromCompare, 
+      clearCompareList, 
+      isInCompareList 
+    } = useProductComparison()
+    
     const searchTerm = ref('')
     const categoryFilter = ref('')
     const priceFilter = ref('')
@@ -437,11 +455,14 @@ export default {
       cartTotal,
       filteredProducts,
       isInWishlist,
-      isInCompare,
+      isInCompare: isInCompareList,
+      compareList,
       filterProducts,
       addToCart,
       toggleWishlist,
-      addToCompare
+      addToCompare,
+      removeFromCompare,
+      clearCompareList
     }
   }
 }
