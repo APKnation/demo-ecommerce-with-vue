@@ -5,138 +5,132 @@
       {{ notification }}
     </div>
 
-    <!-- Hero Section with Premium Design -->
-    <section class="relative min-h-screen hero-gradient overflow-hidden rounded-3xl mx-4 mt-4">
-      <!-- Animated Background Elements -->
-      <div class="absolute inset-0">
-        <!-- Gradient Mesh -->
-        <div class="absolute inset-4 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-orange-500/20 rounded-3xl"></div>
+   <!-- Hero Section with Premium Design -->
+    <section class="relative min-h-screen hero-gradient overflow-hidden rounded-3xl mx-4 mt-4 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
+      <!-- Hero Content -->
+<div class="relative z-10 min-h-screen flex items-center px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto w-full">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+      
+      <!-- Left Content -->
+      <div class="space-y-6 lg:space-y-8 text-center lg:text-left">
         
-        <!-- Floating Particles -->
-        <div class="absolute top-20 left-20 w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-        <div class="absolute top-40 right-32 w-3 h-3 bg-purple-400 rounded-full animate-ping"></div>
-        <div class="absolute bottom-32 left-40 w-2 h-2 bg-orange-400 rounded-full animate-pulse"></div>
-        <div class="absolute top-60 right-20 w-4 h-4 bg-blue-300 rounded-full animate-ping"></div>
-        <div class="absolute bottom-20 right-40 w-2 h-2 bg-purple-300 rounded-full animate-pulse"></div>
+        <!-- Badge -->
+        <div class="inline-flex items-center justify-center px-6 py-4 bg-gradient-to-r from-orange-500 via-orange-600 to-orange-700 text-white rounded-full text-lg font-bold shadow-xl shadow-orange-500/30 transform hover:scale-105 transition-all duration-300">
+          <div class="w-3 h-3 bg-white rounded-full mr-2 sm:mr-4 animate-pulse"></div>
+          <span class="tracking-wide text-sm sm:text-base lg:text-lg">WELCOME TO KAFUKA STORE</span>
+        </div>
         
-        <!-- Geometric Shapes -->
-        <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
-        <div class="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-orange-500/10 to-red-500/10 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2"></div>
+        <!-- Main Title -->
+        <div class="space-y-6">
+          <h2 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white/95 leading-tight italic">
+            Where Innovation
+            <br>
+            Meets
+            <br>
+            <span class="bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent drop-shadow-lg italic">
+              Excellence
+            </span>
+          </h2>
+
+          <!-- ✅ UPDATED DESCRIPTION -->
+          <p class="text-xl md:text-2xl text-gray-300 leading-relaxed max-w-xl font-light italic">
+            Browse the latest electronics—from smartphones and laptops to accessories and home gadgets. 
+            Add items to your cart, review your selections, and enjoy a smooth, secure checkout with fast delivery.
+          </p>
+        </div>
+        
+        <!-- Call-to-Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-6 pt-4">
+          
+          <!-- UPDATED BUTTON TEXT -->
+          <router-link to="/cart" class="relative inline-flex items-center justify-center px-12 py-5 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold text-lg rounded-2xl hover:from-orange-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 shadow-2xl shadow-orange-500/30 hover:shadow-orange-600/40">
+            <span class="relative z-10">Browse Products</span>
+            <div class="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+          </router-link>
+          
+          <router-link to="/admin" class="relative inline-flex items-center justify-center px-12 py-5 bg-white/10 backdrop-blur-md text-white font-bold text-lg rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 border-2 border-white/30 hover:border-white/50 shadow-xl">
+            <span class="relative z-10">Admin Panel</span>
+          </router-link>
+        </div>
       </div>
       
-      <!-- Hero Content -->
-      <div class="relative z-10 min-h-screen flex items-center px-4 sm:px-6 lg:px-8">
-        <div class="max-w-7xl mx-auto w-full">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+      <!-- Right Content - 3D Product Showcase -->
+      <div class="relative scale-110 lg:scale-125">
+        
+        <!-- Glow Effect -->
+        <div class="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-purple-500/20 rounded-3xl blur-3xl transform scale-110"></div>
+        
+        <!-- Product Image -->
+        <div class="relative z-10">
+          <div class="relative group">
+            <img 
+              src="/images/w.jpg" 
+              alt="Featured Product" 
+              class="w-full h-auto max-w-2xl mx-auto rounded-3xl shadow-2xl transform transition-all duration-500 group-hover:scale-105 group-hover:rotate-1"
+            >
             
-            <!-- Left Content -->
-            <div class="space-y-6 lg:space-y-8 text-center lg:text-left">
-              <!-- Badge -->
-              <div class="inline-flex items-center justify-center px-6 py-4 bg-gradient-to-r from-orange-500 via-orange-600 to-orange-700 text-white rounded-full text-lg font-bold shadow-xl shadow-orange-500/30 transform hover:scale-105 transition-all duration-300">
-                <div class="w-3 h-3 bg-white rounded-full mr-2 sm:mr-4 animate-pulse"></div>
-                <span class="tracking-wide text-sm sm:text-base lg:text-lg">WELCOME TO KAFUKA STORE</span>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent rounded-3xl"></div>
+          </div>
+        </div>
+        
+        <!-- Floating Cards -->
+        <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 flex gap-4">
+          
+          <!-- Fast Delivery -->
+          <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-4 transform hover:scale-110 transition-all duration-300 border border-white/20">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
               </div>
-              
-              <!-- Main Title -->
-              <div class="space-y-6">
-                <h2 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white/95 leading-tight italic">
-                  Where Innovation
-                  <br>
-                  Meets
-                  <br>
-                  <span class="bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 bg-clip-text text-transparent drop-shadow-lg italic">Excellence</span>
-                </h2>
-                <p class="text-xl md:text-2xl text-gray-300 leading-relaxed max-w-xl font-light italic">
-                  Discover cutting-edge electronics and premium gadgets that redefine your digital experience. Quality, innovation, and service delivered.
-                </p>
-              </div>
-              
-              <!-- Call-to-Action Buttons -->
-              <div class="flex flex-col sm:flex-row gap-6 pt-4">
-                <router-link to="/cart" class="relative inline-flex items-center justify-center px-12 py-5 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold text-lg rounded-2xl hover:from-orange-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 shadow-2xl shadow-orange-500/30 hover:shadow-orange-600/40">
-                  <span class="relative z-10">Shop Now</span>
-                  <div class="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-                </router-link>
-                
-                <router-link to="/admin" class="relative inline-flex items-center justify-center px-12 py-5 bg-white/10 backdrop-blur-md text-white font-bold text-lg rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 border-2 border-white/30 hover:border-white/50 shadow-xl">
-                  <span class="relative z-10">Admin Panel</span>
-                </router-link>
+              <div>
+                <div class="font-bold text-gray-900 text-sm">Fast</div>
+                <div class="text-gray-600 text-xs">Delivery</div>
               </div>
             </div>
-            
-            <!-- Right Content - 3D Product Showcase -->
-            <div class="relative scale-110 lg:scale-125">
-              <!-- Glow Effect -->
-              <div class="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-purple-500/20 rounded-3xl blur-3xl transform scale-110"></div>
-              
-              <!-- Main Product Container -->
-              <div class="relative z-10">
-                <!-- Product Image -->
-                <div class="relative group">
-                  <img 
-                    src="/images/w.jpg" 
-                    alt="Featured Product" 
-                    class="w-full h-auto max-w-2xl mx-auto rounded-3xl shadow-2xl transform transition-all duration-500 group-hover:scale-105 group-hover:rotate-1"
-                  >
-                  
-                  <!-- Image Overlay Gradient -->
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent rounded-3xl"></div>
-                </div>
+          </div>
+          
+          <!-- Premium Quality -->
+          <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-4 transform hover:scale-110 transition-all duration-300 border border-white/20">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
               </div>
-              
-              <!-- Floating Cards - At Top of Image -->
-              <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 flex gap-4">
-                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-4 transform hover:scale-110 transition-all duration-300 border border-white/20">
-                  <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
-                      <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                      </svg>
-                    </div>
-                    <div>
-                      <div class="font-bold text-gray-900 text-sm">Fast</div>
-                      <div class="text-gray-600 text-xs">Delivery</div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-4 transform hover:scale-110 transition-all duration-300 border border-white/20">
-                  <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
-                      <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                      </svg>
-                    </div>
-                    <div>
-                      <div class="font-bold text-gray-900 text-sm">Premium</div>
-                      <div class="text-gray-600 text-xs">Quality</div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-4 transform hover:scale-110 transition-all duration-300 border border-white/20">
-                  <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
-                      <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                      </svg>
-                    </div>
-                    <div>
-                      <div class="font-bold text-gray-900 text-sm">Trusted</div>
-                      <div class="text-gray-600 text-xs">Service</div>
-                    </div>
-                  </div>
-                </div>
+              <div>
+                <div class="font-bold text-gray-900 text-sm">Premium</div>
+                <div class="text-gray-600 text-xs">Quality</div>
               </div>
-              
-              <!-- Decorative Elements -->
-              <div class="absolute -top-10 right-10 w-20 h-20 bg-gradient-to-br from-orange-400/20 to-orange-600/20 rounded-full blur-2xl animate-pulse"></div>
-              <div class="absolute -bottom-10 left-10 w-16 h-16 bg-gradient-to-br from-blue-400/20 to-blue-600/20 rounded-full blur-2xl animate-pulse"></div>
+            </div>
+          </div>
+          
+          <!-- Trusted Service -->
+          <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-4 transform hover:scale-110 transition-all duration-300 border border-white/20">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </div>
+              <div>
+                <div class="font-bold text-gray-900 text-sm">Trusted</div>
+                <div class="text-gray-600 text-xs">Service</div>
+              </div>
             </div>
           </div>
         </div>
+        
+        <!-- Decorative Elements -->
+        <div class="absolute -top-10 right-10 w-20 h-20 bg-gradient-to-br from-orange-400/20 to-orange-600/20 rounded-full blur-2xl animate-pulse"></div>
+        <div class="absolute -bottom-10 left-10 w-16 h-16 bg-gradient-to-br from-blue-400/20 to-blue-600/20 rounded-full blur-2xl animate-pulse"></div>
       </div>
+    </div>
+  </div>
     </section>
+</div>
 
   </div>
 
