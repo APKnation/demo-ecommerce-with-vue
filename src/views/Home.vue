@@ -269,18 +269,11 @@
               <p class="text-lg sm:text-xl lg:text-2xl font-bold text-blue-600 group-hover:text-orange-500 transition-colors duration-300">Tsh {{ product.price.toLocaleString() }}</p>
               <div class="w-6 sm:w-8 h-6 sm:h-8 lg:w-8 lg:h-8 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center group-hover:from-green-500 group-hover:to-green-600 transition-all duration-300">
                 <svg class="w-3 sm:w-4 sm:h-4 lg:w-4 lg:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      </div>
-      <div class="p-3 sm:p-4 lg:p-6">
-        <h3 class="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 sm:mb-3 text-gray-800 group-hover:text-orange-600 transition-colors duration-300">{{ product.name }}</h3>
-        <p class="text-sm sm:text-base text-gray-600 mb-2 sm:mb-3 group-hover:text-orange-500 transition-colors duration-300">{{ product.category }}</p>
-        <div class="flex items-center justify-between mb-4">
-          <p class="text-lg sm:text-xl lg:text-2xl font-bold text-blue-600 group-hover:text-orange-500 transition-colors duration-300">Tsh {{ product.price.toLocaleString() }}</p>
-          <div class="w-6 sm:w-8 h-6 sm:h-8 lg:w-8 lg:h-8 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center group-hover:from-green-500 group-hover:to-green-600 transition-all duration-300">
-            <svg class="w-3 sm:w-4 sm:h-4 lg:w-4 lg:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 9"></path>
-            </svg>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 9"></path>
+                </svg>
+              </div>
+            </div>
           </div>
-        </div>
         
         <div class="flex flex-wrap gap-2">
           <button
