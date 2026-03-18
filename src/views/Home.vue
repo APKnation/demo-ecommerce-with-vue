@@ -264,28 +264,37 @@
             </div>
           </div>
         
-        <div class="flex flex-wrap gap-2">
+        <div class="flex flex-wrap gap-2 justify-center">
           <button
             @click="addToCart(product.name, product.price)"
-            class="btn btn-primary bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 hover:shadow-lg hover:scale-105 transform transition-all duration-300 text-sm sm:text-base lg:text-lg px-4 sm:px-6 lg:px-6 py-2 sm:py-3 lg:py-4 w-full sm:w-auto lg:w-auto"
+            class="relative group btn-primary bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 px-4 py-2 rounded-lg border-2 border-orange-400 hover:border-orange-500 focus:outline-none focus:ring-4 focus:ring-orange-300 overflow-hidden"
           >
-            <span class="flex items-center justify-center">
-              <svg class="w-4 h-4 mr-2 sm:w-4 sm:h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <!-- Background Animation -->
+            <div class="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+            
+            <span class="relative z-10 flex items-center justify-center">
+              <!-- Enhanced Cart Icon -->
+              <svg class="w-4 h-4 mr-2 transform group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2.293 2.293c-.63.63-.184 1.707.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
               </svg>
-              <span class="text-sm sm:text-xs lg:text-sm">Add to Cart</span>
+              <span class="font-bold text-xs sm:text-xs lg:text-sm uppercase">Add to Cart</span>
             </span>
           </button>
           
           <button
             @click="likeProduct(product)"
-            class="btn btn-danger bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white hover:shadow-lg hover:scale-105 transform transition-all duration-300 text-sm sm:text-base lg:text-lg px-4 sm:px-6 lg:px-6 py-2 sm:py-3 lg:py-4 w-full sm:w-auto lg:w-auto"
+            class="relative group btn-danger bg-gradient-to-br from-red-500 via-pink-500 to-pink-600 hover:from-red-600 hover:via-pink-600 hover:to-pink-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 px-3 py-2 rounded-lg border-2 border-pink-400 hover:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-300 overflow-hidden"
           >
-            <span class="flex items-center justify-center">
-                <svg class="w-4 h-4 mr-2 sm:w-4 sm:h-4 lg:w-5 lg:h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
-              </span>
+            <!-- Heart Animation Background -->
+            <div class="absolute inset-0 bg-gradient-to-br from-pink-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+            
+            <span class="relative z-10 flex items-center justify-center">
+              <!-- Animated Heart Icon -->
+              <svg class="w-4 h-4 transform group-hover:scale-110 transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
+                <!-- Enhanced Heart Path -->
+                <path class="group-hover:fill-pink-200 transition-colors duration-300" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+            </span>
           </button>
         </div>
       </div>
