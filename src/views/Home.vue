@@ -25,16 +25,16 @@
       </div>
       
       <!-- Hero Content -->
-      <div class="relative z-10 min-h-screen flex items-center">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div class="relative z-10 min-h-screen flex items-center px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto w-full">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             
             <!-- Left Content -->
-            <div class="space-y-8">
+            <div class="space-y-6 lg:space-y-8 text-center lg:text-left">
               <!-- Badge -->
-              <div class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-orange-500 via-orange-600 to-orange-700 text-white rounded-full text-lg font-bold shadow-xl shadow-orange-500/30 transform hover:scale-105 transition-all duration-300">
-                <div class="w-3 h-3 bg-white rounded-full mr-4 animate-pulse"></div>
-                <span class="tracking-wide">WELCOME TO KAFUKA STORE</span>
+              <div class="inline-flex items-center justify-center px-6 py-4 bg-gradient-to-r from-orange-500 via-orange-600 to-orange-700 text-white rounded-full text-lg font-bold shadow-xl shadow-orange-500/30 transform hover:scale-105 transition-all duration-300">
+                <div class="w-3 h-3 bg-white rounded-full mr-2 sm:mr-4 animate-pulse"></div>
+                <span class="tracking-wide text-sm sm:text-base lg:text-lg">WELCOME TO KAFUKA STORE</span>
               </div>
               
               <!-- Main Title -->
@@ -247,7 +247,7 @@
         </div>
       </div>
       
-      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-4 lg:gap-6">
         <div
           v-for="product in filteredProducts"
           :key="product.name"
@@ -262,34 +262,34 @@
             <!-- Image Overlay Effect -->
             <div class="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-orange-200/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-t-lg"></div>
           </div>
-          <div class="p-4">
-            <h3 class="text-xl font-semibold mb-2 text-gray-800 group-hover:text-orange-600 transition-colors duration-300">{{ product.name }}</h3>
-            <p class="text-gray-600 mb-2 group-hover:text-orange-500 transition-colors duration-300">{{ product.category }}</p>
+          <div class="p-3 sm:p-4 lg:p-6">
+            <h3 class="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 sm:mb-3 text-gray-800 group-hover:text-orange-600 transition-colors duration-300">{{ product.name }}</h3>
+            <p class="text-sm sm:text-base text-gray-600 mb-2 sm:mb-3 group-hover:text-orange-500 transition-colors duration-300">{{ product.category }}</p>
             <div class="flex items-center justify-between mb-4">
-              <p class="text-2xl font-bold text-blue-600 group-hover:text-orange-500 transition-colors duration-300">Tsh {{ product.price.toLocaleString() }}</p>
-              <div class="w-8 h-8 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center group-hover:from-green-500 group-hover:to-green-600 transition-all duration-300">
-                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <p class="text-lg sm:text-xl lg:text-2xl font-bold text-blue-600 group-hover:text-orange-500 transition-colors duration-300">Tsh {{ product.price.toLocaleString() }}</p>
+              <div class="w-6 sm:w-8 h-6 sm:h-8 lg:w-8 lg:h-8 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center group-hover:from-green-500 group-hover:to-green-600 transition-all duration-300">
+                <svg class="w-3 sm:w-4 sm:h-4 lg:w-4 lg:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 9"></path>
                 </svg>
               </div>
             </div>
             
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-2 sm:gap-2 lg:gap-3">
               <button
                 @click="addToCart(product.name, product.price)"
-                class="btn btn-primary flex-grow bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 hover:shadow-lg hover:scale-105 transform transition-all duration-300"
+                class="btn btn-primary flex-grow bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 hover:shadow-lg hover:scale-105 transform transition-all duration-300 text-sm sm:text-base lg:text-lg px-3 sm:px-4 lg:px-6 py-2 sm:py-3 lg:py-4"
               >
                 <span class="flex items-center justify-center">
                   <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                   </svg>
-                  Add to Cart
+                  <span class="text-sm sm:text-xs lg:text-sm">Add to Cart</span>
                 </span>
               </button>
               
               <button
                 @click="likeProduct(product)"
-                class="btn btn-danger flex-grow bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white hover:shadow-lg hover:scale-105 transform transition-all duration-300"
+                class="btn btn-danger flex-grow bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white hover:shadow-lg hover:scale-105 transform transition-all duration-300 text-sm sm:text-base lg:text-lg px-3 sm:px-4 lg:px-6 py-2 sm:py-3 lg:py-4"
               >
                 <span class="flex items-center justify-center">
                   <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
