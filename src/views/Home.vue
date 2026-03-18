@@ -302,6 +302,10 @@
   <!-- ... -->
     </section>
   </div>
+  
+  <!-- Extra spacing to push content up -->
+  <div class="mb-16"></div>
+</div>
 </template>
 
 <script>
