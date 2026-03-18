@@ -264,7 +264,7 @@
             </div>
           </div>
         
-        <div class="flex flex-wrap gap-2 justify-center">
+        <div class="flex flex-wrap gap-1 justify-center">
           <button
             @click="addToCart(product.name, product.price)"
             class="relative group btn-primary bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 px-4 py-2 rounded-lg border-2 border-orange-400 hover:border-orange-500 focus:outline-none focus:ring-4 focus:ring-orange-300 overflow-hidden"
