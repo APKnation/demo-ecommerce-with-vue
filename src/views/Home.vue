@@ -282,11 +282,10 @@
             class="btn btn-danger bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white hover:shadow-lg hover:scale-105 transform transition-all duration-300 text-sm sm:text-base lg:text-lg px-4 sm:px-6 lg:px-6 py-2 sm:py-3 lg:py-4 w-full sm:w-auto lg:w-auto"
           >
             <span class="flex items-center justify-center">
-              <svg class="w-4 h-4 mr-2 sm:w-4 sm:h-4 lg:w-5 lg:h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-              </svg>
-              <span class="text-sm sm:text-xs lg:text-sm">Like Product</span>
-            </span>
+                <svg class="w-4 h-4 mr-2 sm:w-4 sm:h-4 lg:w-5 lg:h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+              </span>
           </button>
         </div>
       </div>
