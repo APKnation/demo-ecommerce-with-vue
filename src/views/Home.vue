@@ -287,6 +287,18 @@
                   Add to Cart
                 </span>
               </button>
+              
+              <button
+                @click="showGreenNotification(product)"
+                class="btn btn-success flex-grow bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white hover:shadow-lg hover:scale-105 transform transition-all duration-300"
+              >
+                <span class="flex items-center justify-center">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 9"></path>
+                  </svg>
+                  Green Action
+                </span>
+              </button>
                             <button
                 @click="addToCompare(product)"
                 :class="isInCompare(product) ? 'bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white' : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white hover:scale-110'"
@@ -346,6 +358,11 @@ export default {
         showNotification.value = false
         notification.value = ''
       }, 3000)
+    }
+
+    // Show green notification for green button
+    const showGreenNotification = (product) => {
+      showNotificationMessage(`Green action triggered for ${product.name}! 🟢`, 'success')
     }
     
     // Load products from localStorage or use defaults
@@ -478,6 +495,7 @@ export default {
       isInCompare: isInCompareList,
       compareList,
       filterProducts,
+      showGreenNotification
     }
   }
 }
