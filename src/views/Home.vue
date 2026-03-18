@@ -157,25 +157,25 @@
           <!-- Category Filter -->
           <select
             v-model="categoryFilter"
-            class="px-4 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+            class="w-full px-4 py-3 bg-white border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 shadow-sm hover:shadow-md transition-all duration-200 appearance-none cursor-pointer bg-gradient-to-r from-orange-50 to-white hover:from-orange-100 hover:to-white"
             @change="filterProducts"
           >
-            <option value="">All Categories</option>
-            <option value="laptops">Laptops</option>
-            <option value="phones">Smartphones</option>
-            <option value="accessories">Accessories</option>
+            <option value="" class="text-gray-500">📂 All Categories</option>
+            <option value="laptops">💻 Laptops</option>
+            <option value="phones">📱 Smartphones</option>
+            <option value="accessories">🎧 Accessories</option>
           </select>
           
           <!-- Price Filter -->
           <select
             v-model="priceFilter"
-            class="px-4 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+            class="w-full px-4 py-3 bg-white border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 shadow-sm hover:shadow-md transition-all duration-200 appearance-none cursor-pointer bg-gradient-to-r from-orange-50 to-white hover:from-orange-100 hover:to-white"
             @change="filterProducts"
           >
-            <option value="">All Prices</option>
-            <option value="0-200000">Under Tsh 200,000</option>
-            <option value="200000-1000000">Tsh 200,000 - 1,000,000</option>
-            <option value="1000000+">Above Tsh 1,000,000</option>
+            <option value="" class="text-gray-500">💵 All Prices</option>
+            <option value="0-200000">💰 Under Tsh 200,000</option>
+            <option value="200000-1000000">💰 Tsh 200,000 - 1,000,000</option>
+            <option value="1000000+">💰 Above Tsh 1,000,000</option>
           </select>
         </div>
         
@@ -183,31 +183,31 @@
         <div class="mt-4">
           <select
             v-model="sortFilter"
-            class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm hover:shadow-md transition-all duration-200 appearance-none cursor-pointer bg-gradient-to-r from-gray-50 to-white hover:from-blue-50 hover:to-white"
             @change="filterProducts"
           >
-            <option value="">Sort By</option>
-            <option value="name-asc">Name (A-Z)</option>
-            <option value="name-desc">Name (Z-A)</option>
-            <option value="price-asc">Price (Low to High)</option>
-            <option value="price-desc">Price (High to Low)</option>
+            <option value="" class="text-gray-500">🔽 Sort By</option>
+            <option value="name-asc">📝 Name (A-Z)</option>
+            <option value="name-desc">📝 Name (Z-A)</option>
+            <option value="price-asc">💰 Price (Low to High)</option>
+            <option value="price-desc">💰 Price (High to Low)</option>
           </select>
         </div>
         
         <!-- Action Buttons -->
-        <div class="flex gap-3">
+        <div class="flex gap-3 mt-4">
           <button 
             @click="addAllToCompare"
-            class="btn btn-secondary flex items-center gap-2"
+            class="btn btn-secondary flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 px-6 py-3 rounded-xl border-2 border-blue-400 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300"
             :disabled="filteredProducts.length === 0"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002-2v2a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2H9z"></path>
             </svg>
-            Select All Products ({{ filteredProducts.length }})
+            <span class="font-semibold">Select All ({{ filteredProducts.length }})</span>
           </button>
           <button 
-            class="btn btn-ghost text-error-600 hover:text-error-700"
+            class="btn btn-ghost text-error-600 hover:text-error-700 hover:bg-red-50 px-6 py-3 rounded-xl border-2 border-transparent hover:border-red-200 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-300"
           >
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
