@@ -197,6 +197,7 @@ export default {
     const mobileMenuOpen = ref(false)
     const wishlistModalOpen = ref(false)
     const compareModalOpen = ref(false)
+    const notification = ref('')
     const profileMenuOpen = ref(false)
 
     const cartCount = computed(() => {
@@ -376,6 +377,7 @@ export default {
       mobileMenuOpen,
       wishlistModalOpen,
       compareModalOpen,
+      notification,
       profileMenuOpen,
       saveData,
       addToCart,
