@@ -138,7 +138,9 @@
       </div>
     </section>
 
-    <!-- Search and Filter Section -->
+  </div>
+
+  <!-- Search and Filter Section -->
     <section class="mb-8 -mt-16 relative z-20">
       <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-xl p-6 border-2 border-orange-200">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
