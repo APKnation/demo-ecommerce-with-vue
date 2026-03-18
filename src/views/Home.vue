@@ -326,7 +326,7 @@ export default {
 
     // Like product function (not wishlist)
     const likeProduct = (product) => {
-      showNotificationMessage(`You liked ${product.name}! ❤️`, 'success')
+      // Simple like without notification
     }
     
     // Load products from localStorage or use defaults
