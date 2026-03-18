@@ -287,19 +287,7 @@
                   Add to Cart
                 </span>
               </button>
-              <button
-                @click="toggleWishlist(product)"
-                :class="isInWishlist(product) ? 'bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white' : 'bg-gradient-to-r from-gray-200 to-gray-300 hover:from-gray-300 hover:to-gray-400 text-gray-700 hover:text-white'"
-                class="btn text-sm px-3 transition-all duration-300 hover:scale-110 hover:shadow-lg"
-              >
-                <span class="flex items-center justify-center">
-                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                  </svg>
-                  {{ isInWishlist(product) ? '❤️' : '🤍' }}
-                </span>
-              </button>
-              <button
+                            <button
                 @click="addToCompare(product)"
                 :class="isInCompare(product) ? 'bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white' : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white hover:scale-110'"
                 class="btn text-sm px-3 transition-all duration-300 hover:shadow-lg"
