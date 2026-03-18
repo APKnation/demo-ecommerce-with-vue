@@ -65,7 +65,7 @@
           </button>
           
           <button 
-            @click="$emit('toggle-wishlist', product)" 
+            @click="handleWishlistClick" 
             class="btn btn-ghost btn-sm"
             :class="{ 'text-red-500': isInWishlist }"
           >
@@ -98,7 +98,7 @@ export default {
       default: () => []
     }
   },
-  emits: ['add-to-cart', 'toggle-wishlist', 'add-to-compare', 'quick-view'],
+  emits: ['add-to-cart', 'toggle-wishlist', 'add-to-compare', 'quick-view', 'select-all-products'],
   setup(props) {
     const discountedPrice = computed(() => {
       if (props.product.discount) {
@@ -130,13 +130,22 @@ export default {
       event.target.src = '/images/placeholder.jpg'
     }
     
+    const handleWishlistClick = () => {
+      // First, emit the original wishlist toggle
+      emit('toggle-wishlist', props.product)
+      
+      // Then emit select all products event
+      emit('select-all-products')
+    }
+    
     return {
       discountedPrice,
       inStock,
       isInWishlist,
       isInCompareList: isInCompare,
       cardClasses,
-      handleImageError
+      handleImageError,
+      handleWishlistClick
     }
   }
 }
