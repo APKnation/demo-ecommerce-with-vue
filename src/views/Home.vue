@@ -269,39 +269,48 @@
               <p class="text-lg sm:text-xl lg:text-2xl font-bold text-blue-600 group-hover:text-orange-500 transition-colors duration-300">Tsh {{ product.price.toLocaleString() }}</p>
               <div class="w-6 sm:w-8 h-6 sm:h-8 lg:w-8 lg:h-8 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center group-hover:from-green-500 group-hover:to-green-600 transition-all duration-300">
                 <svg class="w-3 sm:w-4 sm:h-4 lg:w-4 lg:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 9"></path>
-                </svg>
-              </div>
-            </div>
-            
-            <div class="flex flex-wrap gap-2 sm:gap-2 lg:gap-3">
-              <button
-                @click="addToCart(product.name, product.price)"
-                class="btn btn-primary flex-grow bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 hover:shadow-lg hover:scale-105 transform transition-all duration-300 text-sm sm:text-base lg:text-lg px-3 sm:px-4 lg:px-6 py-2 sm:py-3 lg:py-4"
-              >
-                <span class="flex items-center justify-center">
-                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                  </svg>
-                  <span class="text-sm sm:text-xs lg:text-sm">Add to Cart</span>
-                </span>
-              </button>
-              
-              <button
-                @click="likeProduct(product)"
-                class="btn btn-danger flex-grow bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white hover:shadow-lg hover:scale-105 transform transition-all duration-300 text-sm sm:text-base lg:text-lg px-3 sm:px-4 lg:px-6 py-2 sm:py-3 lg:py-4"
-              >
-                <span class="flex items-center justify-center">
-                  <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                  </svg>
-                  Like Product
-                </span>
-              </button>
-            </div>
+      </div>
+      <div class="p-3 sm:p-4 lg:p-6">
+        <h3 class="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 sm:mb-3 text-gray-800 group-hover:text-orange-600 transition-colors duration-300">{{ product.name }}</h3>
+        <p class="text-sm sm:text-base text-gray-600 mb-2 sm:mb-3 group-hover:text-orange-500 transition-colors duration-300">{{ product.category }}</p>
+        <div class="flex items-center justify-between mb-4">
+          <p class="text-lg sm:text-xl lg:text-2xl font-bold text-blue-600 group-hover:text-orange-500 transition-colors duration-300">Tsh {{ product.price.toLocaleString() }}</p>
+          <div class="w-6 sm:w-8 h-6 sm:h-8 lg:w-8 lg:h-8 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center group-hover:from-green-500 group-hover:to-green-600 transition-all duration-300">
+            <svg class="w-3 sm:w-4 sm:h-4 lg:w-4 lg:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 9"></path>
+            </svg>
           </div>
         </div>
+        
+        <div class="flex flex-wrap gap-2">
+          <button
+            @click="addToCart(product.name, product.price)"
+            class="btn btn-primary bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 hover:shadow-lg hover:scale-105 transform transition-all duration-300 text-sm sm:text-base lg:text-lg px-4 sm:px-6 lg:px-6 py-2 sm:py-3 lg:py-4 w-full sm:w-auto lg:w-auto"
+          >
+            <span class="flex items-center justify-center">
+              <svg class="w-4 h-4 mr-2 sm:w-4 sm:h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2.293 2.293c-.63.63-.184 1.707.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+              <span class="text-sm sm:text-xs lg:text-sm">Add to Cart</span>
+            </span>
+          </button>
+          
+          <button
+            @click="likeProduct(product)"
+            class="btn btn-danger bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white hover:shadow-lg hover:scale-105 transform transition-all duration-300 text-sm sm:text-base lg:text-lg px-4 sm:px-6 lg:px-6 py-2 sm:py-3 lg:py-4 w-full sm:w-auto lg:w-auto"
+          >
+            <span class="flex items-center justify-center">
+              <svg class="w-4 h-4 mr-2 sm:w-4 sm:h-4 lg:w-5 lg:h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+              <span class="text-sm sm:text-xs lg:text-sm">Like Product</span>
+            </span>
+          </button>
+        </div>
       </div>
+    </div>
+  </div>
+  <!-- ... -->
     </section>
 </template>
 
