@@ -252,7 +252,6 @@
         <div
           v-for="product in filteredProducts"
           :key="product.name"
-          @click="handleProductLike(product)"
           class="card bg-white rounded-xl shadow-md hover:shadow-2xl hover:bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100 transition-all duration-300 transform hover:scale-105 hover:-translate-y-2 hover:rotate-1 group border-2 border-transparent hover:border-orange-300"
         >
           <div class="relative overflow-hidden rounded-t-lg">
@@ -331,7 +330,6 @@
 import { ref, computed, inject, onMounted } from 'vue'
 import ProductComparison from '@/components/ProductComparison.vue'
 import { useProductComparison } from '@/composables/useProductComparison'
-import { useWishlist } from '@/composables/useWishlist'
 
 export default {
   name: 'Home',
@@ -345,13 +343,6 @@ export default {
       isInCompareList 
     } = useProductComparison()
     
-    // Wishlist functionality
-    const { 
-      wishlist, 
-      toggleWishlist, 
-      isInWishlist: isInWishlistProduct 
-    } = useWishlist()
-    
     const searchTerm = ref('')
     const categoryFilter = ref('')
     const priceFilter = ref('')
@@ -360,8 +351,6 @@ export default {
     const isLoading = ref(true)
     const notification = ref('')
     const showNotification = ref(false)
-
-    // Vue notification system
     const showNotificationMessage = (message) => {
       notification.value = message
       showNotification.value = true
@@ -486,15 +475,6 @@ export default {
       }
     }
 
-    // Handle product like click - add to wishlist and select all products
-    const handleProductLike = (product) => {
-      // Add product to wishlist
-      toggleWishlist(product)
-      
-      // Then select all products for comparison
-      addAllToCompare()
-    }
-
     return {
       searchTerm,
       categoryFilter,
@@ -507,17 +487,9 @@ export default {
       cart,
       cartTotal,
       filteredProducts,
-      isInWishlist: isInWishlistProduct,
       isInCompare: isInCompareList,
       compareList,
       filterProducts,
-      addToCart,
-      toggleWishlist,
-      addToCompare,
-      removeFromCompare,
-      clearCompareList,
-      addAllToCompare,
-      handleProductLike
     }
   }
 }
