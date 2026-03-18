@@ -5,8 +5,9 @@ export function useWishlist() {
   const wishlist = useStorage('wishlist', [])
 
   const addToWishlist = (product) => {
-    if (!isInWishlist(product.value || product)) {
-      wishlist.value.push(product.value || product)
+    const productToAdd = product.value || product
+    if (!isInWishlist(productToAdd)) {
+      wishlist.value.push(productToAdd)
       showNotification('Product added to wishlist', 'success')
     } else {
       showNotification('Product already in wishlist', 'warning')
@@ -14,7 +15,8 @@ export function useWishlist() {
   }
 
   const removeFromWishlist = (product) => {
-    const index = wishlist.value.findIndex(p => p.id === product.id)
+    const productToRemove = product.value || product
+    const index = wishlist.value.findIndex(p => p.id === productToRemove.id)
     if (index > -1) {
       wishlist.value.splice(index, 1)
       showNotification('Product removed from wishlist', 'info')
@@ -22,10 +24,11 @@ export function useWishlist() {
   }
 
   const toggleWishlist = (product) => {
-    if (isInWishlist(product.value || product)) {
-      removeFromWishlist(product.value || product)
+    const productToToggle = product.value || product
+    if (isInWishlist(productToToggle)) {
+      removeFromWishlist(productToToggle)
     } else {
-      addToWishlist(product.value || product)
+      addToWishlist(productToToggle)
     }
   }
 
@@ -51,7 +54,10 @@ export function useWishlist() {
 
   const showNotification = (message, type = 'info') => {
     // This would integrate with your notification system
-    console.log(`${type}: ${message}`)
+    // For now, just log to console to avoid errors
+    if (typeof console !== 'undefined') {
+      console.log(`${type}: ${message}`)
+    }
   }
 
   return {
