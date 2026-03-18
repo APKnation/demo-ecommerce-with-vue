@@ -301,7 +301,7 @@
               </button>
                             <button
                 @click="addToCompare(product)"
-                :class="isInCompare(product) ? 'bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white' : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white hover:scale-110'"
+                :class="isInCompare(product) ? 'bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white' : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white hover:scale-110'"
                 class="btn text-sm px-3 transition-all duration-300 hover:shadow-lg"
               >
                 <span class="flex items-center justify-center">
