@@ -336,7 +336,10 @@ export default {
     }
 
     const totalSpent = computed(() => {
-      return orders.value.reduce((total, order) => total + (order?.total_amount || order?.total || 0), 0)
+      return orders.value.reduce((total, order) => {
+        const amount = order?.total_amount || order?.total || 0
+        return total + Number(amount)
+      }, 0)
     })
 
     const pendingOrders = computed(() => {
