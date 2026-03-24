@@ -15,6 +15,7 @@ import Login from './views/Login.vue'
 import Register from './views/Register.vue'
 import ProductRegister from './views/ProductRegister.vue'
 import Checkout from './views/Checkout.vue'
+import Profile from './views/Profile.vue'
 
 // Import Vue.js components (75% of architecture)
 import ProductCard from './components/ProductCard.vue'
@@ -135,6 +136,16 @@ const routes = [
     meta: {
       title: 'Checkout - KAFUKA Electronics Store',
       description: 'Complete your order',
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/profile',
+    component: Profile,
+    name: 'profile',
+    meta: {
+      title: 'Profile - KAFUKA Electronics Store',
+      description: 'Manage your profile',
       requiresAuth: true
     }
   }

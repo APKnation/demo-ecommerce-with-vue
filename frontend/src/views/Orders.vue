@@ -211,7 +211,7 @@
                 class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center"
               >
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 01-2.828 0H5a2 2 0 00-2 828 0l5.694 11.656a1 1 0 00.707.707 1.707z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 01-2.828 0H5a2 2 0 00-2.828 0l5.694 11.656a1 1 0 00.707.707 1.707z"></path>
                 </svg>
                 Cancel Order
               </button>
