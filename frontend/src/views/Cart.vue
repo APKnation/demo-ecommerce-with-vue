@@ -378,10 +378,6 @@ export default {
       }
     }
 
-    const saveCart = () => {
-      localStorage.setItem('cart', JSON.stringify(cart.value))
-    }
-
     return {
       cart: displayCart,
       totalPrice: displayTotalPrice,
