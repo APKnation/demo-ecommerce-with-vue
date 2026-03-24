@@ -355,7 +355,8 @@ export default {
         email: form.value.email,
         username: form.value.username,
         phone: form.value.phone,
-        password: form.value.password
+        password: form.value.password,
+        password_confirm: form.value.confirmPassword
       })
 
       if (result.success) {
