@@ -309,10 +309,14 @@
 
 <script>
 import { ref, computed, inject, onMounted } from 'vue'
+import { useAuth } from '../composables/useAuth'
+import { useAuthenticatedCart } from '../composables/useAuthenticatedCart'
 
 export default {
   name: 'Home',
   setup() {
+    const { isAuthenticated } = useAuth()
+    const { addToCart: addToAuthenticatedCart } = useAuthenticatedCart()
     const searchTerm = ref('')
     const categoryFilter = ref('')
     const priceFilter = ref('')
@@ -348,17 +352,17 @@ export default {
         if (savedProducts) {
           products.value = JSON.parse(savedProducts)
         } else {
-          // Default products
+          // Default products with IDs
           products.value = [
-            { name: 'Mac Book', price: 1000000, category: 'laptops', image: '/images/w.jpg' },
-            { name: 'HP-Brand', price: 150000, category: 'laptops', image: '/images/j.jpg' },
-            { name: 'Dell', price: 200000, category: 'laptops', image: '/images/k.jpg' },
-            { name: 'Apple', price: 1000000, category: 'phones', image: '/images/d.jpg' },
-            { name: 'HP-Elite', price: 1500000, category: 'laptops', image: '/images/a.jpg' },
-            { name: 'Sony', price: 200000, category: 'accessories', image: '/images/f.jpg' },
-            { name: 'Infinix', price: 400000, category: 'phones', image: '/images/g.jpg' },
-            { name: 'iPhone', price: 1500000, category: 'phones', image: '/images/p.jpg' },
-            { name: 'Samsung', price: 3000000, category: 'phones', image: '/images/l.jpg' }
+            { id: 1, name: 'Mac Book', price: 1000000, category: 'laptops', image: '/images/w.jpg' },
+            { id: 2, name: 'HP-Brand', price: 150000, category: 'laptops', image: '/images/j.jpg' },
+            { id: 3, name: 'Dell', price: 200000, category: 'laptops', image: '/images/k.jpg' },
+            { id: 4, name: 'Apple', price: 1000000, category: 'phones', image: '/images/d.jpg' },
+            { id: 5, name: 'HP-Elite', price: 1500000, category: 'laptops', image: '/images/a.jpg' },
+            { id: 6, name: 'Sony', price: 200000, category: 'accessories', image: '/images/f.jpg' },
+            { id: 7, name: 'Infinix', price: 400000, category: 'phones', image: '/images/g.jpg' },
+            { id: 8, name: 'iPhone', price: 1500000, category: 'phones', image: '/images/p.jpg' },
+            { id: 9, name: 'Samsung', price: 3000000, category: 'phones', image: '/images/l.jpg' }
           ]
         }
         showNotificationMessage('Welcome to Kafuka Electronics Store!', 'info', true)
@@ -376,7 +380,30 @@ export default {
 
     // Inject parent data and methods
     const cart = inject('cart', ref([]))
-    const addToCart = inject('addToCart')
+    const guestAddToCart = inject('addToCart')
+
+    // Unified addToCart function for both authenticated and guest users
+    const addToCart = async (productName, productPrice) => {
+      if (isAuthenticated.value) {
+        try {
+          // For authenticated users, find the product and add to backend cart
+          const product = products.value.find(p => p.name === productName)
+          if (product && product.id) {
+            await addToAuthenticatedCart(product.id, 1)
+            showNotificationMessage(`${productName} added to cart!`, 'success')
+          } else {
+            showNotificationMessage('Product not found or missing ID', 'error')
+          }
+        } catch (error) {
+          showNotificationMessage('Failed to add to cart', 'error')
+        }
+      } else {
+        // For guest users, use the existing localStorage cart
+        if (guestAddToCart) {
+          guestAddToCart({ name: productName, price: productPrice })
+        }
+      }
+    }
 
     // Cart total computed property
     const cartTotal = computed(() => {
@@ -466,6 +493,7 @@ export default {
       showNotification,
       cart,
       cartTotal,
+      addToCart,
       filteredProducts,
       filterProducts,
       likeProduct
