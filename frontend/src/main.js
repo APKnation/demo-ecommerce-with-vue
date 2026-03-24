@@ -54,7 +54,9 @@ const routes = [
     name: 'admin',
     meta: {
       title: 'Admin Panel - KAFUKA Electronics Store',
-      description: 'Manage products and orders'
+      description: 'Manage products and orders',
+      requiresAuth: true,
+      requiresAdmin: true
     }
   },
   { 
@@ -63,7 +65,8 @@ const routes = [
     name: 'orders',
     meta: {
       title: 'My Orders - KAFUKA Electronics Store',
-      description: 'View your order history'
+      description: 'View your order history',
+      requiresAuth: true
     }
   },
   { 
@@ -131,8 +134,8 @@ const router = createRouter({
   }
 })
 
-// Vue.js navigation guards
-router.beforeEach((to, from, next) => {
+// Vue.js navigation guards with authentication
+router.beforeEach(async (to, from, next) => {
   // Update page title
   if (to.meta.title) {
     document.title = to.meta.title
@@ -149,6 +152,39 @@ router.beforeEach((to, from, next) => {
       meta.content = to.meta.description
       document.head.appendChild(meta)
     }
+  }
+  
+  // Authentication checks
+  const auth = useAuth()
+  
+  // Wait for auth to initialize
+  if (auth.isLoading.value) {
+    // You could show a loading spinner here
+    setTimeout(() => {
+      router.beforeEach(to, from, next)
+    }, 100)
+    return
+  }
+  
+  // Check if route requires authentication
+  if (to.meta.requiresAuth && !auth.isAuthenticated.value) {
+    next({
+      path: '/login',
+      query: { redirect: to.fullPath }
+    })
+    return
+  }
+  
+  // Check if route requires admin
+  if (to.meta.requiresAdmin && (!auth.user.value || !auth.user.value.is_staff)) {
+    next('/') // Redirect to home if not admin
+    return
+  }
+  
+  // Check if route is for guests only (login, register)
+  if (to.meta.requiresGuest && auth.isAuthenticated.value) {
+    next('/') // Redirect to home if already authenticated
+    return
   }
   
   next()

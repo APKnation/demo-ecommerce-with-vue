@@ -32,9 +32,14 @@
               <router-link to="/" class="block py-2 px-3 text-white bg-primary-600 rounded md:bg-transparent md:text-primary-600 md:p-0" aria-current="page">Home</router-link>
             </li>
             
-            <!-- Admin Link -->
-            <li>
+            <!-- Admin Link (only for admin users) -->
+            <li v-if="isAuthenticated && user && user.is_staff">
               <router-link to="/admin" class="block py-2 px-3 text-white rounded hover:bg-indigo-700 md:hover:bg-transparent md:border-0 md:hover:text-primary-600 md:p-0">Admin</router-link>
+            </li>
+            
+            <!-- Orders Link (only for authenticated users) -->
+            <li v-if="isAuthenticated">
+              <router-link to="/orders" class="block py-2 px-3 text-white rounded hover:bg-indigo-700 md:hover:bg-transparent md:border-0 md:hover:text-primary-600 md:p-0">Orders</router-link>
             </li>
             
             <!-- Cart Link -->
@@ -47,11 +52,6 @@
               </router-link>
             </li>
             
-            <!-- Orders Link -->
-            <li>
-              <router-link to="/orders" class="block py-2 px-3 text-white rounded hover:bg-indigo-700 md:hover:bg-transparent md:border-0 md:hover:text-primary-600 md:p-0">Orders</router-link>
-            </li>
-            
             <!-- Wishlist Link -->
             <li class="relative">
               <button @click="showWishlist" class="block py-2 px-3 text-white rounded hover:bg-indigo-700 md:hover:bg-transparent md:border-0 md:hover:text-primary-600 md:p-0">
@@ -60,6 +60,35 @@
                   {{ wishlist.length }}
                 </span>
               </button>
+            </li>
+
+            <!-- Authentication Section -->
+            <li v-if="!isAuthenticated" class="flex items-center space-x-2">
+              <router-link to="/login" class="block py-2 px-3 text-white rounded hover:bg-indigo-700 md:hover:bg-transparent md:border-0 md:hover:text-primary-600 md:p-0">Login</router-link>
+              <router-link to="/register" class="block py-2 px-3 bg-orange-500 text-white rounded hover:bg-orange-600 md:hover:bg-transparent md:border-0 md:hover:text-orange-600 md:p-0">Register</router-link>
+            </li>
+
+            <!-- User Profile Section -->
+            <li v-if="isAuthenticated" class="relative">
+              <button @click="toggleProfileMenu" class="flex items-center space-x-2 py-2 px-3 text-white rounded hover:bg-indigo-700 md:hover:bg-transparent md:border-0 md:hover:text-primary-600 md:p-0">
+                <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                  <span class="text-white font-semibold">{{ user?.first_name?.[0] || user?.username?.[0] || 'U' }}</span>
+                </div>
+                <span>{{ user?.first_name || user?.username || 'User' }}</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              
+              <!-- Profile Dropdown -->
+              <div v-if="profileMenuOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                <div class="px-4 py-2 border-b border-gray-200">
+                  <p class="text-sm font-medium text-gray-900">{{ user?.first_name }} {{ user?.last_name }}</p>
+                  <p class="text-xs text-gray-500">{{ user?.email }}</p>
+                </div>
+                <router-link to="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</router-link>
+                <button @click="handleLogout" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Logout</button>
+              </div>
             </li>
           </ul>
         </div>
@@ -73,24 +102,63 @@
               Home
             </router-link>
           </li>
-          <li>
+          
+          <!-- Admin Link (only for admin users) -->
+          <li v-if="isAuthenticated && user && user.is_staff">
             <router-link to="/admin" @click="toggleMobileMenu" class="block py-2 px-3 text-white rounded hover:bg-indigo-700">
               Admin
             </router-link>
           </li>
+          
+          <!-- Orders Link (only for authenticated users) -->
+          <li v-if="isAuthenticated">
+            <router-link to="/orders" @click="toggleMobileMenu" class="block py-2 px-3 text-white rounded hover:bg-indigo-700">
+              Orders
+            </router-link>
+          </li>
+          
           <li>
             <router-link to="/cart" @click="toggleMobileMenu" class="block py-2 px-3 text-white rounded hover:bg-indigo-700">
               Cart ({{ cartCount }})
             </router-link>
           </li>
-          <li>
-            <router-link to="/orders" @click="toggleMobileMenu" class="block py-2 px-3 text-white rounded hover:bg-indigo-700">
-              Orders
-            </router-link>
-          </li>
+          
           <li>
             <button @click="showWishlist" class="block py-2 px-3 text-white rounded hover:bg-indigo-700">
               Wishlist ({{ wishlist.length }})
+            </button>
+          </li>
+
+          <!-- Authentication Section for Mobile -->
+          <li v-if="!isAuthenticated" class="border-t border-indigo-700 pt-2">
+            <router-link to="/login" @click="toggleMobileMenu" class="block py-2 px-3 text-white rounded hover:bg-indigo-700">
+              Login
+            </router-link>
+          </li>
+          <li v-if="!isAuthenticated">
+            <router-link to="/register" @click="toggleMobileMenu" class="block py-2 px-3 bg-orange-500 text-white rounded hover:bg-orange-600">
+              Register
+            </router-link>
+          </li>
+
+          <!-- User Profile Section for Mobile -->
+          <li v-if="isAuthenticated" class="border-t border-indigo-700 pt-2">
+            <div class="py-2 px-3 text-white">
+              <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                  <span class="text-white font-semibold">{{ user?.first_name?.[0] || user?.username?.[0] || 'U' }}</span>
+                </div>
+                <div>
+                  <p class="font-medium">{{ user?.first_name || user?.username || 'User' }}</p>
+                  <p class="text-xs text-gray-300">{{ user?.email }}</p>
+                </div>
+              </div>
+            </div>
+            <router-link to="/profile" @click="toggleMobileMenu" class="block py-2 px-3 text-white rounded hover:bg-indigo-700">
+              Profile
+            </router-link>
+            <button @click="handleLogout" class="block w-full text-left py-2 px-3 text-red-400 rounded hover:bg-indigo-700">
+              Logout
             </button>
           </li>
         </ul>
@@ -186,11 +254,13 @@
 import { ref, computed, inject, onMounted, provide } from 'vue'
 import { useRouter } from 'vue-router'
 import Swal from 'sweetalert2'
+import { useAuth } from './composables/useAuth'
 
 export default {
   name: 'App',
   setup() {
     const router = useRouter()
+    const { user, isAuthenticated, logout } = useAuth()
     const cart = ref([])
     const wishlist = ref([])
     const compareList = ref([])
@@ -357,6 +427,20 @@ export default {
       profileMenuOpen.value = !profileMenuOpen.value
     }
 
+    // Logout handler
+    const handleLogout = async () => {
+      profileMenuOpen.value = false
+      mobileMenuOpen.value = false
+      
+      try {
+        await logout()
+        showNotificationMessage('Logged out successfully')
+      } catch (error) {
+        console.error('Logout error:', error)
+        showNotificationMessage('Error during logout', 'error')
+      }
+    }
+
     onMounted(() => {
       loadData()
     })
@@ -379,6 +463,8 @@ export default {
       compareModalOpen,
       notification,
       profileMenuOpen,
+      user,
+      isAuthenticated,
       saveData,
       addToCart,
       removeFromCart,
@@ -390,7 +476,8 @@ export default {
       removeFromCompare,
       closeCompareModal,
       toggleMobileMenu,
-      toggleProfileMenu
+      toggleProfileMenu,
+      handleLogout
     }
   }
 }
