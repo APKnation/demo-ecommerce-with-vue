@@ -32,8 +32,8 @@
               <router-link to="/" class="block py-2 px-3 text-white bg-primary-600 rounded md:bg-transparent md:text-primary-600 md:p-0" aria-current="page">Home</router-link>
             </li>
             
-            <!-- Admin Link -->
-            <li>
+            <!-- Admin Link - Only for admin users -->
+            <li v-if="isAuthenticated && user && user.is_staff">
               <router-link to="/admin" class="block py-2 px-3 text-white rounded hover:bg-indigo-700 md:hover:bg-transparent md:border-0 md:hover:text-primary-600 md:p-0">Admin</router-link>
             </li>
             
