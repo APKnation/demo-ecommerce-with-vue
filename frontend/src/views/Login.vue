@@ -20,27 +20,25 @@
       <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
         <form @submit.prevent="handleLogin" class="space-y-6">
           <!-- Phone Number Field -->
-          <div class="bg-orange-50 p-4 rounded-lg border-2 border-orange-200">
+          <div>
             <label for="phone" class="block text-sm font-semibold text-gray-800 mb-2">
-              📞 Phone Number
+              Phone Number
             </label>
-            <div class="relative">
-              <input
-                id="phone"
-                v-model="form.phone"
-                type="tel"
-                required
-                :disabled="isLoading"
-                class="w-full px-3 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed bg-white"
-                pattern="[+]?[0-9]{10,15}"
-                title="Enter phone number with country code (e.g., +255123456789)"
-              >
-            </div>
-            <p class="text-xs text-gray-600 mt-1">Format: +255 123 456 789</p>
+            <input
+              id="phone"
+              v-model="form.phone"
+              type="tel"
+              required
+              :disabled="isLoading"
+              class="w-full px-3 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed bg-white"
+              pattern="[+]?[0-9]{10,15}"
+              placeholder="📞 +255 123 456 789"
+              title="Enter phone number with country code (e.g., +255123456789)"
+            >
           </div>
 
           <!-- Password Field -->
-          <div class="bg-blue-50 p-4 rounded-lg border-2 border-blue-200">
+          <div>
             <label for="password" class="block text-sm font-semibold text-gray-800 mb-2">
               Password
             </label>
