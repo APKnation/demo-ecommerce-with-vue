@@ -16,6 +16,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Custom authentication backends
+AUTHENTICATION_BACKENDS = [
+    'accounts.authentication.PhoneBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -25,6 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
     'accounts',
     'products',
@@ -115,6 +122,7 @@ CORS_ALLOW_CREDENTIALS = True
 # REST Framework settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ],
