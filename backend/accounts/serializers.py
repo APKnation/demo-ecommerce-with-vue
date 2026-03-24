@@ -5,6 +5,7 @@ from .models import User
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=8)
     password_confirm = serializers.CharField(write_only=True)
+    phone = serializers.CharField(required=True)  # Make phone required
     
     class Meta:
         model = User
