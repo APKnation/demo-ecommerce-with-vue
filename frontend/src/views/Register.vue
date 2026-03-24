@@ -32,7 +32,6 @@
                 required
                 :disabled="isLoading"
                 class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                placeholder="John"
               >
             </div>
             <div>
@@ -46,7 +45,6 @@
                 required
                 :disabled="isLoading"
                 class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                placeholder="Doe"
               >
             </div>
           </div>
@@ -69,7 +67,6 @@
                 required
                 :disabled="isLoading"
                 class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                placeholder="john@example.com"
               >
             </div>
           </div>
@@ -92,19 +89,18 @@
                 required
                 :disabled="isLoading"
                 class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                placeholder="johndoe"
               >
             </div>
           </div>
 
           <!-- Phone Field -->
-          <div>
-            <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
-              Phone Number (Optional)
+          <div class="bg-orange-50 p-4 rounded-lg border-2 border-orange-200">
+            <label for="phone" class="block text-sm font-semibold text-gray-800 mb-2">
+              📱 Phone Number
             </label>
             <div class="relative">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="h-5 w-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                 </svg>
               </div>
@@ -113,20 +109,22 @@
                 v-model="form.phone"
                 type="tel"
                 :disabled="isLoading"
-                class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                placeholder="+255 123 456 789"
+                class="w-full pl-10 pr-3 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed bg-white"
+                pattern="[+]?[0-9]{10,15}"
+                title="Enter phone number with country code (e.g., +255123456789)"
               >
             </div>
+            <p class="text-xs text-gray-600 mt-1">Format: +255 123 456 789</p>
           </div>
 
           <!-- Password Field -->
-          <div>
-            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
-              Password
+          <div class="bg-blue-50 p-4 rounded-lg border-2 border-blue-200">
+            <label for="password" class="block text-sm font-semibold text-gray-800 mb-2">
+              🔐 Password
             </label>
             <div class="relative">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="h-5 w-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                 </svg>
               </div>
@@ -136,8 +134,9 @@
                 :type="showPassword ? 'text' : 'password'"
                 required
                 :disabled="isLoading"
-                class="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                placeholder="Create a strong password"
+                class="w-full pl-10 pr-10 py-3 border-2 border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed bg-white"
+                minlength="8"
+                title="Password must be at least 8 characters long"
               >
               <button
                 type="button"
@@ -170,13 +169,13 @@
           </div>
 
           <!-- Confirm Password Field -->
-          <div>
-            <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">
-              Confirm Password
+          <div class="bg-blue-50 p-4 rounded-lg border-2 border-blue-200">
+            <label for="confirmPassword" class="block text-sm font-semibold text-gray-800 mb-2">
+              ✅ Confirm Password
             </label>
             <div class="relative">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="h-5 w-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
               </div>
@@ -186,8 +185,9 @@
                 :type="showConfirmPassword ? 'text' : 'password'"
                 required
                 :disabled="isLoading"
-                class="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                placeholder="Confirm your password"
+                class="w-full pl-10 pr-10 py-3 border-2 border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed bg-white"
+                minlength="8"
+                title="Please confirm your password"
               >
               <button
                 type="button"

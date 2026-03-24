@@ -76,18 +76,41 @@ export function useAuth() {
     error.value = null
     
     try {
+      // Prepare login data - support both phone and email/username
+      const loginData = {}
+      
+      if (credentials.phone) {
+        // Login with phone number
+        loginData.phone = credentials.phone
+      } else if (credentials.username) {
+        // Login with username
+        loginData.username = credentials.username
+      } else if (credentials.email) {
+        // Login with email
+        loginData.email = credentials.email
+      }
+      
+      loginData.password = credentials.password
+
       const response = await fetch(`${API_BASE_URL}/accounts/login/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(credentials)
+        body: JSON.stringify(loginData)
       })
 
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.non_field_errors?.[0] || data.message || 'Login failed')
+        const errorMessage = data.non_field_errors?.[0] || 
+                           data.phone?.[0] || 
+                           data.username?.[0] || 
+                           data.email?.[0] || 
+                           data.password?.[0] || 
+                           data.message || 
+                           'Login failed'
+        throw new Error(errorMessage)
       }
 
       setAuth(data.token, data.user)

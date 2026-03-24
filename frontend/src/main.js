@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
 import './style.css'
+import { useAuth } from './composables/useAuth'
 
 // Import components
 import Home from './views/Home.vue'
@@ -150,17 +151,8 @@ router.beforeEach(async (to, from, next) => {
     }
   }
   
-  // Authentication checks
+  // Authentication checks - simplified to avoid infinite loops
   const auth = useAuth()
-  
-  // Wait for auth to initialize
-  if (auth.isLoading.value) {
-    // You could show a loading spinner here
-    setTimeout(() => {
-      router.beforeEach(to, from, next)
-    }, 100)
-    return
-  }
   
   // Check if route requires authentication
   if (to.meta.requiresAuth && !auth.isAuthenticated.value) {
