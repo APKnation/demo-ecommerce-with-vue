@@ -37,6 +37,25 @@
         </div>
       </div>
       
+      <!-- Error State -->
+      <div v-else-if="error" class="text-center py-16">
+        <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md mx-auto">
+          <div class="w-16 h-16 mx-auto bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center mb-6">
+            <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <h2 class="text-2xl font-bold text-gray-800 mb-4">Error Loading Orders</h2>
+          <p class="text-gray-600 mb-6">{{ error }}</p>
+          <button @click="loadOrders" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+            Try Again
+          </button>
+        </div>
+      </div>
+      
       <!-- Empty State -->
       <div v-else-if="orders.length === 0" class="text-center py-16">
         <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md mx-auto">
@@ -147,21 +166,21 @@
           >
             <!-- Order Header -->
             <div class="p-6 bg-gradient-to-r from-gray-50 to-blue-50 border-b border-gray-200">
-              <div class="flex justify-between items-center">
+              <div class="flex justify-between items-start">
                 <div>
-                  <h3 class="text-xl font-bold text-gray-800">Order {{ order.id }}</h3>
-                  <p class="text-sm text-gray-600 flex items-center">
-                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m4 0h4M0 4v14a2 2 0 002 2h4a2 2 0 002-2V7a2 2 0 00-2-2H8z"></path>
-                    </svg>
-                    {{ formatDate(order.date) }}
+                  <h3 class="text-xl font-bold text-gray-900 mb-2">
+                    Order #{{ order?.order_number || order?.id || 'Unknown' }}
+                  </h3>
+                  <p class="text-sm text-gray-600 mb-1">
+                    Placed on {{ formatDate(order?.created_at || order?.date) }}
+                  </p>
+                  <p class="text-sm text-gray-600">
+                    Status: <span :class="getStatusClass(order?.status)">{{ order?.status || 'Unknown' }}</span>
                   </p>
                 </div>
                 <div class="text-right">
-                  <p class="text-2xl font-bold text-blue-600">Tsh {{ (order?.total || 0).toLocaleString() }}</p>
-                  <span :class="getStatusClass(order?.status || 'Unknown')" class="inline-block text-sm px-4 py-2 rounded-full font-semibold">
-                    {{ order?.status || 'Unknown' }}
-                  </span>
+                  <p class="text-2xl font-bold text-blue-600">Tsh {{ Number(order?.total_amount || order?.total || 0).toLocaleString() }}</p>
+                  <p class="text-sm text-gray-500">{{ order?.items?.length || 0 }} items</p>
                 </div>
               </div>
             </div>
@@ -187,17 +206,17 @@
                 >
                   <div class="flex items-center space-x-3">
                     <img
-                      :src="item.image"
-                      :alt="item.name"
+                      :src="item?.product?.image || item?.image || '/images/placeholder.jpg'"
+                      :alt="item?.product?.title || item?.name || 'Unknown item'"
                       class="w-16 h-16 object-cover rounded-lg shadow-md"
                     >
                     <div>
-                      <span class="font-medium text-gray-800">{{ item?.name || 'Unknown item' }}</span>
+                      <span class="font-medium text-gray-800">{{ item?.product?.title || item?.name || 'Unknown item' }}</span>
                       <span class="text-gray-600 ml-2">x{{ item?.quantity || 0 }}</span>
                     </div>
                   </div>
                   <div class="text-right">
-                    <p class="font-semibold text-gray-700">Tsh {{ ((item?.price || 0) * (item?.quantity || 0)).toLocaleString() }}</p>
+                    <span class="font-semibold text-gray-700">Tsh {{ Number(item?.price || item?.product?.price || 0).toLocaleString() }}</span>
                   </div>
                 </div>
               </div>
@@ -235,16 +254,19 @@
 <script>
 import { ref, computed, inject, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuth } from '../composables/useAuth'
 import Swal from 'sweetalert2'
 
 export default {
   name: 'Orders',
   setup() {
     const router = useRouter()
+    const { isAuthenticated } = useAuth()
     const orders = ref([])
     const cart = inject('cart', ref([]))
     const isLoading = ref(true)
     const expandedOrders = ref([])
+    const error = ref('')
 
     // SweetAlert notification system
     const showNotificationMessage = (message, type = 'success') => {
@@ -263,26 +285,58 @@ export default {
       })
     }
 
-    // Load orders from localStorage
+    // Load orders from backend or localStorage
     const loadOrders = async () => {
       isLoading.value = true
+      error.value = ''
       try {
-        const savedOrders = localStorage.getItem('orders')
-        if (savedOrders) {
-          orders.value = JSON.parse(savedOrders)
+        if (isAuthenticated.value) {
+          // Fetch orders from backend for authenticated users
+          const token = localStorage.getItem('token')
+          const response = await fetch('http://localhost:8000/api/orders/', {
+            headers: {
+              'Authorization': `Token ${token}`,
+              'Content-Type': 'application/json',
+            }
+          })
+          
+          if (response.ok) {
+            const data = await response.json()
+            orders.value = data
+          } else {
+            throw new Error('Failed to fetch orders from backend')
+          }
+        } else {
+          // Load orders from localStorage for guest users
+          const savedOrders = localStorage.getItem('orders')
+          if (savedOrders) {
+            orders.value = JSON.parse(savedOrders)
+          } else {
+            orders.value = []
+          }
+        }
+      } catch (err) {
+        console.error('Error loading orders:', err)
+        error.value = err.message
+        
+        // Fallback to localStorage for authenticated users if backend fails
+        if (isAuthenticated.value) {
+          const savedOrders = localStorage.getItem('orders')
+          if (savedOrders) {
+            orders.value = JSON.parse(savedOrders)
+          } else {
+            orders.value = []
+          }
         } else {
           orders.value = []
         }
-      } catch (error) {
-        console.error('Error loading orders:', error)
-        orders.value = []
       } finally {
         isLoading.value = false
       }
     }
 
     const totalSpent = computed(() => {
-      return orders.value.reduce((total, order) => total + (order?.total || 0), 0)
+      return orders.value.reduce((total, order) => total + (order?.total_amount || order?.total || 0), 0)
     })
 
     const pendingOrders = computed(() => {
@@ -290,7 +344,11 @@ export default {
     })
 
     const sortedOrders = computed(() => {
-      return [...orders.value].sort((a, b) => new Date(b?.date || 0) - new Date(a?.date || 0))
+      return [...orders.value].sort((a, b) => {
+        const dateA = new Date(a?.created_at || a?.date || 0)
+        const dateB = new Date(b?.created_at || b?.date || 0)
+        return dateB - dateA
+      })
     })
 
     const formatDate = (dateString) => {
@@ -374,6 +432,7 @@ export default {
     return {
       orders,
       isLoading,
+      error,
       expandedOrders,
       totalSpent,
       pendingOrders,
