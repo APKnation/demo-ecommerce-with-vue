@@ -1,0 +1,40 @@
+from django.contrib.auth.backends import ModelBackend
+from django.contrib.auth import get_user_model
+from django.db.models import Q
+
+User = get_user_model()
+
+class PhoneBackend(ModelBackend):
+    """
+    Custom authentication backend that allows users to login with phone number.
+    """
+    
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        """
+        Authenticate user with phone number, username, or email.
+        """
+        if username is None or password is None:
+            return None
+        
+        try:
+            # Try to find user by phone number, username, or email
+            user = User.objects.get(
+                Q(phone=username) | Q(username=username) | Q(email=username)
+            )
+        except User.DoesNotExist:
+            return None
+        
+        # Check if the password is correct
+        if user.check_password(password) and self.user_can_authenticate(user):
+            return user
+        
+        return None
+    
+    def get_user(self, user_id):
+        """
+        Get user by user ID.
+        """
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return None
