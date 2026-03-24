@@ -12,6 +12,7 @@
         <div class="text-sm text-primary-100">Total Products</div>
       </div>
     </div>
+    </div>
 
     <!-- Navigation Tabs -->
     <div class="mt-8 flex space-x-1 bg-white/10 rounded-lg p-1">
