@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
 import './style.css'
+import { useAuth } from './composables/useAuth'
 
 // Import components
 import Home from './views/Home.vue'
@@ -10,6 +11,8 @@ import Admin from './views/Admin.vue'
 import Orders from './views/Orders.vue'
 import Order from './views/Order.vue'
 import ProductDetail from './views/ProductDetail.vue'
+import Login from './views/Login.vue'
+import Register from './views/Register.vue'
 
 // Import Vue.js components (75% of architecture)
 import ProductCard from './components/ProductCard.vue'
@@ -91,6 +94,26 @@ const routes = [
     meta: {
       title: 'Category - KAFUKA Electronics Store',
       description: 'Browse products by category'
+    }
+  },
+  {
+    path: '/login',
+    component: Login,
+    name: 'login',
+    meta: {
+      title: 'Login - KAFUKA Electronics Store',
+      description: 'Sign in to your account',
+      requiresGuest: true
+    }
+  },
+  {
+    path: '/register',
+    component: Register,
+    name: 'register',
+    meta: {
+      title: 'Register - KAFUKA Electronics Store',
+      description: 'Create a new account',
+      requiresGuest: true
     }
   }
 ]
