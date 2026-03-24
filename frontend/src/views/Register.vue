@@ -105,11 +105,11 @@
                 type="tel"
                 :disabled="isLoading"
                 class="w-full px-3 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed bg-white"
-                pattern="[+]?[0-9]{10,15]"
+                pattern="[+]?[0-9]{10,15}"
+                placeholder="+255 123 456 789"
                 title="Enter phone number with country code (e.g., +255123456789)"
               >
             </div>
-            <p class="text-xs text-gray-600 mt-1">Format: +255 123 456 789</p>
           </div>
 
           <!-- Password Field -->
@@ -141,20 +141,6 @@
                   </g>
                 </svg>
               </button>
-            </div>
-            <!-- Password Strength Indicator -->
-            <div class="mt-2">
-              <div class="flex items-center justify-between text-xs">
-                <span class="text-gray-500">Password strength:</span>
-                <span :class="passwordStrengthColor">{{ passwordStrengthText }}</span>
-              </div>
-              <div class="mt-1 w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  :class="passwordStrengthColor" 
-                  class="h-2 rounded-full transition-all duration-300"
-                  :style="{ width: passwordStrengthPercentage + '%' }"
-                ></div>
-              </div>
             </div>
           </div>
 
@@ -315,39 +301,24 @@ export default {
     const showConfirmPassword = ref(false)
     const successMessage = ref('')
 
-    // Password strength calculation
-    const passwordStrength = computed(() => {
-      const password = form.value.password
-      if (!password) return 0
+    const handleRegister = async () => {
+      successMessage.value = ''
       
-      let strength = 0
-      if (password.length >= 8) strength += 25
-      if (password.length >= 12) strength += 25
-      if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength += 25
-      if (/[0-9]/.test(password)) strength += 12.5
-      if (/[^a-zA-Z0-9]/.test(password)) strength += 12.5
-      
-      return Math.min(strength, 100)
-    })
-
-    const passwordStrengthPercentage = computed(() => passwordStrength.value)
-    
-    const passwordStrengthText = computed(() => {
-      const strength = passwordStrength.value
-      if (strength === 0) return 'Very Weak'
-      if (strength <= 25) return 'Weak'
-      if (strength <= 50) return 'Fair'
-      if (strength <= 75) return 'Good'
-      return 'Strong'
-    })
-
-    const passwordStrengthColor = computed(() => {
-      const strength = passwordStrength.value
-      if (strength <= 25) return 'bg-red-500 text-red-700'
-      if (strength <= 50) return 'bg-yellow-500 text-yellow-700'
-      if (strength <= 75) return 'bg-blue-500 text-blue-700'
-      return 'bg-green-500 text-green-700'
-    })
+      try {
+        const result = await register(form.value)
+        
+        if (result.success) {
+          successMessage.value = 'Registration successful! Redirecting to login...'
+          
+          // Redirect after a short delay to show success message
+          setTimeout(() => {
+            router.push('/login')
+          }, 2000)
+        }
+      } catch (err) {
+        console.error('Registration error:', err)
+      }
+    }
 
     const passwordsMatch = computed(() => {
       return form.value.password === form.value.confirmPassword
@@ -362,8 +333,7 @@ export default {
         form.value.password &&
         form.value.confirmPassword &&
         passwordsMatch.value &&
-        form.value.agreeTerms &&
-        passwordStrength.value >= 50
+        form.value.agreeTerms
       )
     })
 
@@ -398,9 +368,6 @@ export default {
       isLoading,
       error,
       successMessage,
-      passwordStrengthPercentage,
-      passwordStrengthText,
-      passwordStrengthColor,
       passwordsMatch,
       isFormValid,
       handleRegister
