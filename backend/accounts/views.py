@@ -55,6 +55,13 @@ def profile(request):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+@permission_classes([permissions.IsAdminUser])
+def users_list(request):
+    users = User.objects.all()
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data)
+
 @api_view(['GET', 'DELETE'])
 @permission_classes([permissions.IsAdminUser])
 def admin_user_detail(request, pk):
