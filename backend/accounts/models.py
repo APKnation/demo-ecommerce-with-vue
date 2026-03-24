@@ -18,8 +18,8 @@ class User(AbstractUser):
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='customer')
     phone = models.CharField(
         max_length=20, 
-        blank=False, 
-        null=False,
+        blank=True, 
+        null=True,
         validators=[phone_validator],
         unique=True,  # Make phone numbers unique
         help_text="Enter phone number with country code (e.g., +255123456789)"
