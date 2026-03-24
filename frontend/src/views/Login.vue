@@ -53,8 +53,7 @@
                 required
                 :disabled="isLoading"
                 class="w-full px-3 pr-10 py-3 border-2 border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed bg-white"
-                minlength="8"
-                title="Password must be at least 8 characters long"
+                placeholder="Enter your password"
               >
               <button
                 type="button"
