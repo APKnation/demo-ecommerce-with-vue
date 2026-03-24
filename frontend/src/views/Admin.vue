@@ -13,6 +13,44 @@
       </div>
     </div>
 
+    <!-- Navigation Tabs -->
+    <div class="mt-8 flex space-x-1 bg-white/10 rounded-lg p-1">
+      <button 
+        v-for="tab in tabs" 
+        :key="tab.id"
+        @click="activeTab = tab.id"
+        :class="[
+          'px-6 py-2 rounded-md font-medium transition-all',
+          activeTab === tab.id 
+            ? 'bg-white text-blue-600 shadow-md' 
+            : 'text-white hover:bg-white/20'
+        ]"
+      >
+        {{ tab.name }}
+        <span v-if="tab.badge" class="ml-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+          {{ tab.badge }}
+        </span>
+      </button>
+    </div>
+
+    <!-- Dashboard Stats Section -->
+    <div v-if="activeTab === 'dashboard'" class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div v-for="stat in dashboardStats" :key="stat.label" 
+           class="bg-white rounded-xl shadow-lg p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-600">{{ stat.label }}</p>
+            <p class="text-2xl font-bold text-gray-900 mt-1">{{ stat.value }}</p>
+          </div>
+          <div :class="`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center`">
+            <svg class="w-6 h-6" :class="stat.iconColor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="stat.icon"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- View Product Modal -->
     <div v-if="viewingProduct" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
@@ -139,9 +177,82 @@
         </form>
       </div>
     </div>
-  </div>
     
-    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+    <!-- Orders Management Section -->
+    <div v-if="activeTab === 'orders'" class="mt-8">
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <h2 class="text-2xl font-bold mb-4">Order Management</h2>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order #</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr v-for="order in allOrders" :key="order.id">
+                <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ order.order_number || order.id }}</td>
+                <td class="px-6 py-4 text-sm text-gray-500">{{ order.customer?.username }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">Tsh {{ Number(order.total_amount || order.total).toLocaleString() }}</td>
+                <td class="px-6 py-4">
+                  <span :class="getStatusClass(order.status)">{{ order.status }}</span>
+                </td>
+                <td class="px-6 py-4 text-sm">
+                  <button v-if="order.status === 'Pending'" @click="confirmOrder(order.id)" class="bg-green-500 text-white px-3 py-1 rounded text-xs mr-2">Confirm</button>
+                  <button v-if="order.status === 'Pending'" @click="cancelOrder(order.id)" class="bg-red-500 text-white px-3 py-1 rounded text-xs">Cancel</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Users Management Section -->
+    <div v-if="activeTab === 'users'" class="mt-8">
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <h2 class="text-2xl font-bold mb-4">User Management</h2>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">User</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Role</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Phone</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Joined</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr v-for="user in allUsers" :key="user.id">
+                <td class="px-6 py-4">
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-sm font-medium">{{ user.username?.charAt(0).toUpperCase() }}</div>
+                    <div class="ml-3">
+                      <p class="text-sm font-medium text-gray-900">{{ user.username }}</p>
+                      <p class="text-sm text-gray-500">{{ user.first_name }} {{ user.last_name }}</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4"><span :class="getRoleClass(user.role)">{{ user.role }}</span></td>
+                <td class="px-6 py-4 text-sm text-gray-500">{{ user.phone }}</td>
+                <td class="px-6 py-4 text-sm text-gray-500">{{ formatDate(user.created_at) }}</td>
+                <td class="px-6 py-4 text-sm">
+                  <button v-if="user.id !== currentUser?.id" @click="deleteUser(user.id)" class="bg-red-500 text-white px-3 py-1 rounded text-xs">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Products Tab (existing content wrapped) -->
+    <div v-if="activeTab === 'products'" class="mt-8 grid grid-cols-1 xl:grid-cols-3 gap-8">
       <!-- Add Product Section -->
       <div class="xl:col-span-2">
         <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
@@ -388,6 +499,29 @@ export default {
   setup() {
     const products = ref([])
     const orders = ref([])
+    const allOrders = ref([])
+    const allUsers = ref([])
+    const stats = ref({})
+    const currentUser = ref(null)
+    const activeTab = ref('dashboard')
+    const API_BASE_URL = 'http://localhost:8000/api'
+    
+    const getToken = () => localStorage.getItem('token')
+    
+    const tabs = computed(() => [
+      { id: 'dashboard', name: 'Dashboard' },
+      { id: 'orders', name: 'Orders', badge: stats.value.pending_orders },
+      { id: 'users', name: 'Users' },
+      { id: 'products', name: 'Products' }
+    ])
+    
+    const dashboardStats = computed(() => [
+      { label: 'Total Users', value: stats.value.total_users || 0, bgColor: 'bg-blue-100', iconColor: 'text-blue-600', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z' },
+      { label: 'Total Orders', value: stats.value.total_orders || 0, bgColor: 'bg-green-100', iconColor: 'text-green-600', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2 2v10a2 2 0 002 2h6a2 2 0 002-2V9a2 2 0 00-2-2H9z' },
+      { label: 'Total Products', value: stats.value.total_products || 0, bgColor: 'bg-orange-100', iconColor: 'text-orange-600', icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4' },
+      { label: 'Total Revenue', value: `Tsh ${Number(stats.value.total_revenue || 0).toLocaleString()}`, bgColor: 'bg-purple-100', iconColor: 'text-purple-600', icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z' }
+    ])
+
     const newProduct = ref({
       name: '',
       price: 0,
@@ -582,8 +716,96 @@ export default {
       }
     }
 
+    // Admin Dashboard API Functions
+    const loadDashboardStats = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/accounts/admin/dashboard-stats/`, {
+          headers: { 'Authorization': `Token ${getToken()}` }
+        })
+        if (response.ok) stats.value = await response.json()
+      } catch (error) { console.error('Failed to load stats:', error) }
+    }
+
+    const loadAllOrders = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/orders/`, {
+          headers: { 'Authorization': `Token ${getToken()}` }
+        })
+        if (response.ok) allOrders.value = await response.json()
+      } catch (error) { console.error('Failed to load orders:', error) }
+    }
+
+    const loadAllUsers = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/accounts/users/`, {
+          headers: { 'Authorization': `Token ${getToken()}` }
+        })
+        if (response.ok) allUsers.value = await response.json()
+      } catch (error) { console.error('Failed to load users:', error) }
+    }
+
+    const confirmOrder = async (orderId) => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/accounts/admin/orders/${orderId}/`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Token ${getToken()}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'Confirmed' })
+        })
+        if (response.ok) {
+          showNotificationMessage('Order confirmed successfully!')
+          loadAllOrders()
+          loadDashboardStats()
+        }
+      } catch (error) { showNotificationMessage('Failed to confirm order', 'error') }
+    }
+
+    const cancelOrder = async (orderId) => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/accounts/admin/orders/${orderId}/`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Token ${getToken()}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'Cancelled' })
+        })
+        if (response.ok) {
+          showNotificationMessage('Order cancelled successfully!')
+          loadAllOrders()
+          loadDashboardStats()
+        }
+      } catch (error) { showNotificationMessage('Failed to cancel order', 'error') }
+    }
+
+    const deleteUser = async (userId) => {
+      if (!confirm('Are you sure you want to delete this user?')) return
+      try {
+        const response = await fetch(`${API_BASE_URL}/accounts/admin/users/${userId}/`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Token ${getToken()}` }
+        })
+        if (response.ok) {
+          showNotificationMessage('User deleted successfully!')
+          loadAllUsers()
+          loadDashboardStats()
+        }
+      } catch (error) { showNotificationMessage('Failed to delete user', 'error') }
+    }
+
+    const getStatusClass = (status) => {
+      const classes = { 'Pending': 'bg-yellow-100 text-yellow-800', 'Confirmed': 'bg-blue-100 text-blue-800', 'Completed': 'bg-green-100 text-green-800', 'Cancelled': 'bg-red-100 text-red-800' }
+      return classes[status] || 'bg-gray-100 text-gray-800'
+    }
+
+    const getRoleClass = (role) => {
+      const classes = { 'admin': 'bg-red-100 text-red-800', 'author': 'bg-blue-100 text-blue-800', 'customer': 'bg-green-100 text-green-800' }
+      return classes[role] || 'bg-gray-100 text-gray-800'
+    }
+
     onMounted(() => {
       loadData()
+      loadDashboardStats()
+      loadAllOrders()
+      loadAllUsers()
+      const userData = localStorage.getItem('user')
+      if (userData) currentUser.value = JSON.parse(userData)
     })
 
     return {
@@ -614,7 +836,23 @@ export default {
       formatDate,
       toggleFilterDropdown,
       setFilter,
-      toggleSelectAll
+      toggleSelectAll,
+      // Admin Dashboard
+      activeTab,
+      tabs,
+      dashboardStats,
+      allOrders,
+      allUsers,
+      stats,
+      currentUser,
+      loadDashboardStats,
+      loadAllOrders,
+      loadAllUsers,
+      confirmOrder,
+      cancelOrder,
+      deleteUser,
+      getStatusClass,
+      getRoleClass
     }
   }
 }
