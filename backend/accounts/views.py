@@ -42,6 +42,7 @@ def logout_view(request):
     return Response({'message': 'Logged out successfully'})
 
 @api_view(['GET', 'PUT'])
+@permission_classes([permissions.IsAuthenticated])
 def profile(request):
     if request.method == 'GET':
         serializer = UserSerializer(request.user)
