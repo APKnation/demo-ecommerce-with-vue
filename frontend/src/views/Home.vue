@@ -239,23 +239,23 @@
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-4 lg:gap-6">
         <div
           v-for="product in filteredProducts"
-          :key="product.name"
+          :key="product.id || product.name"
           class="card bg-white rounded-xl shadow-md hover:shadow-2xl hover:bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100 transition-all duration-300 transform hover:scale-105 hover:-translate-y-2 hover:rotate-1 group border-2 border-transparent hover:border-orange-300"
         >
           <div class="relative overflow-hidden rounded-t-lg">
             <img
-              :src="product.image"
-              :alt="product.name"
+              :src="product.image || '/images/placeholder.jpg'"
+              :alt="product.title || product.name"
               class="w-full h-48 object-cover rounded-t-lg mb-4 group-hover:scale-110 transition-transform duration-500"
             >
             <!-- Image Overlay Effect -->
             <div class="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-orange-200/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-t-lg"></div>
           </div>
           <div class="p-3 sm:p-4 lg:p-6">
-            <h3 class="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 sm:mb-3 text-gray-800 group-hover:text-orange-600 transition-colors duration-300">{{ product.name }}</h3>
-            <p class="text-sm sm:text-base text-gray-600 mb-2 sm:mb-3 group-hover:text-orange-500 transition-colors duration-300">{{ product.category }}</p>
+            <h3 class="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 sm:mb-3 text-gray-800 group-hover:text-orange-600 transition-colors duration-300">{{ product.title || product.name }}</h3>
+            <p class="text-sm sm:text-base text-gray-600 mb-2 sm:mb-3 group-hover:text-orange-500 transition-colors duration-300">{{ product.category?.name || product.category }}</p>
             <div class="flex items-center justify-between mb-4">
-              <p class="text-lg sm:text-xl lg:text-2xl font-bold text-blue-600 group-hover:text-orange-500 transition-colors duration-300">Tsh {{ product.price.toLocaleString() }}</p>
+              <p class="text-lg sm:text-xl lg:text-2xl font-bold text-blue-600 group-hover:text-orange-500 transition-colors duration-300">Tsh {{ Number(product.price).toLocaleString() }}</p>
               <div class="w-6 sm:w-8 h-6 sm:h-8 lg:w-8 lg:h-8 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center group-hover:from-green-500 group-hover:to-green-600 transition-all duration-300">
                 <svg class="w-3 sm:w-4 sm:h-4 lg:w-4 lg:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 9"></path>
@@ -266,7 +266,7 @@
         
         <div class="flex flex-wrap gap-1 justify-between px-2">
           <button
-            @click="addToCart(product.name, product.price)"
+            @click="addToCart(product.title || product.name, Number(product.price))"
             class="relative group btn-primary bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 px-4 py-2 rounded-lg border-2 border-orange-400 hover:border-orange-500 focus:outline-none focus:ring-4 focus:ring-orange-300 overflow-hidden"
           >
             <!-- Background Animation -->
@@ -344,26 +344,33 @@ export default {
       // Simple like without notification
     }
     
-    // Load products from localStorage or use defaults
+    // Load products from backend API
     const loadProducts = async () => {
       isLoading.value = true
       try {
-        const savedProducts = localStorage.getItem('adminProducts')
-        if (savedProducts) {
-          products.value = JSON.parse(savedProducts)
+        const response = await fetch('http://localhost:8000/api/products/')
+        if (response.ok) {
+          const data = await response.json()
+          products.value = data
         } else {
-          // Default products with IDs
-          products.value = [
-            { id: 1, name: 'Mac Book', price: 1000000, category: 'laptops', image: '/images/w.jpg' },
-            { id: 2, name: 'HP-Brand', price: 150000, category: 'laptops', image: '/images/j.jpg' },
-            { id: 3, name: 'Dell', price: 200000, category: 'laptops', image: '/images/k.jpg' },
-            { id: 4, name: 'Apple', price: 1000000, category: 'phones', image: '/images/d.jpg' },
-            { id: 5, name: 'HP-Elite', price: 1500000, category: 'laptops', image: '/images/a.jpg' },
-            { id: 6, name: 'Sony', price: 200000, category: 'accessories', image: '/images/f.jpg' },
-            { id: 7, name: 'Infinix', price: 400000, category: 'phones', image: '/images/g.jpg' },
-            { id: 8, name: 'iPhone', price: 1500000, category: 'phones', image: '/images/p.jpg' },
-            { id: 9, name: 'Samsung', price: 3000000, category: 'phones', image: '/images/l.jpg' }
-          ]
+          // Fallback to localStorage products if API fails
+          const savedProducts = localStorage.getItem('adminProducts')
+          if (savedProducts) {
+            products.value = JSON.parse(savedProducts)
+          } else {
+            // Default products with IDs
+            products.value = [
+              { id: 1, name: 'Mac Book', price: 1000000, category: 'laptops', image: '/images/w.jpg' },
+              { id: 2, name: 'HP-Brand', price: 150000, category: 'laptops', image: '/images/j.jpg' },
+              { id: 3, name: 'Dell', price: 200000, category: 'laptops', image: '/images/k.jpg' },
+              { id: 4, name: 'Apple', price: 1000000, category: 'phones', image: '/images/d.jpg' },
+              { id: 5, name: 'HP-Elite', price: 1500000, category: 'laptops', image: '/images/a.jpg' },
+              { id: 6, name: 'Sony', price: 200000, category: 'accessories', image: '/images/f.jpg' },
+              { id: 7, name: 'Infinix', price: 400000, category: 'phones', image: '/images/g.jpg' },
+              { id: 8, name: 'iPhone', price: 1500000, category: 'phones', image: '/images/p.jpg' },
+              { id: 9, name: 'Samsung', price: 3000000, category: 'phones', image: '/images/l.jpg' }
+            ]
+          }
         }
         showNotificationMessage('Welcome to Kafuka Electronics Store!', 'info', true)
       } catch (error) {
@@ -387,10 +394,10 @@ export default {
       if (isAuthenticated.value) {
         try {
           // For authenticated users, find the product and add to backend cart
-          const product = products.value.find(p => p.name === productName)
+          const product = products.value.find(p => p.title === productName || p.name === productName)
           if (product && product.id) {
             await addToAuthenticatedCart(product.id, 1)
-            showNotificationMessage(`${productName} added to cart!`, 'success')
+            showNotificationMessage(`${product.title || product.name} added to cart!`, 'success')
           } else {
             showNotificationMessage('Product not found or missing ID', 'error')
           }
@@ -414,19 +421,22 @@ export default {
     const filteredProducts = computed(() => {
       let filtered = products.value.filter(product => {
         // Search filter
-        const matchesSearch = product.name.toLowerCase().includes(searchTerm.value.toLowerCase())
+        const productTitle = product.title || product.name || ''
+        const matchesSearch = productTitle.toLowerCase().includes(searchTerm.value.toLowerCase())
         
         // Category filter
-        const matchesCategory = !categoryFilter.value || product.category === categoryFilter.value
+        const categoryName = product.category?.name || product.category || ''
+        const matchesCategory = !categoryFilter.value || categoryName === categoryFilter.value
         
         // Price filter
+        const productPrice = Number(product.price)
         let matchesPrice = true
         if (priceFilter.value === '0-200000') {
-          matchesPrice = product.price <= 200000
+          matchesPrice = productPrice <= 200000
         } else if (priceFilter.value === '200000-1000000') {
-          matchesPrice = product.price > 200000 && product.price <= 1000000
+          matchesPrice = productPrice > 200000 && productPrice <= 1000000
         } else if (priceFilter.value === '1000000+') {
-          matchesPrice = product.price > 1000000
+          matchesPrice = productPrice > 1000000
         }
         
         return matchesSearch && matchesCategory && matchesPrice
@@ -435,15 +445,20 @@ export default {
       // Sort products
       if (sortFilter.value) {
         filtered.sort((a, b) => {
+          const titleA = a.title || a.name || ''
+          const titleB = b.title || b.name || ''
+          const priceA = Number(a.price)
+          const priceB = Number(b.price)
+          
           switch(sortFilter.value) {
             case 'name-asc':
-              return a.name.localeCompare(b.name)
+              return titleA.localeCompare(titleB)
             case 'name-desc':
-              return b.name.localeCompare(a.name)
+              return titleB.localeCompare(titleA)
             case 'price-asc':
-              return a.price - b.price
+              return priceA - priceB
             case 'price-desc':
-              return b.price - a.price
+              return priceB - priceA
             default:
               return 0
           }
