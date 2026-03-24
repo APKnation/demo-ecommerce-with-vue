@@ -6,6 +6,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=8)
     password_confirm = serializers.CharField(write_only=True)
     phone = serializers.CharField(required=True)  # Make phone required
+    role = serializers.ChoiceField(choices=User.ROLE_CHOICES, default='customer', read_only=True)
     
     class Meta:
         model = User
@@ -18,6 +19,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         validated_data.pop('password_confirm')
+        # Set default role if not provided
+        if 'role' not in validated_data:
+            validated_data['role'] = 'customer'
         user = User.objects.create_user(**validated_data)
         return user
 

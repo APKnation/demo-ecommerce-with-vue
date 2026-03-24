@@ -47,6 +47,9 @@ export function useAuth() {
     error.value = null
     
     try {
+      // Debug: Log the data being sent
+      console.log('Registration data being sent:', userData)
+      
       const response = await fetch(`${API_BASE_URL}/accounts/register/`, {
         method: 'POST',
         headers: {
@@ -56,6 +59,10 @@ export function useAuth() {
       })
 
       const data = await response.json()
+      
+      // Debug: Log the response
+      console.log('Registration response status:', response.status)
+      console.log('Registration response data:', data)
 
       if (!response.ok) {
         // Handle different types of errors
@@ -74,6 +81,7 @@ export function useAuth() {
 
       return { success: true, data }
     } catch (err) {
+      console.error('Registration error:', err)
       error.value = err.message
       return { success: false, error: err.message }
     } finally {
