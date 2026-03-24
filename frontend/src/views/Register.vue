@@ -104,9 +104,11 @@
               type="tel"
               :disabled="isLoading"
               class="w-full px-3 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed bg-white"
-              pattern="[+]?[0-9]{10,15]"
+              pattern="[+]?[0-9]{10,15}"
               placeholder="📞 +255 123 456 789"
               title="Enter phone number with country code (e.g., +255123456789)"
+              @input="validatePhoneInput"
+              @keydown="preventNonNumeric"
             >
           </div>
 
@@ -299,6 +301,32 @@ export default {
     const showConfirmPassword = ref(false)
     const successMessage = ref('')
 
+    // Phone number validation functions
+    const preventNonNumeric = (event) => {
+      // Allow: backspace, delete, tab, escape, enter, + sign, numbers
+      const allowedKeys = ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', '+']
+      const isNumber = /^[0-9]$/.test(event.key)
+      
+      if (!allowedKeys.includes(event.key) && !isNumber) {
+        event.preventDefault()
+      }
+    }
+
+    const validatePhoneInput = (event) => {
+      // Remove any non-numeric characters except + at the beginning
+      let value = event.target.value
+      
+      // Allow + only at the beginning
+      if (value.includes('+')) {
+        value = '+' + value.replace(/\D/g, '').replace(/^\+/, '')
+      } else {
+        value = value.replace(/\D/g, '')
+      }
+      
+      // Update the form value
+      form.value.phone = value
+    }
+
     const passwordsMatch = computed(() => {
       return form.value.password === form.value.confirmPassword
     })
@@ -349,7 +377,9 @@ export default {
       successMessage,
       passwordsMatch,
       isFormValid,
-      handleRegister
+      handleRegister,
+      preventNonNumeric,
+      validatePhoneInput
     }
   }
 }
