@@ -58,7 +58,18 @@ export function useAuth() {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.message || 'Registration failed')
+        // Handle different types of errors
+        if (data.non_field_errors) {
+          throw new Error(data.non_field_errors[0])
+        } else if (typeof data === 'object' && data !== null) {
+          // Handle field-specific errors
+          const firstError = Object.entries(data)[0]
+          if (firstError) {
+            const [field, errors] = firstError
+            throw new Error(`${field}: ${Array.isArray(errors) ? errors[0] : errors}`)
+          }
+        }
+        throw new Error(data.message || data.detail || 'Registration failed')
       }
 
       return { success: true, data }
