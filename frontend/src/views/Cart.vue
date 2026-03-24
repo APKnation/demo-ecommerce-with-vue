@@ -44,6 +44,12 @@
       </div>
       
       <!-- Cart Items -->
+      <div v-else-if="isLoading" class="flex justify-center items-center py-12">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+        <span class="ml-4 text-gray-600">Loading cart...</span>
+      </div>
+      
+      <!-- Cart Items -->
       <div v-else class="space-y-6">
         <!-- Cart Items List -->
         <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
@@ -56,43 +62,43 @@
               <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
                   <img
-                    :src="item.image"
-                    :alt="item.name"
-                    class="w-20 h-20 object-cover rounded-xl shadow-md group-hover:scale-110 transition-transform duration-300"
+                    :src="item.image || item.product?.image || '/images/placeholder.jpg'"
+                    :alt="item.name || item.product?.title"
+                    class="w-20 h-20 object-cover rounded-lg shadow-md group-hover:scale-110 transition-transform duration-300"
                   >
                   <div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-1">{{ item.name }}</h3>
-                    <p class="text-sm text-gray-500">{{ item.category }}</p>
-                    <p class="text-lg font-semibold text-orange-600">Tsh {{ item.price.toLocaleString() }}</p>
+                    <h3 class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors duration-300">
+                      {{ item.name || item.product?.title }}
+                    </h3>
+                    <p class="text-sm text-gray-600">{{ item.category || item.product?.category?.name }}</p>
+                    <p class="text-lg font-bold text-blue-600">Tsh {{ Number(item.price || item.product?.price).toLocaleString() }}</p>
                   </div>
                 </div>
                 
                 <!-- Quantity Controls -->
                 <div class="flex items-center space-x-3">
-                  <div class="flex items-center bg-gray-100 rounded-lg p-1">
-                    <button
-                      @click="updateQuantity(index, -1)"
-                      class="w-8 h-8 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center justify-center"
-                    >
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 6L9 17l-5-5L4 6z"></path>
-                      </svg>
-                    </button>
-                    <span class="px-3 font-semibold text-gray-700">{{ item.quantity }}</span>
-                    <button
-                      @click="updateQuantity(index, 1)"
-                      class="w-8 h-8 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors duration-300 flex items-center justify-center"
-                    >
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 6v6m0 6V6"></path>
-                      </svg>
-                    </button>
-                  </div>
+                  <button
+                    @click="updateQuantity(index, -1)"
+                    class="w-8 h-8 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center justify-center"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                    </svg>
+                  </button>
+                  <span class="px-3 font-semibold text-gray-700">{{ item.quantity }}</span>
+                  <button
+                    @click="updateQuantity(index, 1)"
+                    class="w-8 h-8 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors duration-300 flex items-center justify-center"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 6v6m0 6V6"></path>
+                    </svg>
+                  </button>
                 </div>
                 
                 <!-- Item Total & Remove -->
                 <div class="text-right">
-                  <p class="text-lg font-bold text-gray-800 mb-2">Tsh {{ (item.price * item.quantity).toLocaleString() }}</p>
+                  <p class="text-lg font-bold text-gray-800 mb-2">Tsh {{ (Number(item.price || item.product?.price) * item.quantity).toLocaleString() }}</p>
                   <button
                     @click="removeFromCart(index)"
                     class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center"
@@ -187,9 +193,10 @@
 </template>
 
 <script>
-import { ref, computed, inject } from 'vue'
+import { ref, computed, inject, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
+import { useAuthenticatedCart } from '../composables/useAuthenticatedCart'
 import Swal from 'sweetalert2'
 
 export default {
@@ -197,8 +204,11 @@ export default {
   setup() {
     const router = useRouter()
     const { isAuthenticated } = useAuth()
+    const { cartItems, totalPrice, loadCart, removeFromCart: removeFromAuthenticatedCart, updateCartItem } = useAuthenticatedCart()
     const cart = inject('cart', ref([]))
     const isProcessing = ref(false)
+    const isLoading = ref(false)
+    const error = ref('')
 
     // SweetAlert notification system
     const showNotificationMessage = (message, type = 'success') => {
@@ -217,9 +227,62 @@ export default {
       })
     }
 
-    const totalPrice = computed(() => {
-      return cart.value.reduce((total, item) => total + (item.price * item.quantity), 0)
+    // Computed properties to handle both cart systems
+    const displayCart = computed(() => {
+      return isAuthenticated.value ? cartItems.value : cart.value
     })
+
+    const displayTotalPrice = computed(() => {
+      return isAuthenticated.value ? totalPrice.value : cart.value.reduce((total, item) => total + (item.price * item.quantity), 0)
+    })
+
+    // Load cart based on authentication status
+    const loadUserCart = async () => {
+      if (isAuthenticated.value) {
+        try {
+          isLoading.value = true
+          await loadCart()
+        } catch (err) {
+          error.value = err.message
+          showNotificationMessage('Failed to load cart', 'error')
+        } finally {
+          isLoading.value = false
+        }
+      }
+    }
+
+    // Unified remove from cart function
+    const handleRemoveFromCart = async (index) => {
+      if (isAuthenticated.value) {
+        try {
+          const item = cartItems.value[index]
+          await removeFromAuthenticatedCart(item.id)
+          showNotificationMessage('Item removed from cart', 'success')
+        } catch (err) {
+          showNotificationMessage('Failed to remove item', 'error')
+        }
+      } else {
+        removeFromCart(index)
+        showNotificationMessage('Item removed from cart', 'success')
+      }
+    }
+
+    // Unified update quantity function
+    const handleUpdateQuantity = async (index, change) => {
+      if (isAuthenticated.value) {
+        try {
+          const item = cartItems.value[index]
+          const newQuantity = item.quantity + change
+          if (newQuantity > 0) {
+            await updateCartItem(item.id, newQuantity)
+          }
+        } catch (err) {
+          showNotificationMessage('Failed to update quantity', 'error')
+        }
+      } else {
+        updateQuantity(index, change)
+      }
+    }
 
     const updateQuantity = (index, change) => {
       cart.value[index].quantity += change
@@ -235,14 +298,23 @@ export default {
       const itemName = cart.value[index].name
       cart.value.splice(index, 1)
       saveCart()
-      showNotificationMessage(`${itemName} removed from cart`)
+      showNotificationMessage(`${itemName} removed from cart`, 'success')
     }
 
     const clearCart = () => {
       cart.value = []
       saveCart()
-      showNotificationMessage('Cart cleared successfully')
+      showNotificationMessage('Cart cleared', 'success')
     }
+
+    const saveCart = () => {
+      localStorage.setItem('cart', JSON.stringify(cart.value))
+    }
+
+    // Load cart on mount
+    onMounted(() => {
+      loadUserCart()
+    })
 
     const checkout = async () => {
       if (cart.value.length === 0) {
@@ -311,12 +383,14 @@ export default {
     }
 
     return {
-      cart,
-      totalPrice,
+      cart: displayCart,
+      totalPrice: displayTotalPrice,
       isProcessing,
       isAuthenticated,
-      updateQuantity,
-      removeFromCart,
+      isLoading,
+      error,
+      updateQuantity: handleUpdateQuantity,
+      removeFromCart: handleRemoveFromCart,
       clearCart,
       checkout
     }
