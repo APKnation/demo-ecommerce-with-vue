@@ -13,7 +13,8 @@
           </svg>
         </div>
         <h1 class="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
-        <p class="text-gray-600">Sign in to your KAFUKA Store account</p>
+        <p class="text-gray-600">Sign in with your phone number and password</p>
+        <p class="text-sm text-gray-500 mt-1">For customers, authors, and admins</p>
       </div>
 
       <!-- Login Form -->
@@ -222,9 +223,17 @@ export default {
         
         // Redirect after a short delay to show success message
         setTimeout(() => {
-          // Redirect to intended page or home
-          const redirect = router.currentRoute.value.query.redirect || '/'
-          router.push(redirect)
+          // Check user role and redirect accordingly
+          const userRole = result.data?.user?.role
+          
+          if (userRole === 'admin') {
+            // Redirect admin to admin panel
+            router.push('/admin')
+          } else {
+            // Redirect customer/author to intended page or home
+            const redirect = router.currentRoute.value.query.redirect || '/'
+            router.push(redirect)
+          }
         }, 1000)
       }
     }
