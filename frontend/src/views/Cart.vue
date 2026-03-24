@@ -120,7 +120,24 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Checkout button for logged-in users -->
+              <router-link
+                v-if="isAuthenticated"
+                to="/checkout"
+                class="relative overflow-hidden bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold py-4 rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 shadow-xl text-center flex items-center justify-center"
+              >
+                <span class="relative z-10 flex items-center justify-center">
+                  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 9"></path>
+                  </svg>
+                  Proceed to Checkout
+                </span>
+                <div class="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+              </router-link>
+              
+              <!-- Guest checkout button -->
               <button
+                v-if="!isAuthenticated"
                 @click="checkout"
                 :disabled="isProcessing"
                 class="relative overflow-hidden bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold py-4 rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-xl"
@@ -133,12 +150,25 @@
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V8c4 10.09 4.91 12 6h4"></path>
                   </svg>
-                  <span v-if="!isProcessing">Place Order</span>
+                  <span v-if="!isProcessing">Place Order (Guest)</span>
                   <span v-else>Processing...</span>
                 </span>
                 <div class="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
               </button>
               
+              <!-- Login prompt for guests -->
+              <router-link
+                v-if="!isAuthenticated"
+                to="/login"
+                class="bg-blue-500 text-white font-semibold py-4 rounded-xl hover:bg-blue-600 transition-colors duration-300 text-center flex items-center justify-center"
+              >
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                </svg>
+                Login for Better Checkout
+              </router-link>
+              
+              <!-- Clear cart button -->
               <button
                 @click="clearCart"
                 class="bg-gray-200 text-gray-700 font-semibold py-4 rounded-xl hover:bg-gray-300 transition-colors duration-300"
@@ -159,12 +189,14 @@
 <script>
 import { ref, computed, inject } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuth } from '../composables/useAuth'
 import Swal from 'sweetalert2'
 
 export default {
   name: 'Cart',
   setup() {
     const router = useRouter()
+    const { isAuthenticated } = useAuth()
     const cart = inject('cart', ref([]))
     const isProcessing = ref(false)
 
@@ -282,6 +314,7 @@ export default {
       cart,
       totalPrice,
       isProcessing,
+      isAuthenticated,
       updateQuantity,
       removeFromCart,
       clearCart,
