@@ -804,21 +804,6 @@ export default {
       localStorage.setItem('adminProducts', JSON.stringify(products.value))
     }
 
-    const addProduct = () => {
-      products.value.push({ ...newProduct.value })
-      saveProducts()
-      
-      // Reset form
-      newProduct.value = {
-        name: '',
-        price: 0,
-        category: '',
-        image: ''
-      }
-      
-      showNotificationMessage('Product added successfully!')
-    }
-
     const totalRevenue = computed(() => {
       return orders.value.reduce((total, order) => total + order.total, 0)
     })
