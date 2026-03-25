@@ -282,18 +282,82 @@
               Add New Product
             </h2>
           </div>
-          <div class="p-6 text-center">
-            <p class="text-gray-600 mb-6">Register a new product to your e-commerce store</p>
-            <router-link
-              to="/register-product"
-              class="inline-flex items-center bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-lg"
-            >
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-              </svg>
-              Register New Product
-            </router-link>
-          </div>
+          <form @submit.prevent="addProduct" class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Product Name</label>
+                <input
+                  v-model="newProduct.name"
+                  type="text"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter product name"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Price (Tsh)</label>
+                <input
+                  v-model.number="newProduct.price"
+                  type="number"
+                  required
+                  min="0"
+                  step="0.01"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter price"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                <select
+                  v-model="newProduct.category"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">Select category</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Phones">Phones</option>
+                  <option value="Laptops">Laptops</option>
+                  <option value="Accessories">Accessories</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
+                <input
+                  v-model="newProduct.image"
+                  type="url"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter image URL (optional)"
+                />
+              </div>
+            </div>
+            <div class="mt-6">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+              <textarea
+                v-model="newProduct.description"
+                rows="3"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter product description"
+              ></textarea>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+              <button
+                type="button"
+                @click="resetProductForm"
+                class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+              >
+                Reset
+              </button>
+              <button
+                type="submit"
+                :disabled="isAddingProduct"
+                class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <span v-if="isAddingProduct">Adding...</span>
+                <span v-else>Add Product</span>
+              </button>
+            </div>
+          </form>
         </div>
       </div>
       
@@ -613,8 +677,10 @@ export default {
       name: '',
       price: 0,
       category: '',
-      image: ''
+      image: '',
+      description: ''
     })
+    const isAddingProduct = ref(false)
     const editingProduct = ref(null)
     const isEditing = ref(false)
     const viewingProduct = ref(null)
@@ -661,6 +727,52 @@ export default {
         saveProducts()
         showNotificationMessage(`${productName} removed successfully!`)
         cancelDelete()
+      }
+    }
+
+    // Product Management Functions
+    const addProduct = async () => {
+      isAddingProduct.value = true
+      try {
+        const response = await fetch(`${API_BASE_URL}/products/`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Token ${getToken()}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            title: newProduct.value.name,
+            price: newProduct.value.price,
+            category: newProduct.value.category,
+            image: newProduct.value.image,
+            description: newProduct.value.description
+          })
+        })
+        
+        if (response.ok) {
+          const newProductData = await response.json()
+          products.value.push(newProductData)
+          showNotificationMessage('Product added successfully!')
+          resetProductForm()
+          loadData() // Refresh products list
+        } else {
+          const error = await response.json()
+          showNotificationMessage('Failed to add product: ' + JSON.stringify(error), 'error')
+        }
+      } catch (error) {
+        showNotificationMessage('Failed to add product', 'error')
+      } finally {
+        isAddingProduct.value = false
+      }
+    }
+
+    const resetProductForm = () => {
+      newProduct.value = {
+        name: '',
+        price: 0,
+        category: '',
+        image: '',
+        description: ''
       }
     }
 
@@ -945,6 +1057,8 @@ export default {
       filteredProducts,
       saveProducts,
       addProduct,
+      resetProductForm,
+      isAddingProduct,
       viewProduct,
       closeViewModal,
       editProduct,
