@@ -36,7 +36,7 @@
           <!-- ✅ UPDATED DESCRIPTION -->
           <p class="text-xl md:text-2xl text-gray-300 leading-relaxed max-w-xl font-light italic">
             Shop the latest electronics including smartphones, laptops, accessories, and home gadgets—all in one place. 
-            Add items to your cart, compare options, and enjoy a fast, secure checkout with reliable delivery.
+            Add items to your cart and enjoy a fast, secure checkout with reliable delivery.
           </p>
         </div>
         
@@ -196,16 +196,6 @@
         
         <!-- Action Buttons -->
         <div class="flex gap-3 mt-4">
-          <button 
-            @click="addAllToCompare"
-            class="btn btn-secondary flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 px-6 py-3 rounded-xl border-2 border-blue-400 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300"
-            :disabled="filteredProducts.length === 0"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002-2v2a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2H9z"></path>
-            </svg>
-            <span class="font-semibold">Select All ({{ filteredProducts.length }})</span>
-          </button>
           <button 
             class="btn btn-ghost text-error-600 hover:text-error-700 hover:bg-red-50 px-6 py-3 rounded-xl border-2 border-transparent hover:border-red-200 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-300"
           >
@@ -469,35 +459,6 @@ export default {
       return filtered
     })
 
-    // Check if product is in compare list
-    const isInCompare = (productName) => {
-      return compareList.value.some(item => item.name === productName)
-    }
-
-    // Filter products function
-    const filterProducts = () => {
-      // This function is reactive due to computed property
-    }
-
-    // Add all filtered products to comparison
-    const addAllToCompare = () => {
-      const maxProducts = 4 // Maximum comparison limit
-      const availableSlots = maxProducts - compareList.value.length
-      const productsToAdd = filteredProducts.value.slice(0, availableSlots)
-      
-      productsToAdd.forEach(product => {
-        if (!isInCompareList(product)) {
-          addToCompare(product)
-        }
-      })
-      
-      if (productsToAdd.length < filteredProducts.value.length) {
-        showNotification(`Added ${productsToAdd.length} products to comparison. Maximum ${maxProducts} products allowed.`, 'warning')
-      } else {
-        showNotification(`Added all ${productsToAdd.length} products to comparison!`, 'success')
-      }
-    }
-
     // Helper function to map product names to image files
     const getProductImage = (productName) => {
       const imageMap = {
@@ -546,7 +507,6 @@ export default {
       cartTotal,
       addToCart,
       filteredProducts,
-      filterProducts,
       likeProduct,
       getProductImage,
       handleImageError
