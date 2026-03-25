@@ -244,7 +244,7 @@
                     <button @click="viewOrderDetails(order)" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-xs">View</button>
                     <button v-if="order.status === 'Pending'" @click="confirmOrder(order.id)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs">Confirm</button>
                     <button v-if="order.status === 'Confirmed'" @click="completeOrder(order.id)" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs">Complete</button>
-                    <button v-if="['Pending', 'Confirmed'].includes(order.status)" @click="cancelOrder(order.id)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">Cancel</button>
+                    <button v-if="['Pending', 'Confirmed'].includes(order.status)" @click="cancelOrder(order.id)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">Cancel</button>,
                     <button v-if="order.status !== 'Cancelled'" @click="deleteOrder(order.id)" class="bg-gray-700 hover:bg-gray-800 text-white px-3 py-1 rounded text-xs">Delete</button>
                   </div>
                 </td>
