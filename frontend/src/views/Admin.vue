@@ -526,7 +526,6 @@
               <div class="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-6">
                 <h2 class="text-2xl font-bold flex items-center justify-between">
                   <span class="flex items-center">
-                    <span class="mr-3">📦</span>
                     Product Inventory
                   </span>
                   <span class="text-sm bg-white/20 px-4 py-2 rounded-full">
@@ -608,10 +607,10 @@
                                 {{ product.stock || 0 }} units
                               </span>
                               <span v-if="product.stock <= 10 && product.stock > 0" class="text-xs text-yellow-600 font-medium">
-                                ⚠️ Low Stock
+                                Low Stock
                               </span>
                               <span v-if="product.stock === 0" class="text-xs text-red-600 font-medium">
-                                🚫 Out of Stock
+                                Out of Stock
                               </span>
                             </div>
                           </td>
@@ -703,23 +702,23 @@
                               {{ product.stock || 0 }} units
                             </span>
                             <span v-if="product.stock <= 10 && product.stock > 0" class="text-xs text-yellow-600 font-medium">
-                              ⚠️
+                              Low Stock
                             </span>
                             <span v-if="product.stock === 0" class="text-xs text-red-600 font-medium">
-                              🚫
+                              Out of Stock
                             </span>
                           </div>
                         </div>
                         
                         <div class="flex flex-wrap gap-2">
                           <button @click="viewProduct(product)" class="px-3 py-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-sm">
-                            👁️ View
+                            View
                           </button>
                           <button @click="editProduct(product)" class="px-3 py-1 bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-medium rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-sm">
-                            ✏️ Edit
+                            Edit
                           </button>
                           <button @click="deleteProduct(product.id)" class="px-3 py-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-medium rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-sm">
-                            🗑️ Delete
+                            Delete
                           </button>
                         </div>
                       </div>
@@ -729,14 +728,13 @@
                 
                 <!-- Empty State -->
                 <div v-if="filteredProducts.length === 0" class="text-center py-12">
-                  <span class="text-6xl mb-4 block">📦</span>
                   <h3 class="text-xl font-bold text-gray-800 mb-2">No products found</h3>
                   <p class="text-gray-600 mb-4">Try adjusting your search or filters</p>
                   <button 
                     @click="productSearchQuery = ''; productCategoryFilter = ''; productStatusFilter = ''"
                     class="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl"
                   >
-                    🔄 Clear Filters
+                    Clear Filters
                   </button>
                 </div>
               </div>
@@ -764,7 +762,7 @@
           <!-- Customer Info -->
           <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
             <h4 class="font-bold text-blue-900 mb-3 flex items-center">
-              <span class="mr-2">👤</span> Customer Information
+              Customer Information
             </h4>
             <div class="space-y-2">
               <div>
@@ -785,7 +783,7 @@
           <!-- Order Status -->
           <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 border border-green-200">
             <h4 class="font-bold text-green-900 mb-3 flex items-center">
-              <span class="mr-2">📊</span> Order Status Management
+              Order Status Management
             </h4>
             <div class="space-y-3">
               <div>
@@ -802,28 +800,28 @@
                     @click="updateOrderStatus(selectedOrder.id, 'Pending')"
                     class="px-3 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors text-sm font-medium"
                   >
-                    ⏳ Set Pending
+                    Set Pending
                   </button>
                   <button 
                     v-if="selectedOrder.status !== 'Confirmed'" 
                     @click="updateOrderStatus(selectedOrder.id, 'Confirmed')"
                     class="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium"
                   >
-                    ✅ Confirm Order
+                    Confirm Order
                   </button>
                   <button 
                     v-if="selectedOrder.status !== 'Completed'" 
                     @click="updateOrderStatus(selectedOrder.id, 'Completed')"
                     class="px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm font-medium"
                   >
-                    🚚 Complete Order
+                    Complete Order
                   </button>
                   <button 
                     v-if="selectedOrder.status !== 'Cancelled'" 
                     @click="updateOrderStatus(selectedOrder.id, 'Cancelled')"
                     class="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm font-medium"
                   >
-                    ❌ Cancel Order
+                    Cancel Order
                   </button>
                 </div>
               </div>
@@ -869,11 +867,10 @@
         <!-- Order Items -->
         <div class="mt-6">
           <h4 class="font-bold text-gray-900 mb-4 flex items-center">
-            <span class="mr-2">📦</span> Order Items ({{ selectedOrder.items?.length || 0 }} items)
+            Order Items ({{ selectedOrder.items?.length || 0 }} items)
           </h4>
           <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
             <div v-if="!selectedOrder.items || selectedOrder.items.length === 0" class="text-center py-8">
-              <span class="text-4xl mb-2 block">📦</span>
               <p class="text-gray-500 mb-2">No items found in this order</p>
               <p class="text-sm text-gray-400">Order data may not include item details</p>
             </div>
@@ -889,7 +886,7 @@
                       @error="handleImageError"
                     />
                     <div v-else class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center shadow-md">
-                      <span class="text-2xl">📦</span>
+                      <span class="text-xs font-bold text-gray-500">No Image</span>
                     </div>
                   </div>
                   <div class="flex-1 min-w-0">
@@ -924,28 +921,28 @@
             @click="selectedOrder = null" 
             class="px-6 py-3 border-2 border-gray-300 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium"
           >
-            ❌ Close
+            Close
           </button>
           <button 
             v-if="selectedOrder.status === 'Pending'" 
             @click="confirmOrder(selectedOrder.id); selectedOrder = null" 
             class="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
           >
-            ✅ Confirm Order
+            Confirm Order
           </button>
           <button 
             v-if="selectedOrder.status === 'Confirmed'" 
             @click="completeOrder(selectedOrder.id); selectedOrder = null" 
             class="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-300 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
           >
-            🚚 Complete Order
+            Complete Order
           </button>
           <button 
             v-if="['Pending', 'Confirmed'].includes(selectedOrder.status)" 
             @click="cancelOrder(selectedOrder.id); selectedOrder = null" 
             class="px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-300 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
           >
-            🗑️ Cancel Order
+            Cancel Order
           </button>
         </div>
       </div>
