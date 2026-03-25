@@ -2,7 +2,9 @@
   <div class="min-h-screen bg-gray-50 py-8">
     <div class="max-w-3xl mx-auto px-4">
       <div class="bg-white rounded-lg shadow-lg p-6">
-        <h1 class="text-2xl font-bold text-gray-900 mb-6">Register New Product</h1>
+        <h1 class="text-2xl font-bold text-gray-900 mb-6">
+      {{ isEditMode ? 'Edit Product' : 'Register New Product' }}
+    </h1>
         
         <form @submit.prevent="handleSubmit" class="space-y-6">
           <!-- Product Title -->
@@ -165,8 +167,8 @@
               :disabled="isLoading"
               class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <span v-if="isLoading">Registering...</span>
-              <span v-else>Register Product</span>
+              <span v-if="isLoading">{{ isEditMode ? 'Updating...' : 'Registering...' }}</span>
+              <span v-else>{{ isEditMode ? 'Update Product' : 'Register Product' }}</span>
             </button>
           </div>
         </form>
@@ -177,12 +179,17 @@
 
 <script>
 import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 export default {
   name: 'ProductRegister',
   setup() {
     const router = useRouter()
+    const route = useRoute()
+    
+    // Check if we're in edit mode
+    const isEditMode = ref(!!route.params.id)
+    const productId = ref(route.params.id || null)
     
     const form = ref({
       title: '',
@@ -215,6 +222,38 @@ export default {
     // Handle image change
     const handleImageChange = (event) => {
       form.value.image = event.target.files[0]
+    }
+
+    // Load product data for edit mode
+    const loadProduct = async () => {
+      if (!isEditMode.value || !productId.value) return
+      
+      try {
+        const token = localStorage.getItem('token')
+        const response = await fetch(`http://localhost:8000/api/products/${productId.value}/`, {
+          headers: {
+            'Authorization': `Token ${token}`
+          }
+        })
+        
+        if (response.ok) {
+          const product = await response.json()
+          form.value = {
+            title: product.title,
+            description: product.description,
+            price: parseFloat(product.price),
+            stock: product.stock || 1,
+            condition: product.condition,
+            category_id: product.category?.id || null,
+            image: null,
+            is_active: product.is_active
+          }
+        } else {
+          error.value = 'Failed to load product data'
+        }
+      } catch (err) {
+        error.value = 'Error loading product: ' + err.message
+      }
     }
 
     // Handle form submission
@@ -251,8 +290,14 @@ export default {
           formData.append('image', form.value.image)
         }
         
-        const response = await fetch('http://localhost:8000/api/products/create/', {
-          method: 'POST',
+        // Determine URL and method based on edit mode
+        const url = isEditMode.value 
+          ? `http://localhost:8000/api/products/${productId.value}/manage/`
+          : 'http://localhost:8000/api/products/create/'
+        const method = isEditMode.value ? 'PUT' : 'POST'
+        
+        const response = await fetch(url, {
+          method: method,
           headers: {
             'Authorization': `Token ${token}`
             // Don't set Content-Type for FormData - browser sets it automatically with boundary
@@ -266,7 +311,7 @@ export default {
           throw new Error(data.error || JSON.stringify(data) || 'Failed to register product')
         }
         
-        successMessage.value = 'Product registered successfully! Redirecting...'
+        successMessage.value = isEditMode.value ? 'Product updated successfully! Redirecting...' : 'Product registered successfully! Redirecting...'
         
         // Redirect after a short delay
         setTimeout(() => {
@@ -282,6 +327,9 @@ export default {
 
     onMounted(() => {
       loadCategories()
+      if (isEditMode.value) {
+        loadProduct()
+      }
     })
 
     return {
@@ -290,6 +338,7 @@ export default {
       isLoading,
       error,
       successMessage,
+      isEditMode,
       handleImageChange,
       handleSubmit
     }

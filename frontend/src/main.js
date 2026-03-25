@@ -72,6 +72,17 @@ const routes = [
     }
   },
   { 
+    path: '/admin/edit-product/:id', 
+    component: ProductRegister,
+    name: 'admin-edit-product',
+    props: true,
+    meta: {
+      title: 'Edit Product - KAFUKA Electronics Store',
+      description: 'Edit product information',
+      requiresAdmin: true
+    }
+  },
+  { 
     path: '/orders', 
     component: Orders,
     name: 'orders',
