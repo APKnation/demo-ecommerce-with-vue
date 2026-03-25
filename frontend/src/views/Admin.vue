@@ -467,10 +467,10 @@
                       <div class="relative">
                         <img 
                           v-if="product.image && product.image !== '' && product.image !== '/images/placeholder.jpg'" 
-                          :src="product.image" 
+                          :src="getImageUrl(product.image)" 
                           :alt="product.name || 'Product'" 
                           class="w-16 h-16 object-cover rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
-                          @error="$event.target.src='/images/placeholder.jpg'"
+                          @error="handleImageError"
                         >
                         <div v-else class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center shadow-md">
                           <span class="text-2xl">📦</span>
@@ -878,16 +878,65 @@ export default {
       }
     }
 
+    // Helper functions for image handling
+    const getImageUrl = (imagePath) => {
+      if (!imagePath) return '/images/placeholder.jpg'
+      
+      // If it's already a full URL, return as is
+      if (imagePath.startsWith('http')) {
+        return imagePath
+      }
+      
+      // If it's a backend media path, construct full URL
+      if (imagePath.startsWith('/media/')) {
+        return `http://localhost:8000${imagePath}`
+      }
+      
+      // If it's a relative path starting with /images/, use as is
+      if (imagePath.startsWith('/images/')) {
+        return imagePath
+      }
+      
+      // Otherwise, assume it's a relative path and construct backend URL
+      return `http://localhost:8000/media/${imagePath}`
+    }
+
+    const handleImageError = (event) => {
+      event.target.src = '/images/placeholder.jpg'
+    }
+
     // Load data from backend API
     const loadData = async () => {
       try {
-        // Load products from backend
+        // Load products from backend API first
         const productsResponse = await fetch(`${API_BASE_URL}/products/`, {
           headers: { 'Authorization': `Token ${getToken()}` }
         })
         if (productsResponse.ok) {
-          products.value = await productsResponse.json()
+          const backendProducts = await productsResponse.json()
+          console.log('Backend products loaded:', backendProducts)
+          
+          // Transform backend products to match admin format
+          products.value = backendProducts.map(product => ({
+            id: product.id,
+            name: product.title,
+            title: product.title,
+            price: Number(product.price),
+            category: product.category?.name || 'Other',
+            image: product.image || '/images/placeholder.jpg',
+            description: product.description || 'No description available',
+            stock: product.stock || 0,
+            is_active: product.is_active,
+            condition: product.condition,
+            author: product.author,
+            images: product.images || [],
+            created_at: product.created_at,
+            updated_at: product.updated_at
+          }))
+          
+          console.log('Transformed products for admin:', products.value)
         } else {
+          console.log('Backend products failed, using fallback')
           // Fallback to localStorage if API fails
           const savedProducts = localStorage.getItem('adminProducts')
           if (savedProducts) {
@@ -1329,7 +1378,9 @@ export default {
       filteredOrdersList,
       deleteUser,
       getStatusClass,
-      getRoleClass
+      getRoleClass,
+      getImageUrl,
+      handleImageError
     }
   }
 }
