@@ -257,7 +257,7 @@
         
         <div class="flex flex-wrap gap-1 justify-between px-2">
           <button
-            @click="addToCart(product.title || product.name, Number(product.price))"
+            @click="addToCart((product.title || product.name || 'Unknown Product'), Number(product.price))"
             class="relative group btn-primary bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 px-4 py-2 rounded-lg border-2 border-orange-400 hover:border-orange-500 focus:outline-none focus:ring-4 focus:ring-orange-300 overflow-hidden"
           >
             <!-- Background Animation -->
@@ -419,10 +419,13 @@ export default {
 
     // Unified addToCart function for both authenticated and guest users
     const addToCart = async (productName, productPrice) => {
+      // Ensure we have a valid product name
+      const displayName = productName || 'Unknown Product'
+      
       // Always use guest cart first (localStorage)
       if (guestAddToCart) {
-        guestAddToCart({ name: productName, price: productPrice })
-        showNotificationMessage(`${productName} added to cart!`, 'success')
+        guestAddToCart({ name: displayName, price: productPrice })
+        showNotificationMessage(`${displayName} added to cart!`, 'success')
         
         // If user is authenticated and has token, also try to add to backend cart
         if (isAuthenticated.value && localStorage.getItem('token')) {
