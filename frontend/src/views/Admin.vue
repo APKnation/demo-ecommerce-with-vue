@@ -762,11 +762,6 @@
           </button>
         </div>
         
-        <!-- Debug Info (remove in production) -->
-        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
-          <p class="text-xs text-yellow-800">Debug: Order data = {{ JSON.stringify(selectedOrder, null, 2) }}</p>
-        </div>
-        
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <!-- Customer Info -->
           <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
@@ -848,7 +843,8 @@
           <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
             <div v-if="!selectedOrder.items || selectedOrder.items.length === 0" class="text-center py-8">
               <span class="text-4xl mb-2 block">📦</span>
-              <p class="text-gray-500">No items found in this order</p>
+              <p class="text-gray-500 mb-2">No items found in this order</p>
+              <p class="text-sm text-gray-400">Order data may not include item details</p>
             </div>
             <div v-else class="space-y-3">
               <div v-for="item in selectedOrder.items" :key="item.id || item.product_id" class="bg-white rounded-lg p-4 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
@@ -948,7 +944,7 @@ export default {
     
     const tabs = computed(() => [
       { id: 'dashboard', name: 'Dashboard' },
-      { id: 'orders', name: 'Orders', badge: stats.value.pending_orders, route: '/admin/orders' },
+      { id: 'orders', name: 'Orders', badge: stats.value.pending_orders },
       { id: 'users', name: 'Users' },
       { id: 'products', name: 'Products' }
     ])
@@ -1548,7 +1544,13 @@ export default {
     }
 
     const viewOrderDetails = (order) => {
-      selectedOrder.value = order
+      try {
+        console.log('Opening order details for:', order)
+        selectedOrder.value = order
+      } catch (error) {
+        console.error('Error opening order details:', error)
+        showNotificationMessage('Failed to open order details', 'error')
+      }
     }
 
     const deleteUser = async (userId) => {
