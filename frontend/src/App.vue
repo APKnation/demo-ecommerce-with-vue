@@ -196,7 +196,14 @@
             </tbody>
           </table>
         </div>
+        <div class="mt-4 flex justify-end">
+          <button @click="closeCompareModal" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+            Close
+          </button>
+        </div>
       </div>
+    </div>
+  </div>
 </template>
 
 <script>
