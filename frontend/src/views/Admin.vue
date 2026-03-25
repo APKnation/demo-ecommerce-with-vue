@@ -1104,7 +1104,7 @@ export default {
             products.value.splice(productToDelete.value, 1)
             showNotificationMessage(`${productName} removed successfully!`)
             cancelDelete()
-            await loadData() // Refresh products list
+            // Don't call loadData() here to prevent infinite loop
           } else {
             const error = await response.json()
             showNotificationMessage('Failed to delete product: ' + JSON.stringify(error), 'error')
@@ -1165,7 +1165,7 @@ export default {
           products.value.push(newProductData)
           showNotificationMessage('Product added successfully!')
           resetProductForm()
-          await loadData() // Refresh products list
+          // Don't call loadData() here to prevent infinite loop
         } else {
           const error = await response.json()
           showNotificationMessage('Failed to add product: ' + JSON.stringify(error), 'error')
@@ -1421,7 +1421,7 @@ export default {
           }
           closeEditModal()
           showNotificationMessage('Product updated successfully!')
-          await loadData() // Refresh products list
+          // Don't call loadData() here to prevent infinite loop
         } else {
           const error = await response.json()
           showNotificationMessage('Failed to update product: ' + JSON.stringify(error), 'error')
