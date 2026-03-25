@@ -224,38 +224,36 @@ export default {
       successMessage.value = ''
       
       try {
-        const formData = new FormData()
-        
-        // Add all form fields
-        Object.keys(form.value).forEach(key => {
-          if (key !== 'image' && form.value[key] !== null) {
-            formData.append(key, form.value[key])
-          }
-        })
-        
-        // Add image if selected
-        if (form.value.image) {
-          formData.append('image', form.value.image)
-        }
-        
         // Get auth token
-        const token = localStorage.getItem('authToken')
+        const token = localStorage.getItem('token')
         if (!token) {
           throw new Error('You must be logged in to register a product')
+        }
+        
+        // Create JSON payload (not FormData for this API)
+        const payload = {
+          title: form.value.title,
+          description: form.value.description,
+          price: form.value.price,
+          stock: form.value.stock,
+          condition: form.value.condition,
+          category: form.value.category_id,
+          is_active: form.value.is_active
         }
         
         const response = await fetch('http://localhost:8000/api/products/create/', {
           method: 'POST',
           headers: {
-            'Authorization': `Token ${token}`
+            'Authorization': `Token ${token}`,
+            'Content-Type': 'application/json'
           },
-          body: formData
+          body: JSON.stringify(payload)
         })
         
         const data = await response.json()
         
         if (!response.ok) {
-          throw new Error(data.error || 'Failed to register product')
+          throw new Error(data.error || JSON.stringify(data) || 'Failed to register product')
         }
         
         successMessage.value = 'Product registered successfully! Redirecting...'
