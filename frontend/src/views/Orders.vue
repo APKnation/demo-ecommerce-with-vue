@@ -7,9 +7,7 @@
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-3">
             <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2 2v10a2 2 0 002 2h6a2 2 0 002-2V9a2 2 0 00-2-2H9z"></path>
-              </svg>
+              <span class="text-white text-xl font-bold">📋</span>
             </div>
             <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">Order History</h1>
           </div>
@@ -28,9 +26,7 @@
       <div v-if="isLoading" class="text-center py-16">
         <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md mx-auto">
           <div class="w-16 h-16 mx-auto bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center mb-6">
-            <svg class="w-8 h-8 text-blue-500 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v2.618A2 2 0 002 2.618V9a2 2 0 002-2V4.382A2 2 0 002 2.618L6.618 9.382A2 2 0 019.382 12H20a2 2 0 002 2v2.618A2 2 0 002 2.618L17.382 19.618A2 2 0 011.618 20H9a2 2 0 00-2-2V9a2 2 0 00-2-2H4.382z"></path>
-            </svg>
+            <span class="text-blue-500 animate-spin text-2xl">⏳</span>
           </div>
           <h2 class="text-2xl font-bold text-gray-800 mb-4">Loading your orders...</h2>
           <p class="text-gray-600">Please wait while we fetch your order history.</p>
@@ -41,16 +37,12 @@
       <div v-else-if="error" class="text-center py-16">
         <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md mx-auto">
           <div class="w-16 h-16 mx-auto bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center mb-6">
-            <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
+            <span class="text-red-500 text-2xl">⚠️</span>
           </div>
           <h2 class="text-2xl font-bold text-gray-800 mb-4">Error Loading Orders</h2>
           <p class="text-gray-600 mb-6">{{ error }}</p>
           <button @click="loadOrders" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-            </svg>
+            <span class="text-blue-500 text-xl">🔄</span>
             Try Again
           </button>
         </div>
@@ -60,9 +52,7 @@
       <div v-else-if="orders.length === 0" class="text-center py-16">
         <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md mx-auto">
           <div class="w-24 h-24 mx-auto bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center mb-6">
-            <svg class="w-12 h-12 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2 2v10a2 2 0 002 2h6a2 2 0 002-2V9a2 2 0 00-2-2H9z"></path>
-            </svg>
+            <span class="text-blue-500 text-xl">📋</span>
           </div>
           <h2 class="text-2xl font-bold text-gray-800 mb-4">No Orders Found</h2>
           <p class="text-gray-600 mb-6">You haven't placed any orders yet. Start shopping to create your first order!</p>
@@ -73,25 +63,19 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="flex items-center space-x-3">
                 <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-                  <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                  </svg>
+                  <span class="text-white text-xl">🛍</span>
                 </div>
                 <span class="text-gray-700">Fast and secure checkout</span>
               </div>
               <div class="flex items-center space-x-3">
                 <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
-                  <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                  </svg>
+                  <span class="text-white text-xl">💰</span>
                 </div>
                 <span class="text-gray-700">Order tracking and history</span>
               </div>
               <div class="flex items-center space-x-3">
                 <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                  </svg>
+                  <span class="text-white text-xl">📝</span>
                 </div>
                 <span class="text-gray-700">Easy reordering of past purchases</span>
               </div>
@@ -123,9 +107,7 @@
           <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-shadow duration-300">
             <div class="text-center">
               <div class="w-12 h-12 mx-auto bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-4">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2 2v10a2 2 0 002 2h6a2 2 0 002-2V9a2 2 0 00-2-2H9z"></path>
-                </svg>
+                <span class="text-blue-500 text-xl">📋</span>
               </div>
               <h3 class="text-lg font-semibold text-gray-600 mb-2">Total Orders</h3>
               <p class="text-3xl font-bold text-blue-600">{{ orders.length }}</p>
@@ -135,9 +117,7 @@
           <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-shadow duration-300">
             <div class="text-center">
               <div class="w-12 h-12 mx-auto bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mb-4">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 1.343-1.343A5.002 5.002 0 013.657 6.66l-6.314 6.314a5.002 5.002 0 016.657 3.343A5.002 5.002 0 013.657 6.66z"></path>
-                </svg>
+                <span class="text-green-500 text-xl">💰</span>
               </div>
               <h3 class="text-lg font-semibold text-gray-600 mb-2">Total Spent</h3>
               <p class="text-3xl font-bold text-green-600">Tsh {{ totalSpent.toLocaleString() }}</p>
@@ -147,9 +127,7 @@
           <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-shadow duration-300">
             <div class="text-center">
               <div class="w-12 h-12 mx-auto bg-gradient-to-br from-yellow-500 to-orange-600 rounded-xl flex items-center justify-center mb-4">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m0 0l-6-6"></path>
-                </svg>
+                <span class="text-yellow-500 text-xl">⏰</span>
               </div>
               <h3 class="text-lg font-semibold text-gray-600 mb-2">Pending Orders</h3>
               <p class="text-3xl font-bold text-yellow-600">{{ pendingOrders }}</p>
@@ -234,18 +212,14 @@
                 @click="cancelOrder(order.id)"
                 class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center"
               >
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 01-2.828 0H5a2 2 0 00-2.828 0l5.694 11.656a1 1 0 00.707.707 1.707z"></path>
-                </svg>
+                <span class="text-white text-xl">🗑️</span>
                 Cancel Order
               </button>
               <button
                 @click="reorder(order.items)"
                 class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 flex items-center"
               >
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                </svg>
+                <span class="text-white text-xl">🛒</span>
                 Reorder Items
               </button>
             </div>
