@@ -808,17 +808,23 @@ export default {
 
     // Product Management Functions
     const addProduct = async () => {
+      if (!newProduct.value.name || !newProduct.value.price) {
+        showNotificationMessage('Please fill in all required fields', 'error')
+        return
+      }
+
       isAddingProduct.value = true
+      
       try {
-        // Map category name to ID
+        // Category mapping for backend
         const categoryMap = {
-          'Electronics': 4,
-          'Phones': 5, 
-          'Laptops': 4,
-          'Accessories': 6,
-          'Other': 4
+          'Electronics': 1,
+          'Phones': 2, 
+          'Laptops': 3,
+          'Accessories': 4,
+          'Other': 5
         }
-        
+
         // Use FormData for potential image upload
         const formData = new FormData()
         formData.append('title', newProduct.value.name)
@@ -826,7 +832,7 @@ export default {
         formData.append('category', categoryMap[newProduct.value.category] || 4)
         formData.append('description', newProduct.value.description)
         formData.append('is_active', true)
-        formData.append('stock', 1) // Default stock
+        formData.append('stock', newProduct.value.stock || 1) // Use provided stock or default
         
         // Add image if provided
         if (newProduct.value.imageFile) {
