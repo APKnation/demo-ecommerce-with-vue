@@ -1082,13 +1082,37 @@ export default {
       showConfirmDialog.value = false
     }
 
-    const executeDelete = () => {
+    const executeDelete = async () => {
       if (productToDelete.value !== null) {
-        const productName = products.value[productToDelete.value].name
-        products.value.splice(productToDelete.value, 1)
-        saveProducts()
-        showNotificationMessage(`${productName} removed successfully!`)
-        cancelDelete()
+        try {
+          const token = getToken()
+          if (!token) {
+            showNotificationMessage('Authentication required to delete product', 'error')
+            return
+          }
+
+          const product = products.value[productToDelete.value]
+          const response = await fetch(`${API_BASE_URL}/products/${product.id}/`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Token ${token}`
+            }
+          })
+          
+          if (response.ok) {
+            const productName = product.name
+            products.value.splice(productToDelete.value, 1)
+            showNotificationMessage(`${productName} removed successfully!`)
+            cancelDelete()
+            await loadData() // Refresh products list
+          } else {
+            const error = await response.json()
+            showNotificationMessage('Failed to delete product: ' + JSON.stringify(error), 'error')
+          }
+        } catch (error) {
+          console.error('Error deleting product:', error)
+          showNotificationMessage('Failed to delete product', 'error')
+        }
       }
     }
 
@@ -1127,7 +1151,7 @@ export default {
           formData.append('image_url', newProduct.value.image)
         }
         
-        const response = await fetch(`${API_BASE_URL}/products/create/`, {
+        const response = await fetch(`${API_BASE_URL}/products/`, {
           method: 'POST',
           headers: {
             'Authorization': `Token ${getToken()}`
@@ -1350,15 +1374,61 @@ export default {
       closeViewModal()
     }
 
-    const saveProduct = () => {
-      const index = products.value.findIndex(p => p.name === editingProduct.value.name)
-      if (index !== -1) {
-        products.value[index] = JSON.parse(JSON.stringify(editingProduct.value))
-        saveProducts()
-        closeEditModal()
-        showNotificationMessage('Product updated successfully!')
-      } else {
-        showNotificationMessage('Product not found!', 'error')
+    const saveProduct = async () => {
+      try {
+        const token = getToken()
+        if (!token) {
+          showNotificationMessage('Authentication required to update product', 'error')
+          return
+        }
+
+        // Category mapping for backend
+        const categoryMap = {
+          'Electronics': 1,
+          'Phones': 2, 
+          'Laptops': 3,
+          'Accessories': 4,
+          'Other': 5
+        }
+
+        // Use FormData for potential image upload
+        const formData = new FormData()
+        formData.append('title', editingProduct.value.name || editingProduct.value.title)
+        formData.append('price', editingProduct.value.price)
+        formData.append('category', categoryMap[editingProduct.value.category] || 4)
+        formData.append('description', editingProduct.value.description)
+        formData.append('is_active', editingProduct.value.is_active !== false)
+        formData.append('stock', editingProduct.value.stock || 0)
+        
+        // Add image if provided
+        if (editingProduct.value.imageFile) {
+          formData.append('image', editingProduct.value.imageFile)
+        }
+
+        const response = await fetch(`${API_BASE_URL}/products/${editingProduct.value.id}/`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Token ${token}`
+          },
+          body: formData
+        })
+        
+        if (response.ok) {
+          const updatedProduct = await response.json()
+          const index = products.value.findIndex(p => p.id === editingProduct.value.id)
+          if (index !== -1) {
+            products.value[index] = updatedProduct
+          }
+          closeEditModal()
+          showNotificationMessage('Product updated successfully!')
+          await loadData() // Refresh products list
+        } else {
+          const error = await response.json()
+          showNotificationMessage('Failed to update product: ' + JSON.stringify(error), 'error')
+        }
+      } catch (error) {
+        console.error('Error updating product:', error)
+        showNotificationMessage('Failed to update product', 'error')
       }
     }
 
@@ -1393,8 +1463,11 @@ export default {
     }
 
     // Enhanced remove product function with Vue confirm
-    const deleteProduct = (index) => {
-      confirmDelete(index)
+    const deleteProduct = (productId) => {
+      const index = products.value.findIndex(p => p.id === productId)
+      if (index !== -1) {
+        confirmDelete(index)
+      }
     }
 
     // Format date function
