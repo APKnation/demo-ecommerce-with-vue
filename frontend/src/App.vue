@@ -275,7 +275,7 @@ export default {
     // Cart functions
     const addToCart = (name, price) => {
       // Debug logging
-      console.log('App.vue addToCart called with:', { name, price, typeof name })
+      console.log('App.vue addToCart called with:', { name, price, nameType: typeof name })
       
       const existingItemIndex = cart.value.findIndex(item => item.name === name)
       if (existingItemIndex !== -1) {
