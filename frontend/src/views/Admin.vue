@@ -1046,6 +1046,7 @@ export default {
     const isEditing = ref(false)
     const viewingProduct = ref(null)
     const productToDelete = ref(null)
+    const showConfirmDialog = ref(false)
 
     // Handle product image file change
     const handleProductImageChange = (event) => {
@@ -1470,7 +1471,7 @@ export default {
     }
 
     // Enhanced remove product function with Vue confirm
-    const removeProduct = (index) => {
+    const deleteProduct = (index) => {
       confirmDelete(index)
     }
 
@@ -1733,6 +1734,12 @@ export default {
       getRoleClass,
       getImageUrl,
       handleImageError,
+      // Product modal functions
+      viewProduct,
+      closeViewModal,
+      confirmDelete,
+      cancelDelete,
+      executeDelete,
       // Filter functions
       toggleFilterDropdown,
       setFilter,
@@ -1740,6 +1747,7 @@ export default {
       selectedProducts,
       currentFilter,
       filterDropdownOpen,
+      showConfirmDialog,
       // Data loading functions
       loadData,
       loadDashboardStats,
