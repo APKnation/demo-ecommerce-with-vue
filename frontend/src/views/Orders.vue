@@ -173,6 +173,10 @@
               
               <!-- Expandable Order Details -->
               <div v-show="expandedOrders.includes(order.id)" class="space-y-2">
+                <!-- Debug: Show order items structure -->
+                <div class="text-xs text-gray-500 p-2 bg-gray-100 rounded">
+                  Debug: Order items = {{ JSON.stringify(order.items, null, 2) }}
+                </div>
                 <div v-if="order.items && order.items.length > 0">
                   <div
                     v-for="(item, index) in order.items"
@@ -181,12 +185,13 @@
                   >
                     <div class="flex items-center space-x-3">
                       <img
-                        :src="item.product?.image || item.image || '/images/placeholder.jpg'"
-                        :alt="item.product?.title || item.name || 'Unknown item'"
+                        :src="getOrderItemImage(item)"
+                        :alt="item.product?.title || item.name || item.product_name || 'Unknown item'"
                         class="w-16 h-16 object-cover rounded-lg shadow-md"
+                        @error="handleImageError"
                       >
                       <div>
-                        <span class="font-medium text-gray-800">{{ item.product?.title || item.name || 'Unknown item' }}</span>
+                        <span class="font-medium text-gray-800">{{ item.product?.title || item.name || item.product_name || 'Unknown item' }}</span>
                         <span class="text-gray-600 ml-2">x{{ item.quantity || 0 }}</span>
                       </div>
                     </div>
@@ -419,6 +424,33 @@ export default {
       loadOrders()
     })
 
+    // Helper function to get order item image
+    const getOrderItemImage = (item) => {
+      // Try different possible image field locations
+      if (item.product?.image) {
+        return item.product.image
+      }
+      if (item.image) {
+        return item.image
+      }
+      if (item.product_image) {
+        return item.product_image
+      }
+      if (item.product?.image_url) {
+        return item.product.image_url
+      }
+      if (item.image_url) {
+        return item.image_url
+      }
+      // If no image found, return placeholder
+      return '/images/placeholder.jpg'
+    }
+
+    // Handle image loading errors
+    const handleImageError = (event) => {
+      event.target.src = '/images/placeholder.jpg'
+    }
+
     return {
       orders,
       isLoading,
@@ -431,7 +463,9 @@ export default {
       getStatusClass,
       cancelOrder,
       reorder,
-      toggleOrderDetails
+      toggleOrderDetails,
+      getOrderItemImage,
+      handleImageError
     }
   }
 }
