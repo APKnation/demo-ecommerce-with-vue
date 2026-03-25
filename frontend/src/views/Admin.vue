@@ -271,7 +271,7 @@
 </template>
 
 <script>
-import { ref, computed, inject, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import Swal from 'sweetalert2'
 
 export default {
@@ -384,8 +384,114 @@ export default {
       }
     }
 
-    // Notification system
-    const showNotificationMessage = inject('showNotification')
+    // Notification system - using SweetAlert directly instead of inject
+    const showNotificationMessage = (message, type = 'success') => {
+      Swal.fire({
+        icon: type === 'success' ? 'success' : type === 'error' ? 'error' : 'info',
+        title: type === 'success' ? 'Success!' : type === 'error' ? 'Error!' : 'Notification',
+        text: message,
+        position: 'top-end',
+        timer: 3000,
+        toast: true,
+        showConfirmButton: false,
+        showCancelButton: false,
+        customClass: {
+          popup: 'swal2-popup'
+        }
+      })
+    }
+
+    // Product Management Functions
+    const addProduct = async () => {
+      if (!newProduct.value.name || !newProduct.value.price) {
+        showNotificationMessage('Please fill in all required fields', 'error')
+        return
+      }
+
+      isAddingProduct.value = true
+      
+      try {
+        // Category mapping for backend
+        const categoryMap = {
+          'Electronics': 1,
+          'Phones': 2, 
+          'Laptops': 3,
+          'Accessories': 4,
+          'Other': 5
+        }
+
+        // Use FormData for potential image upload
+        const formData = new FormData()
+        formData.append('title', newProduct.value.name)
+        formData.append('price', newProduct.value.price)
+        formData.append('category', categoryMap[newProduct.value.category] || 4)
+        formData.append('description', newProduct.value.description)
+        formData.append('is_active', true)
+        formData.append('stock', newProduct.value.stock || 1) // Use provided stock or default
+        
+        // Add image if provided
+        if (newProduct.value.imageFile) {
+          formData.append('image', newProduct.value.imageFile)
+        } else if (newProduct.value.image) {
+          formData.append('image_url', newProduct.value.image)
+        }
+        
+        const response = await fetch(`${API_BASE_URL}/products/`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Token ${getToken()}` 
+            // Don't set Content-Type for FormData
+          },
+          body: formData
+        })
+        
+        if (response.ok) {
+          const newProductData = await response.json()
+          products.value.push(newProductData)
+          showNotificationMessage('Product added successfully!')
+          resetProductForm()
+          // Don't call loadData() here to prevent infinite loop
+        } else {
+          const error = await response.json()
+          showNotificationMessage('Failed to add product: ' + JSON.stringify(error), 'error')
+        }
+      } catch (error) {
+        showNotificationMessage('Failed to add product', 'error')
+      } finally {
+        isAddingProduct.value = false
+      }
+    }
+
+    const resetProductForm = () => {
+      newProduct.value = {
+        name: '',
+        price: 0,
+        category: '',
+        image: '',
+        imageFile: null,
+        description: ''
+      }
+    }
+
+    const handleImageUpload = (event) => {
+      const file = event.target.files[0]
+      if (file) {
+        imageFile.value = file
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          imagePreview.value = e.target.result
+        }
+        reader.readAsDataURL(file)
+      }
+    }
+
+    const removeImage = () => {
+      imagePreview.value = ''
+      imageFile.value = null
+      if (newProduct.value) {
+        newProduct.value.image = ''
+      }
+    }
 
     // Computed properties for dashboard
     const totalRevenue = computed(() => {
@@ -941,6 +1047,8 @@ export default {
       getRoleClass,
       getImageUrl,
       handleImageError,
+      formatDate,
+      resetProductForm,
       // Product modal functions
       viewProduct,
       closeViewModal,
