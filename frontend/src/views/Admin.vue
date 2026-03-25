@@ -1740,6 +1740,12 @@ export default {
       totalRevenue,
       totalSpend,
       pendingOrders,
+      // Modal variables
+      viewingProduct,
+      editingProduct,
+      isEditing,
+      productToDelete,
+      showConfirmDialog,
       // Product functions
       addProduct,
       deleteProduct,
@@ -1765,6 +1771,7 @@ export default {
       // Product modal functions
       viewProduct,
       closeViewModal,
+      closeEditModal,
       confirmDelete,
       cancelDelete,
       executeDelete,
@@ -1775,7 +1782,6 @@ export default {
       selectedProducts,
       currentFilter,
       filterDropdownOpen,
-      showConfirmDialog,
       // Data loading functions
       loadData,
       loadDashboardStats,
