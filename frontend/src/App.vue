@@ -197,50 +197,52 @@
           </table>
         </div>
       </div>
-    </div>
-  </div>
 </template>
 
 <script>
-import { ref, computed, inject, onMounted, provide } from 'vue'
+import { ref, computed, provide, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import Swal from 'sweetalert2'
 import { useAuth } from './composables/useAuth'
+import { useUnifiedCart } from './composables/useUnifiedCart'
+import Swal from 'sweetalert2'
 
 export default {
   name: 'App',
   setup() {
     const router = useRouter()
     const { user, isAuthenticated, logout } = useAuth()
-    const cart = ref([])
+    const unifiedCart = useUnifiedCart()
     const compareList = ref([])
     const mobileMenuOpen = ref(false)
     const compareModalOpen = ref(false)
     const notification = ref('')
     const profileMenuOpen = ref(false)
 
-    const cartCount = computed(() => {
-      return cart.value.reduce((total, item) => total + item.quantity, 0)
-    })
+    const cartCount = computed(() => unifiedCart.totalItems.value)
 
     // Load data from localStorage
     const loadData = () => {
-      // Check if we should start with a fresh cart (optional: uncomment below to always start clean)
-      // localStorage.removeItem('cart')
-      cart.value = JSON.parse(localStorage.getItem('cart')) || []
       compareList.value = JSON.parse(localStorage.getItem('compareList')) || []
       
-      // Debug: Show what's loaded
-      console.log('Cart loaded from localStorage:', cart.value)
-      console.log('Cart item count:', cart.value.length)
+      // Load unified cart (handles both guest and authenticated)
+      unifiedCart.loadCart()
+      
+      // Debug: Show cart state
+      console.log('Unified cart loaded:', unifiedCart.cartItems.value)
+      console.log('Cart type:', isAuthenticated.value ? 'Authenticated' : 'Guest')
+      console.log('Cart item count:', unifiedCart.totalItems.value)
     }
 
     // Clear cart function
-    const clearCart = () => {
-      cart.value = []
-      localStorage.removeItem('cart')
-      console.log('Cart cleared - starting fresh')
-      showNotificationMessage('Cart cleared successfully!', 'success')
+    const clearCart = async () => {
+      try {
+        await unifiedCart.clearCart()
+        console.log('Cart cleared - starting fresh')
+        showNotificationMessage('Cart cleared successfully!', 'success')
+      } catch (err) {
+        console.error('Error clearing cart:', err)
+        showNotificationMessage('Error clearing cart', 'error')
+      }
     }
 
     // Save data to localStorage
@@ -286,46 +288,34 @@ export default {
       }
     }
 
-    // Cart functions
-    const addToCart = (item) => {
-      // Handle both object and string parameters
-      let name, price
-      
-      if (typeof item === 'object' && item !== null) {
-        name = item.name || 'Unknown Product'
-        price = item.price || 0
-      } else {
-        name = item || 'Unknown Product'
-        price = 0
+    // Cart functions (unified)
+    const addToCart = async (product) => {
+      try {
+        await unifiedCart.addToCart(product)
+        const productName = product.title || product.name || 'Unknown Product'
+        showNotificationMessage(`${productName} added to cart!`)
+      } catch (err) {
+        console.error('Error adding to cart:', err)
+        showNotificationMessage('Error adding to cart', 'error')
       }
-      
-      // Debug logging
-      console.log('App.vue addToCart called with:', { name, price, nameType: typeof name })
-      
-      const existingItemIndex = cart.value.findIndex(cartItem => cartItem.name === name)
-      if (existingItemIndex !== -1) {
-        cart.value[existingItemIndex].quantity += 1
-      } else {
-        cart.value.push({ name, price, quantity: 1 })
-      }
-      saveData()
-      showNotificationMessage(`${name} added to cart!`)
     }
 
-    const removeFromCart = (index) => {
-      const itemName = cart.value[index].name
-      cart.value.splice(index, 1)
-      saveData()
-      showNotificationMessage(`${itemName} removed from cart`)
+    const removeFromCart = async (itemId) => {
+      try {
+        await unifiedCart.removeFromCart(itemId)
+        showNotificationMessage('Item removed from cart')
+      } catch (err) {
+        console.error('Error removing from cart:', err)
+        showNotificationMessage('Error removing from cart', 'error')
+      }
     }
 
-    const updateQuantity = (index, change) => {
-      cart.value[index].quantity += change
-      
-      if (cart.value[index].quantity <= 0) {
-        removeFromCart(index)
-      } else {
-        saveData()
+    const updateQuantity = async (itemId, quantity) => {
+      try {
+        await unifiedCart.updateQuantity(itemId, quantity)
+      } catch (err) {
+        console.error('Error updating quantity:', err)
+        showNotificationMessage('Error updating quantity', 'error')
       }
     }
 
@@ -392,7 +382,7 @@ export default {
     })
 
     // Provide data to child components
-    provide('cart', cart)
+    provide('cart', computed(() => unifiedCart.cartItems.value))
     provide('cartCount', cartCount)
     provide('compareList', compareList)
     provide('addToCart', addToCart)
@@ -401,7 +391,7 @@ export default {
     provide('notification', notification)
 
     return {
-      cart,
+      cart: computed(() => unifiedCart.cartItems.value),
       cartCount,
       compareList,
       mobileMenuOpen,
@@ -410,7 +400,6 @@ export default {
       profileMenuOpen,
       user,
       isAuthenticated,
-      saveData,
       addToCart,
       removeFromCart,
       updateQuantity,

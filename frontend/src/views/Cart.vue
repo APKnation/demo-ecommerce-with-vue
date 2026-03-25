@@ -203,7 +203,7 @@
 import { ref, computed, inject, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
-import { useAuthenticatedCart } from '../composables/useAuthenticatedCart'
+import { useUnifiedCart } from '../composables/useUnifiedCart'
 import Swal from 'sweetalert2'
 
 export default {
@@ -211,7 +211,7 @@ export default {
   setup() {
     const router = useRouter()
     const { isAuthenticated } = useAuth()
-    const { cartItems, totalPrice, loadCart, removeFromCart: removeFromAuthenticatedCart, updateCartItem } = useAuthenticatedCart()
+    const unifiedCart = useUnifiedCart()
     const cart = inject('cart', ref([]))
     const clearCart = inject('clearCart')
     const isProcessing = ref(false)
@@ -236,81 +236,49 @@ export default {
     }
 
     // Computed properties to handle both cart systems
-    const displayCart = computed(() => {
-      return isAuthenticated.value ? cartItems.value : cart.value
-    })
-
-    const displayTotalPrice = computed(() => {
-      return isAuthenticated.value ? totalPrice.value : cart.value.reduce((total, item) => total + (item.price * item.quantity), 0)
-    })
+    const displayCart = computed(() => unifiedCart.cartItems.value)
+    const displayTotalPrice = computed(() => unifiedCart.totalPrice.value)
 
     // Load cart based on authentication status
     const loadUserCart = async () => {
-      if (isAuthenticated.value) {
-        try {
-          isLoading.value = true
-          await loadCart()
-        } catch (err) {
-          error.value = err.message
-          showNotificationMessage('Failed to load cart', 'error')
-        } finally {
-          isLoading.value = false
-        }
+      try {
+        isLoading.value = true
+        await unifiedCart.loadCart()
+      } catch (err) {
+        error.value = err.message
+        showNotificationMessage('Failed to load cart', 'error')
+      } finally {
+        isLoading.value = false
       }
     }
 
     // Unified remove from cart function
-    const handleRemoveFromCart = async (index) => {
-      if (isAuthenticated.value) {
-        try {
-          const item = cartItems.value[index]
-          await removeFromAuthenticatedCart(item.id)
-          showNotificationMessage('Item removed from cart', 'success')
-        } catch (err) {
-          showNotificationMessage('Failed to remove item', 'error')
-        }
-      } else {
-        removeFromCart(index)
+    const handleRemoveFromCart = async (itemId) => {
+      try {
+        await unifiedCart.removeFromCart(itemId)
         showNotificationMessage('Item removed from cart', 'success')
+      } catch (err) {
+        console.error('Error removing from cart:', err)
+        showNotificationMessage('Error removing from cart', 'error')
       }
     }
 
     // Unified update quantity function
-    const handleUpdateQuantity = async (index, change) => {
-      if (isAuthenticated.value) {
-        try {
-          const item = cartItems.value[index]
-          const newQuantity = item.quantity + change
-          if (newQuantity > 0) {
-            await updateCartItem(item.id, newQuantity)
-          }
-        } catch (err) {
-          showNotificationMessage('Failed to update quantity', 'error')
-        }
-      } else {
-        updateQuantity(index, change)
+    const handleUpdateQuantity = async (itemId, newQuantity) => {
+      try {
+        await unifiedCart.updateQuantity(itemId, newQuantity)
+      } catch (err) {
+        console.error('Error updating quantity:', err)
+        showNotificationMessage('Error updating quantity', 'error')
       }
     }
 
-    const updateQuantity = (index, change) => {
-      cart.value[index].quantity += change
-      
-      if (cart.value[index].quantity <= 0) {
-        removeFromCart(index)
-      } else {
-        saveCart()
-      }
+    const updateQuantity = (itemId, newQuantity) => {
+      handleUpdateQuantity(itemId, newQuantity)
     }
 
-    const removeFromCart = (index) => {
-      const itemName = cart.value[index].name
-      cart.value.splice(index, 1)
-      saveCart()
-      showNotificationMessage(`${itemName} removed from cart`, 'success')
-    }
-
-    const saveCart = () => {
-      localStorage.setItem('cart', JSON.stringify(cart.value))
+    const removeFromCart = (itemId) => {
+      handleRemoveFromCart(itemId)
     }
 
     // Load cart on mount
