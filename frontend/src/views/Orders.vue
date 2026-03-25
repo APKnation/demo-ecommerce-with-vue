@@ -404,11 +404,13 @@ export default {
       
       const index = expandedOrders.value.indexOf(orderId)
       if (index > -1) {
-        expandedOrders.value.push(orderId)
-        console.log('Added to expanded orders:', expandedOrders.value)
-      } else {
+        // Order is expanded, so collapse it (remove from expanded list)
         expandedOrders.value.splice(index, 1)
-        console.log('Removed from expanded orders:', expandedOrders.value)
+        console.log('Collapsed order:', orderId, 'New expandedOrders:', expandedOrders.value)
+      } else {
+        // Order is collapsed, so expand it (add to expanded list)
+        expandedOrders.value.push(orderId)
+        console.log('Expanded order:', orderId, 'New expandedOrders:', expandedOrders.value)
       }
     }
 
