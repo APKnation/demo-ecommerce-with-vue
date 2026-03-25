@@ -555,7 +555,7 @@
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium text-gray-600">Total Revenue</p>
-                <p class="text-3xl font-bold text-yellow-600 mt-1">Tsh {{ totalRevenue.toLocaleString() }}</p>
+                <p class="text-3xl font-bold text-yellow-600 mt-1">Tsh {{ totalSpend.toLocaleString() }}</p>
               </div>
               <div class="bg-yellow-100 p-3 rounded-lg">
                 <span class="text-yellow-600 font-bold text-xl">💰</span>
@@ -878,11 +878,23 @@ export default {
     }
 
     const totalRevenue = computed(() => {
-      return orders.value.reduce((total, order) => total + order.total, 0)
+      return allOrders.value.reduce((total, order) => {
+        const orderTotal = Number(order.total_amount || order.total || 0)
+        return total + orderTotal
+      }, 0)
+    })
+
+    const totalSpend = computed(() => {
+      return allOrders.value
+        .filter(order => order.status === 'delivered' || order.status === 'Delivered')
+        .reduce((total, order) => {
+          const orderTotal = Number(order.total_amount || order.total || 0)
+          return total + orderTotal
+        }, 0)
     })
 
     const pendingOrders = computed(() => {
-      return orders.value.filter(order => order.status === 'Pending').length
+      return allOrders.value.filter(order => order.status === 'Pending').length
     })
 
     // View product functions
@@ -1095,6 +1107,7 @@ export default {
       selectedProducts,
       currentFilter,
       totalRevenue,
+      totalSpend,
       saveProducts,
       addProduct,
       resetProductForm,
