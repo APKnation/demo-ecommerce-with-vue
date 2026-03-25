@@ -4,8 +4,7 @@ from django.conf import settings
 class Order(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),
-        ('confirmed', 'Confirmed'),
-        ('processing', 'Processing'),
+        ('paid', 'Paid'),
         ('shipped', 'Shipped'),
         ('delivered', 'Delivered'),
         ('cancelled', 'Cancelled'),
@@ -15,7 +14,9 @@ class Order(models.Model):
     order_number = models.CharField(max_length=50, unique=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    shipping_address = models.TextField()
+    shipping_address = models.TextField(blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
+    payment_method = models.CharField(max_length=20, default='cash')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
