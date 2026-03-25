@@ -385,6 +385,130 @@
         </div>
       </div>
 
+      <!-- Vendors Section -->
+      <div v-if="activeTab === 'vendors'" class="space-y-6 sm:space-y-8">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+          <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 sm:px-8 py-4 sm:py-6">
+            <h2 class="text-xl sm:text-2xl font-bold flex items-center justify-between">
+              <span class="flex items-center">
+                <span class="mr-3">🏪</span>
+                Vendor Management
+              </span>
+              <span class="text-sm bg-white/20 px-4 py-2 rounded-full">
+                {{ allUsers.filter(u => u.role === 'vendor').length }} total vendors
+              </span>
+            </h2>
+          </div>
+          
+          <div class="p-4 sm:p-6">
+            <!-- Vendor Stats -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6">
+              <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-sm font-medium text-purple-600">Active Vendors</p>
+                    <p class="text-2xl font-bold text-purple-900">{{ allUsers.filter(u => u.role === 'vendor').length }}</p>
+                  </div>
+                  <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                    <span class="text-2xl">👤</span>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-pink-50 rounded-xl p-4 border border-pink-200">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-sm font-medium text-pink-600">Total Products</p>
+                    <p class="text-2xl font-bold text-pink-900">{{ products.filter(p => p.vendor_id).length }}</p>
+                  </div>
+                  <div class="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center">
+                    <span class="text-2xl">📦</span>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-indigo-50 rounded-xl p-4 border border-indigo-200">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-sm font-medium text-indigo-600">Pending Approval</p>
+                    <p class="text-2xl font-bold text-indigo-900">{{ products.filter(p => p.vendor_id && !p.is_approved).length }}</p>
+                  </div>
+                  <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+                    <span class="text-2xl">⏳</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Vendors Table -->
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-gray-50 border-b-2 border-gray-200">
+                  <tr>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Vendor</th>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Email</th>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Products</th>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Status</th>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Joined</th>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr v-for="vendor in allUsers.filter(u => u.role === 'vendor')" :key="vendor.id" class="hover:bg-gray-50 transition-colors">
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-white font-bold mr-3">
+                          {{ vendor.username?.charAt(0).toUpperCase() || 'V' }}
+                        </div>
+                        <div>
+                          <div class="text-sm font-bold text-gray-900">{{ vendor.username }}</div>
+                          <div class="text-xs text-gray-500">Vendor</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{{ vendor.email }}</div>
+                    </td>
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm font-bold text-purple-600">
+                        {{ products.filter(p => p.vendor_id === vendor.id).length }} products
+                      </div>
+                      <div class="text-xs text-gray-500">
+                        {{ products.filter(p => p.vendor_id === vendor.id && !p.is_approved).length }} pending
+                      </div>
+                    </td>
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <span :class="vendor.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'" 
+                            class="px-3 py-1 rounded-full text-xs font-bold">
+                        {{ vendor.is_active ? 'Active' : 'Inactive' }}
+                      </span>
+                    </td>
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{{ formatDate(vendor.date_joined) }}</div>
+                    </td>
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <div class="flex space-x-2">
+                        <button @click="viewVendorProducts(vendor)" class="px-3 py-1 bg-purple-500 text-white text-xs font-medium rounded-lg hover:bg-purple-600 transition-colors">
+                          View Products
+                        </button>
+                        <button @click="toggleVendorStatus(vendor)" :class="vendor.is_active ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'" 
+                                class="px-3 py-1 text-white text-xs font-medium rounded-lg transition-colors">
+                          {{ vendor.is_active ? 'Deactivate' : 'Activate' }}
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              <!-- Empty State -->
+              <div v-if="allUsers.filter(u => u.role === 'vendor').length === 0" class="text-center py-12">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">No vendors found</h3>
+                <p class="text-gray-600">Vendors will appear here when they register</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     <!-- View Product Modal -->
     <div v-if="viewingProduct" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div class="bg-white rounded-xl p-4 sm:p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
@@ -603,12 +727,7 @@ export default {
     const getToken = () => localStorage.getItem('token')
     const API_BASE_URL = 'http://localhost:8000/api'
     
-    const tabs = computed(() => [
-      { id: 'dashboard', name: 'Dashboard' },
-      { id: 'orders', name: 'Orders', badge: stats.value.pending_orders },
-      { id: 'users', name: 'Users' },
-      { id: 'products', name: 'Products' }
-    ])
+    const tabs = computed(() => availableTabs.value)
     
     const dashboardStats = computed(() => [
       { label: 'Total Revenue', value: `Tsh ${(stats.value.total_revenue || 0).toLocaleString()}`, bgColor: 'bg-green-100', iconColor: 'text-green-600', icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1l-1 1m-1-1l1-1m-1 1H8m8 0h-1m0 0l-1 1m1-1V6m0 2c.657 0 1.5-.895 1.5-2s-.843-2-1.5-2M8 12c-.657 0-1.5.895-1.5 2s.843 2 1.5 2m0-8c.657 0 1.5.895 1.5 2s-.843 2-1.5 2m0 0V6m0 2v2m0-4h.01M8 8v8m0-4h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' },
@@ -1278,15 +1397,156 @@ export default {
       } catch (error) { showNotificationMessage('Failed to delete user', 'error') }
     }
 
+    // Vendor management functions
+    const viewVendorProducts = (vendor) => {
+      // Filter products to show only this vendor's products
+      const vendorProducts = products.value.filter(p => p.vendor_id === vendor.id)
+      showNotificationMessage(`Viewing ${vendorProducts.length} products from ${vendor.username}`, 'info')
+      // You could open a modal or navigate to a filtered view
+    }
+
+    const toggleVendorStatus = async (vendor) => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/accounts/admin/users/${vendor.id}/`, {
+          method: 'PUT',
+          headers: { 
+            'Authorization': `Token ${getToken()}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ is_active: !vendor.is_active })
+        })
+        
+        if (response.ok) {
+          const updatedVendor = await response.json()
+          const index = allUsers.value.findIndex(u => u.id === vendor.id)
+          if (index !== -1) {
+            allUsers.value[index] = updatedVendor
+          }
+          showNotificationMessage(`Vendor ${vendor.is_active ? 'deactivated' : 'activated'} successfully!`)
+        } else {
+          showNotificationMessage('Failed to update vendor status', 'error')
+        }
+      } catch (error) {
+        showNotificationMessage('Failed to update vendor status', 'error')
+      }
+    }
+
+    const approveProduct = async (productId) => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/products/${productId}/approve/`, {
+          method: 'PUT',
+          headers: { 
+            'Authorization': `Token ${getToken()}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ is_approved: true })
+        })
+        
+        if (response.ok) {
+          const updatedProduct = await response.json()
+          const index = products.value.findIndex(p => p.id === productId)
+          if (index !== -1) {
+            products.value[index] = updatedProduct
+          }
+          showNotificationMessage('Product approved successfully!')
+        } else {
+          showNotificationMessage('Failed to approve product', 'error')
+        }
+      } catch (error) {
+        showNotificationMessage('Failed to approve product', 'error')
+      }
+    }
+
     const getStatusClass = (status) => {
       const classes = { 'Pending': 'bg-yellow-100 text-yellow-800', 'Confirmed': 'bg-blue-100 text-blue-800', 'Completed': 'bg-green-100 text-green-800', 'Cancelled': 'bg-red-100 text-red-800' }
       return classes[status] || 'bg-gray-100 text-gray-800'
     }
 
     const getRoleClass = (role) => {
-      const classes = { 'admin': 'bg-red-100 text-red-800', 'author': 'bg-blue-100 text-blue-800', 'customer': 'bg-green-100 text-green-800' }
+      const classes = { 
+        'admin': 'bg-red-100 text-red-800', 
+        'vendor': 'bg-purple-100 text-purple-800', 
+        'customer': 'bg-green-100 text-green-800' 
+      }
       return classes[role] || 'bg-gray-100 text-gray-800'
     }
+
+    // Role-based permissions
+    const userPermissions = computed(() => {
+      const user = currentUser.value
+      if (!user) return { canManageProducts: false, canViewOrders: false, canControlSystem: false, canAddProducts: false }
+      
+      switch (user.role) {
+        case 'admin':
+          return {
+            canManageProducts: true,
+            canViewOrders: true,
+            canControlSystem: true,
+            canAddProducts: true,
+            canManageUsers: true,
+            canManageVendors: true,
+            canApproveProducts: true
+          }
+        case 'vendor':
+          return {
+            canManageProducts: true,
+            canViewOrders: false,
+            canControlSystem: false,
+            canAddProducts: true,
+            canManageUsers: false,
+            canManageVendors: false,
+            canApproveProducts: false
+          }
+        case 'customer':
+          return {
+            canManageProducts: false,
+            canViewOrders: false,
+            canControlSystem: false,
+            canAddProducts: false,
+            canManageUsers: false,
+            canManageVendors: false,
+            canApproveProducts: false
+          }
+        default:
+          return {
+            canManageProducts: false,
+            canViewOrders: false,
+            canControlSystem: false,
+            canAddProducts: false,
+            canManageUsers: false,
+            canManageVendors: false,
+            canApproveProducts: false
+          }
+      }
+    })
+
+    // Filter tabs based on user permissions
+    const availableTabs = computed(() => {
+      const allTabs = [
+        { id: 'dashboard', name: 'Dashboard' },
+        { id: 'orders', name: 'Orders', badge: stats.value.pending_orders },
+        { id: 'users', name: 'Users' },
+        { id: 'products', name: 'Products' },
+        { id: 'vendors', name: 'Vendors' }
+      ]
+      
+      return allTabs.filter(tab => {
+        switch (tab.id) {
+          case 'dashboard':
+            return true // Everyone can see dashboard
+          case 'orders':
+            return userPermissions.value.canViewOrders
+          case 'users':
+            return userPermissions.value.canManageUsers
+          case 'products':
+            return userPermissions.value.canManageProducts
+          case 'vendors':
+            return userPermissions.value.canManageVendors
+          default:
+            return false
+        }
+      })
+    })
 
     // New table functionality methods
     const searchQuery = ref('')
@@ -1369,6 +1629,13 @@ export default {
       updateOrderStatus,
       // User functions
       deleteUser,
+      // Vendor functions
+      viewVendorProducts,
+      toggleVendorStatus,
+      approveProduct,
+      // Role-based variables
+      userPermissions,
+      availableTabs,
       // Utility functions
       getStatusClass,
       getRoleClass,
