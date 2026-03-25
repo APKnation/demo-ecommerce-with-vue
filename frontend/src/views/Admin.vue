@@ -566,7 +566,16 @@ export default {
     const addProduct = async () => {
       isAddingProduct.value = true
       try {
-        const response = await fetch(`${API_BASE_URL}/products/`, {
+        // Map category name to ID
+        const categoryMap = {
+          'Electronics': 4,
+          'Phones': 5, 
+          'Laptops': 4,
+          'Accessories': 6,
+          'Other': 4
+        }
+        
+        const response = await fetch(`${API_BASE_URL}/products/create/`, {
           method: 'POST',
           headers: {
             'Authorization': `Token ${getToken()}`,
@@ -575,7 +584,7 @@ export default {
           body: JSON.stringify({
             title: newProduct.value.name,
             price: newProduct.value.price,
-            category: newProduct.value.category,
+            category: categoryMap[newProduct.value.category] || 4,
             image: newProduct.value.image,
             description: newProduct.value.description
           })
@@ -608,25 +617,43 @@ export default {
       }
     }
 
-    // Load data from localStorage
-    const loadData = () => {
-      const savedProducts = localStorage.getItem('adminProducts')
-      if (savedProducts) {
-        products.value = JSON.parse(savedProducts)
-      } else {
-        // Load default products
-        products.value = [
-          { name: 'Mac Book', price: 1000000, category: 'laptops', image: '/images/w.jpg' },
-          { name: 'HP-Brand', price: 150000, category: 'laptops', image: '/images/j.jpg' },
-          { name: 'Dell', price: 200000, category: 'laptops', image: '/images/k.jpg' },
-          { name: 'Apple', price: 1000000, category: 'phones', image: '/images/d.jpg' },
-          { name: 'HP-Elite', price: 1500000, category: 'laptops', image: '/images/a.jpg' },
-          { name: 'Sony', price: 200000, category: 'accessories', image: '/images/f.jpg' },
-          { name: 'Infinix', price: 400000, category: 'phones', image: '/images/g.jpg' },
-          { name: 'iPhone', price: 1500000, category: 'phones', image: '/images/p.jpg' },
-          { name: 'Samsung', price: 3000000, category: 'phones', image: '/images/l.jpg' }
-        ]
-        saveProducts()
+    // Load data from backend API
+    const loadData = async () => {
+      try {
+        // Load products from backend
+        const productsResponse = await fetch(`${API_BASE_URL}/products/`, {
+          headers: { 'Authorization': `Token ${getToken()}` }
+        })
+        if (productsResponse.ok) {
+          products.value = await productsResponse.json()
+        } else {
+          // Fallback to localStorage if API fails
+          const savedProducts = localStorage.getItem('adminProducts')
+          if (savedProducts) {
+            products.value = JSON.parse(savedProducts)
+          } else {
+            // Load default products
+            products.value = [
+              { name: 'Mac Book', price: 1000000, category: 'laptops', image: '/images/w.jpg' },
+              { name: 'HP-Brand', price: 150000, category: 'laptops', image: '/images/j.jpg' },
+              { name: 'Dell', price: 200000, category: 'laptops', image: '/images/k.jpg' },
+              { name: 'Apple', price: 1000000, category: 'phones', image: '/images/d.jpg' },
+              { name: 'HP-Elite', price: 1500000, category: 'laptops', image: '/images/a.jpg' },
+              { name: 'Sony', price: 200000, category: 'accessories', image: '/images/f.jpg' },
+              { name: 'Infinix', price: 400000, category: 'phones', image: '/images/g.jpg' },
+              { name: 'iPhone', price: 1500000, category: 'phones', image: '/images/p.jpg' },
+              { name: 'Samsung', price: 3000000, category: 'phones', image: '/images/l.jpg' }
+            ]
+            saveProducts()
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load products:', error)
+        // Fallback to localStorage
+        const savedProducts = localStorage.getItem('adminProducts')
+        if (savedProducts) {
+          products.value = JSON.parse(savedProducts)
+        }
       }
       
       orders.value = JSON.parse(localStorage.getItem('orders')) || []
@@ -849,14 +876,15 @@ export default {
       return classes[role] || 'bg-gray-100 text-gray-800'
     }
 
-    onMounted(() => {
-      loadData()
+    onMounted(async () => {
+      await loadData()
       loadDashboardStats()
       loadAllOrders()
       loadAllUsers()
-      const userData = localStorage.getItem('user')
-      if (userData) currentUser.value = JSON.parse(userData)
     })
+
+    const userData = localStorage.getItem('user')
+    if (userData) currentUser.value = JSON.parse(userData)
 
     return {
       products,
