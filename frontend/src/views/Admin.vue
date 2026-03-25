@@ -1092,7 +1092,7 @@ export default {
           }
 
           const product = products.value[productToDelete.value]
-          const response = await fetch(`${API_BASE_URL}/products/${product.id}/`, {
+          const response = await fetch(`${API_BASE_URL}/products/${product.id}/manage/`, {
             method: 'DELETE',
             headers: {
               'Authorization': `Token ${token}`
@@ -1405,11 +1405,9 @@ export default {
           formData.append('image', editingProduct.value.imageFile)
         }
 
-        const response = await fetch(`${API_BASE_URL}/products/${editingProduct.value.id}/`, {
+        const response = await fetch(`${API_BASE_URL}/products/${editingProduct.value.id}/manage/`, {
           method: 'PUT',
-          headers: {
-            'Authorization': `Token ${token}`
-          },
+          headers: { 'Authorization': `Token ${token}` },
           body: formData
         })
         
@@ -1740,6 +1738,7 @@ export default {
       totalRevenue,
       totalSpend,
       pendingOrders,
+      isAddingProduct,
       // Modal variables
       viewingProduct,
       editingProduct,
