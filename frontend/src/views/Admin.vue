@@ -884,28 +884,6 @@ export default {
       return orders.value.filter(order => order.status === 'Pending').length
     })
 
-    // Filtered products based on search and filter
-    const filteredProducts = computed(() => {
-      let filtered = products.value
-
-      // Apply search filter
-      if (searchQuery.value) {
-        filtered = filtered.filter(product => 
-          product.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-          product.category.toLowerCase().includes(searchQuery.value.toLowerCase())
-        )
-      }
-
-      // Apply category filter
-      if (currentFilter.value === 'category') {
-        filtered = filtered.sort((a, b) => a.category.localeCompare(b.category))
-      } else if (currentFilter.value === 'price') {
-        filtered = filtered.sort((a, b) => a.price - b.price)
-      }
-
-      return filtered
-    })
-
     // View product functions
     const viewProduct = (product) => {
       viewingProduct.value = { ...product, addedDate: new Date().toISOString() }
