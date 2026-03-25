@@ -28,9 +28,21 @@ export function useOrderManagement() {
 
   // Calculate total spent
   const totalSpent = computed(() => {
-    return orders.value.reduce((total, order) => {
-      return total + (order.total_amount || order.total || 0)
+    console.log('=== ORDERS TOTAL SPENT DEBUG ===')
+    console.log('orders.value:', orders.value)
+    console.log('Number of orders:', orders.value.length)
+    
+    const total = orders.value.reduce((total, order) => {
+      const orderTotal = Number(order.total_amount || order.total || 0)
+      console.log(`Order ${order.id || 'unknown'}: ${order.total_amount || order.total || 0} -> ${orderTotal}`)
+      return total + orderTotal
     }, 0)
+    
+    console.log('Raw total:', total)
+    const roundedTotal = Math.round(total)
+    console.log('Rounded total:', roundedTotal)
+    console.log('=== END DEBUG ===')
+    return roundedTotal
   })
 
   // Calculate pending orders count
