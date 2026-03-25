@@ -1,11 +1,13 @@
 from django.core.management.base import BaseCommand
 from products.models import Product, Category
 from django.contrib.auth import get_user_model
+import requests
+from django.core.files.base import ContentFile
 
 User = get_user_model()
 
 class Command(BaseCommand):
-    help = 'Create sample products for testing'
+    help = 'Create sample products with real images'
 
     def handle(self, *args, **options):
         # Clear existing products and categories
@@ -32,9 +34,10 @@ class Command(BaseCommand):
         
         # Create categories
         categories = {
-            'laptops': 'Laptops and notebook computers',
-            'phones': 'Smartphones and mobile devices',
-            'accessories': 'Electronic accessories and peripherals'
+            'Laptops': 'Laptops and notebook computers',
+            'Phones': 'Smartphones and mobile devices',
+            'Accessories': 'Electronic accessories and peripherals',
+            'Electronics': 'Electronic devices and gadgets'
         }
         
         created_categories = {}
@@ -45,108 +48,124 @@ class Command(BaseCommand):
                 self.style.SUCCESS(f'Created category: {category.name} (ID: {category.id})')
             )
         
-        # Create sample products
+        # Create sample products with real images
         products = [
             {
-                'title': 'Mac Book',
-                'price': 1000000,
-                'description': 'High-performance laptop for professionals',
+                'title': 'MacBook Pro 14"',
+                'price': 2500000,
+                'description': 'Apple MacBook Pro with M2 Pro chip, 16GB RAM, 512GB SSD. Perfect for professionals and creators.',
                 'condition': 'new',
-                'category': created_categories['laptops'],
-                'author': admin_user,
-                'stock': 10,
-                'is_active': True
-            },
-            {
-                'title': 'HP-Brand',
-                'price': 150000,
-                'description': 'Reliable laptop for everyday use',
-                'condition': 'new',
-                'category': created_categories['laptops'],
-                'author': admin_user,
-                'stock': 15,
-                'is_active': True
-            },
-            {
-                'title': 'Dell',
-                'price': 200000,
-                'description': 'Business laptop with great performance',
-                'condition': 'new',
-                'category': created_categories['laptops'],
-                'author': admin_user,
-                'stock': 8,
-                'is_active': True
-            },
-            {
-                'title': 'Apple iPhone',
-                'price': 1000000,
-                'description': 'Latest smartphone with advanced features',
-                'condition': 'new',
-                'category': created_categories['phones'],
-                'author': admin_user,
-                'stock': 20,
-                'is_active': True
-            },
-            {
-                'title': 'HP-Elite',
-                'price': 1500000,
-                'description': 'Premium laptop for power users',
-                'condition': 'new',
-                'category': created_categories['laptops'],
+                'category': created_categories['Laptops'],
                 'author': admin_user,
                 'stock': 5,
-                'is_active': True
+                'is_active': True,
+                'image_url': 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&h=600&fit=crop'
             },
             {
-                'title': 'Sony Headphones',
-                'price': 200000,
-                'description': 'High-quality wireless headphones',
+                'title': 'iPhone 15 Pro',
+                'price': 1800000,
+                'description': 'Latest iPhone with A17 Pro chip, 48MP camera, titanium design. Premium smartphone experience.',
                 'condition': 'new',
-                'category': created_categories['accessories'],
+                'category': created_categories['Phones'],
+                'author': admin_user,
+                'stock': 8,
+                'is_active': True,
+                'image_url': 'https://images.unsplash.com/photo-1592286115803-a1c3b552ee43?w=800&h=600&fit=crop'
+            },
+            {
+                'title': 'Sony WH-1000XM5',
+                'price': 450000,
+                'description': 'Premium noise-cancelling headphones with 30-hour battery life, superior sound quality.',
+                'condition': 'new',
+                'category': created_categories['Accessories'],
+                'author': admin_user,
+                'stock': 15,
+                'is_active': True,
+                'image_url': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&h=600&fit=crop'
+            },
+            {
+                'title': 'Dell XPS 15',
+                'price': 2200000,
+                'description': 'High-performance laptop with Intel Core i7, 32GB RAM, 1TB SSD, 4K display. Excellent for creative work.',
+                'condition': 'new',
+                'category': created_categories['Laptops'],
+                'author': admin_user,
+                'stock': 3,
+                'is_active': True,
+                'image_url': 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&h=600&fit=crop'
+            },
+            {
+                'title': 'Samsung Galaxy S24 Ultra',
+                'price': 1600000,
+                'description': 'Flagship Android phone with S Pen, 200MP camera, Snapdragon 8 Gen 3. Ultimate smartphone.',
+                'condition': 'new',
+                'category': created_categories['Phones'],
+                'author': admin_user,
+                'stock': 6,
+                'is_active': True,
+                'image_url': 'https://images.unsplash.com/photo-1592286115803-a1c3b552ee43?w=800&h=600&fit=crop'
+            },
+            {
+                'title': 'Logitech MX Master 3S',
+                'price': 180000,
+                'description': 'Advanced wireless mouse with precision scrolling, ergonomic design, multi-device connectivity.',
+                'condition': 'new',
+                'category': created_categories['Accessories'],
+                'author': admin_user,
+                'stock': 20,
+                'is_active': True,
+                'image_url': 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800&h=600&fit=crop'
+            },
+            {
+                'title': 'iPad Air',
+                'price': 900000,
+                'description': 'Apple iPad Air with M1 chip, 10.9-inch display, 64GB storage. Perfect tablet for work and entertainment.',
+                'condition': 'new',
+                'category': created_categories['Electronics'],
+                'author': admin_user,
+                'stock': 10,
+                'is_active': True,
+                'image_url': 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=800&h=600&fit=crop'
+            },
+            {
+                'title': 'AirPods Pro 2',
+                'price': 350000,
+                'description': 'Apple wireless earbuds with active noise cancellation, spatial audio, 6-hour battery life.',
+                'condition': 'new',
+                'category': created_categories['Accessories'],
                 'author': admin_user,
                 'stock': 25,
-                'is_active': True
-            },
-            {
-                'title': 'Infinix Smartphone',
-                'price': 400000,
-                'description': 'Budget-friendly smartphone with good features',
-                'condition': 'new',
-                'category': created_categories['phones'],
-                'author': admin_user,
-                'stock': 30,
-                'is_active': True
-            },
-            {
-                'title': 'iPhone Pro',
-                'price': 1500000,
-                'description': 'Professional smartphone with advanced camera',
-                'condition': 'new',
-                'category': created_categories['phones'],
-                'author': admin_user,
-                'stock': 12,
-                'is_active': True
-            },
-            {
-                'title': 'Samsung Galaxy',
-                'price': 3000000,
-                'description': 'Flagship smartphone with premium features',
-                'condition': 'new',
-                'category': created_categories['phones'],
-                'author': admin_user,
-                'stock': 7,
-                'is_active': True
+                'is_active': True,
+                'image_url': 'https://images.unsplash.com/photo-1606236517996-35c9ac89b5e0?w=800&h=600&fit=crop'
             }
         ]
         
         created_count = 0
         for product_data in products:
-            product = Product.objects.create(**product_data)
-            created_count += 1
-            self.stdout.write(
-                self.style.SUCCESS(f'Created product: {product.title} (ID: {product.id})')
-            )
+            try:
+                # Download image
+                image_url = product_data.pop('image_url', None)
+                image_content = None
+                
+                if image_url:
+                    response = requests.get(image_url, timeout=30)
+                    if response.status_code == 200:
+                        image_name = f"{product_data['title'].lower().replace(' ', '_').replace('/', '_')}.jpg"
+                        image_content = ContentFile(response.content, name=image_name)
+                        self.stdout.write(f'Downloaded image for {product_data["title"]}')
+                
+                # Create product
+                product = Product.objects.create(**product_data, image=image_content)
+                created_count += 1
+                self.stdout.write(
+                    self.style.SUCCESS(f'Created product: {product.title} (ID: {product.id})')
+                )
+                
+            except Exception as e:
+                self.stdout.write(
+                    self.style.ERROR(f'Error creating product {product_data["title"]}: {str(e)}')
+                )
         
         self.stdout.write(
-            self.style.SUCCESS(f'Successfully created {created_count} products!')
+            self.style.SUCCESS(f'Successfully created {created_count} products with real images!')
         )

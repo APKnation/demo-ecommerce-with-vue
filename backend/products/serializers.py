@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.conf import settings
 from .models import Category, Product, ProductImage
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -7,15 +8,26 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'description', 'created_at']
 
 class ProductImageSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+    
     class Meta:
         model = ProductImage
         fields = ['id', 'image', 'alt_text']
+    
+    def get_image(self, obj):
+        if obj.image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.image.url)
+            return f"{settings.MEDIA_URL}{obj.image.name}"
+        return None
 
 class ProductSerializer(serializers.ModelSerializer):
     author = serializers.StringRelatedField(read_only=True)
     category = CategorySerializer(read_only=True)
     category_id = serializers.IntegerField(write_only=True, required=False, allow_null=True)
     images = ProductImageSerializer(many=True, read_only=True)
+    image = serializers.SerializerMethodField()
     is_in_stock = serializers.BooleanField(read_only=True)
     
     class Meta:
@@ -25,6 +37,14 @@ class ProductSerializer(serializers.ModelSerializer):
             'author', 'image', 'images', 'stock', 'is_active', 'is_in_stock', 'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'author', 'created_at', 'updated_at']
+    
+    def get_image(self, obj):
+        if obj.image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.image.url)
+            return f"{settings.MEDIA_URL}{obj.image.name}"
+        return None
 
 class ProductCreateSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, required=False)

@@ -1026,13 +1026,18 @@ export default {
       if (!imagePath) return '/images/placeholder.jpg'
       
       // If it's already a full URL, return as is
-      if (imagePath.startsWith('http')) {
+      if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
         return imagePath
       }
       
-      // If it's a backend media path, construct full URL
+      // If it's a backend media URL, return as is
       if (imagePath.startsWith('/media/')) {
         return `http://localhost:8000${imagePath}`
+      }
+      
+      // If it's a full URL from backend, return as is
+      if (imagePath.includes('localhost:8000')) {
+        return imagePath
       }
       
       // If it's a relative path starting with /images/, use as is
