@@ -244,9 +244,10 @@
         >
           <div class="relative overflow-hidden rounded-t-lg">
             <img
-              :src="product.image || '/images/placeholder.jpg'"
+              :src="product.image || product.images?.[0] || `/images/${getProductImage(product.title || product.name)}`"
               :alt="product.title || product.name"
               class="w-full h-48 object-cover rounded-t-lg mb-4 group-hover:scale-110 transition-transform duration-500"
+              @error="handleImageError"
             >
             <!-- Image Overlay Effect -->
             <div class="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-orange-200/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-t-lg"></div>
@@ -497,6 +498,41 @@ export default {
       }
     }
 
+    // Helper function to map product names to image files
+    const getProductImage = (productName) => {
+      const imageMap = {
+        'Mac Book': 'w.jpg',
+        'HP-Brand': 'j.jpg', 
+        'Dell': 'k.jpg',
+        'Apple iPhone': 'd.jpg',
+        'iPhone': 'd.jpg',
+        'HP-Elite': 'a.jpg',
+        'Sony Headphones': 'f.jpg',
+        'Sony': 'f.jpg',
+        'Infinix Smartphone': 'g.jpg',
+        'Infinix': 'g.jpg',
+        'iPhone Pro': 'p.jpg',
+        'Samsung Galaxy': 'l.jpg',
+        'Samsung': 'l.jpg'
+      }
+      
+      // Find matching image by checking if product name contains any key
+      for (const [key, image] of Object.entries(imageMap)) {
+        if (productName.toLowerCase().includes(key.toLowerCase())) {
+          return image
+        }
+      }
+      
+      // Default fallback images
+      const defaultImages = ['Computer.jpeg', 'iPhone.jpg', 'watch1.jpeg']
+      return defaultImages[Math.floor(Math.random() * defaultImages.length)]
+    }
+
+    // Handle image loading errors
+    const handleImageError = (event) => {
+      event.target.src = '/images/Computer.jpeg'
+    }
+
     return {
       searchTerm,
       categoryFilter,
@@ -511,7 +547,9 @@ export default {
       addToCart,
       filteredProducts,
       filterProducts,
-      likeProduct
+      likeProduct,
+      getProductImage,
+      handleImageError
     }
   }
 }
