@@ -182,29 +182,49 @@
     <!-- Orders Management Section -->
     <div v-if="activeTab === 'orders'" class="mt-8">
       <div class="bg-white rounded-xl shadow-lg p-6">
-        <h2 class="text-2xl font-bold mb-4">Order Management</h2>
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold">Order Management</h2>
+          <div class="flex gap-4">
+            <select v-model="orderStatusFilter" class="border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500">
+              <option value="all">All Orders</option>
+              <option value="Pending">Pending</option>
+              <option value="Confirmed">Confirmed</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div>
         <div class="overflow-x-auto">
           <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
               <tr>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order #</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Items</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="order in allOrders" :key="order.id">
+              <tr v-for="order in filteredOrdersList" :key="order.id">
                 <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ order.order_number || order.id }}</td>
-                <td class="px-6 py-4 text-sm text-gray-500">{{ order.customer?.username }}</td>
-                <td class="px-6 py-4 text-sm text-gray-900">Tsh {{ Number(order.total_amount || order.total).toLocaleString() }}</td>
+                <td class="px-6 py-4 text-sm text-gray-500">{{ order.customer?.username || 'Unknown' }}</td>
+                <td class="px-6 py-4 text-sm text-gray-500">{{ order.items?.length || 0 }} items</td>
+                <td class="px-6 py-4 text-sm text-gray-900 font-semibold">Tsh {{ Number(order.total_amount || order.total).toLocaleString() }}</td>
                 <td class="px-6 py-4">
                   <span :class="getStatusClass(order.status)">{{ order.status }}</span>
                 </td>
+                <td class="px-6 py-4 text-sm text-gray-500">{{ formatDate(order.created_at || order.date) }}</td>
                 <td class="px-6 py-4 text-sm">
-                  <button v-if="order.status === 'Pending'" @click="confirmOrder(order.id)" class="bg-green-500 text-white px-3 py-1 rounded text-xs mr-2">Confirm</button>
-                  <button v-if="order.status === 'Pending'" @click="cancelOrder(order.id)" class="bg-red-500 text-white px-3 py-1 rounded text-xs">Cancel</button>
+                  <div class="flex flex-wrap gap-2">
+                    <button @click="viewOrderDetails(order)" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-xs">View</button>
+                    <button v-if="order.status === 'Pending'" @click="confirmOrder(order.id)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs">Confirm</button>
+                    <button v-if="order.status === 'Confirmed'" @click="completeOrder(order.id)" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs">Complete</button>
+                    <button v-if="['Pending', 'Confirmed'].includes(order.status)" @click="cancelOrder(order.id)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">Cancel</button>
+                    <button v-if="order.status !== 'Cancelled'" @click="deleteOrder(order.id)" class="bg-gray-700 hover:bg-gray-800 text-white px-3 py-1 rounded text-xs">Delete</button>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -488,6 +508,65 @@
         </div>
       </div>
     </div>
+    
+    <!-- Order Details Modal -->
+    <div v-if="selectedOrder" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">Order Details #{{ selectedOrder.order_number || selectedOrder.id }}</h3>
+          <button @click="selectedOrder = null" class="text-gray-500 hover:text-gray-700">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <p class="text-sm text-gray-600">Customer</p>
+              <p class="font-medium">{{ selectedOrder.customer?.username || 'Unknown' }}</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600">Status</p>
+              <span :class="getStatusClass(selectedOrder.status)">{{ selectedOrder.status }}</span>
+            </div>
+          </div>
+          <div>
+            <p class="text-sm text-gray-600 mb-2">Items</p>
+            <div class="bg-gray-50 rounded-lg p-4 space-y-2">
+              <div v-for="item in selectedOrder.items" :key="item.id" class="flex justify-between items-center py-2 border-b last:border-0">
+                <div class="flex items-center space-x-3">
+                  <img v-if="item.product?.image || item.image" :src="item.product?.image || item.image" class="w-12 h-12 object-cover rounded" />
+                  <div>
+                    <p class="font-medium">{{ item.product?.title || item.name }}</p>
+                    <p class="text-sm text-gray-500">Qty: {{ item.quantity }}</p>
+                  </div>
+                </div>
+                <span class="font-semibold">Tsh {{ Number(item.price).toLocaleString() }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-between items-center pt-4 border-t">
+            <div>
+              <p class="text-sm text-gray-600">Order Date</p>
+              <p class="font-medium">{{ formatDate(selectedOrder.created_at || selectedOrder.date) }}</p>
+            </div>
+            <div class="text-right">
+              <p class="text-sm text-gray-600">Total Amount</p>
+              <p class="text-2xl font-bold text-blue-600">
+                Tsh {{ Number(selectedOrder.total_amount || selectedOrder.total).toLocaleString() }}
+              </p>
+            </div>
+          </div>
+          <div class="flex justify-end space-x-3 pt-4">
+            <button @click="selectedOrder = null" class="px-4 py-2 border rounded-lg hover:bg-gray-50">Close</button>
+            <button v-if="selectedOrder.status === 'Pending'" @click="confirmOrder(selectedOrder.id); selectedOrder = null" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Confirm</button>
+            <button v-if="selectedOrder.status === 'Confirmed'" @click="completeOrder(selectedOrder.id); selectedOrder = null" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Complete</button>
+            <button v-if="['Pending', 'Confirmed'].includes(selectedOrder.status)" @click="cancelOrder(selectedOrder.id); selectedOrder = null" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -505,6 +584,8 @@ export default {
     const stats = ref({})
     const currentUser = ref(null)
     const activeTab = ref('dashboard')
+    const orderStatusFilter = ref('all')
+    const selectedOrder = ref(null)
     const API_BASE_URL = 'http://localhost:8000/api'
     
     const getToken = () => localStorage.getItem('token')
@@ -522,6 +603,11 @@ export default {
       { label: 'Total Products', value: stats.value.total_products || 0, bgColor: 'bg-orange-100', iconColor: 'text-orange-600', icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4' },
       { label: 'Total Revenue', value: `Tsh ${Number(stats.value.total_revenue || 0).toLocaleString()}`, bgColor: 'bg-purple-100', iconColor: 'text-purple-600', icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z' }
     ])
+
+    const filteredOrdersList = computed(() => {
+      if (orderStatusFilter.value === 'all') return allOrders.value
+      return allOrders.value.filter(order => order.status === orderStatusFilter.value)
+    })
 
     const newProduct = ref({
       name: '',
@@ -775,6 +861,40 @@ export default {
       } catch (error) { showNotificationMessage('Failed to cancel order', 'error') }
     }
 
+    const completeOrder = async (orderId) => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/accounts/admin/orders/${orderId}/`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Token ${getToken()}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'Completed' })
+        })
+        if (response.ok) {
+          showNotificationMessage('Order completed successfully!')
+          loadAllOrders()
+          loadDashboardStats()
+        }
+      } catch (error) { showNotificationMessage('Failed to complete order', 'error') }
+    }
+
+    const deleteOrder = async (orderId) => {
+      if (!confirm('Are you sure you want to delete this order?')) return
+      try {
+        const response = await fetch(`${API_BASE_URL}/accounts/admin/orders/${orderId}/`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Token ${getToken()}` }
+        })
+        if (response.ok) {
+          showNotificationMessage('Order deleted successfully!')
+          allOrders.value = allOrders.value.filter(o => o.id !== orderId)
+          loadDashboardStats()
+        }
+      } catch (error) { showNotificationMessage('Failed to delete order', 'error') }
+    }
+
+    const viewOrderDetails = (order) => {
+      selectedOrder.value = order
+    }
+
     const deleteUser = async (userId) => {
       if (!confirm('Are you sure you want to delete this user?')) return
       try {
@@ -851,6 +971,12 @@ export default {
       loadAllUsers,
       confirmOrder,
       cancelOrder,
+      completeOrder,
+      deleteOrder,
+      viewOrderDetails,
+      selectedOrder,
+      orderStatusFilter,
+      filteredOrdersList,
       deleteUser,
       getStatusClass,
       getRoleClass
