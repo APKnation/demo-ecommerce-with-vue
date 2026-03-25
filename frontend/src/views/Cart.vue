@@ -17,6 +17,13 @@
             <span class="text-neutral-500">{{ cart.length }} item{{ cart.length !== 1 ? 's' : '' }}</span>
             <span class="text-neutral-400">•</span>
             <span class="font-semibold text-neutral-700">Tsh {{ totalPrice.toLocaleString() }}</span>
+            <button
+              v-if="cart.length > 0"
+              @click="clearCart"
+              class="ml-4 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-600 transition-colors duration-300"
+            >
+              Clear Cart
+            </button>
           </div>
         </div>
       </div>
@@ -206,6 +213,7 @@ export default {
     const { isAuthenticated } = useAuth()
     const { cartItems, totalPrice, loadCart, removeFromCart: removeFromAuthenticatedCart, updateCartItem } = useAuthenticatedCart()
     const cart = inject('cart', ref([]))
+    const clearCart = inject('clearCart')
     const isProcessing = ref(false)
     const isLoading = ref(false)
     const error = ref('')

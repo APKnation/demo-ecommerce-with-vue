@@ -225,8 +225,22 @@ export default {
 
     // Load data from localStorage
     const loadData = () => {
+      // Check if we should start with a fresh cart (optional: uncomment below to always start clean)
+      // localStorage.removeItem('cart')
       cart.value = JSON.parse(localStorage.getItem('cart')) || []
       compareList.value = JSON.parse(localStorage.getItem('compareList')) || []
+      
+      // Debug: Show what's loaded
+      console.log('Cart loaded from localStorage:', cart.value)
+      console.log('Cart item count:', cart.value.length)
+    }
+
+    // Clear cart function
+    const clearCart = () => {
+      cart.value = []
+      localStorage.removeItem('cart')
+      console.log('Cart cleared - starting fresh')
+      showNotificationMessage('Cart cleared successfully!', 'success')
     }
 
     // Save data to localStorage
@@ -389,6 +403,7 @@ export default {
     provide('compareList', compareList)
     provide('addToCart', addToCart)
     provide('addToCompare', addToCompare)
+    provide('clearCart', clearCart)
     provide('notification', notification)
 
     return {
