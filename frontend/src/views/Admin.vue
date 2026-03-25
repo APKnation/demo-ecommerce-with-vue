@@ -297,41 +297,94 @@
     <!-- Products Tab (existing content wrapped) -->
     <div v-if="activeTab === 'products'" class="mt-8">
       <!-- Product Management Header -->
-      <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6 mb-8">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h2 class="text-2xl font-bold text-gray-800">Product Management</h2>
-            <p class="text-gray-600 mt-1">Manage your store inventory</p>
+      <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-8">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          <div class="flex items-center space-x-4">
+            <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
+              <span class="text-white text-2xl">📦</span>
+            </div>
+            <div>
+              <h2 class="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">Product Inventory</h2>
+              <p class="text-gray-600 mt-1">Manage your store inventory with ease</p>
+            </div>
           </div>
-          <div class="flex flex-col sm:flex-row gap-3">
+          <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
             <div class="relative">
               <input
                 v-model="productSearchQuery"
                 type="text"
-                placeholder="Search products..."
-                class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full sm:w-64"
+                placeholder="🔍 Search products..."
+                class="pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 w-full sm:w-80 shadow-sm hover:shadow-md"
               >
-              <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
+              <span class="absolute left-4 top-3.5 text-gray-400 text-lg">🔍</span>
             </div>
             <select
               v-model="productCategoryFilter"
-              class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md bg-white"
             >
-              <option value="">All Categories</option>
-              <option value="Electronics">Electronics</option>
-              <option value="Phones">Phones</option>
-              <option value="Laptops">Laptops</option>
-              <option value="Accessories">Accessories</option>
-              <option value="Other">Other</option>
+              <option value="">📂 All Categories</option>
+              <option value="Electronics">💻 Electronics</option>
+              <option value="Phones">📱 Phones</option>
+              <option value="Laptops">💻 Laptops</option>
+              <option value="Accessories">🎧 Accessories</option>
+              <option value="Other">📦 Other</option>
             </select>
             <select
               v-model="productStatusFilter"
-              class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md bg-white"
             >
-              <option value="">All Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
+              <option value="">🎯 All Status</option>
+              <option value="active">✅ Active</option>
+              <option value="inactive">❌ Inactive</option>
             </select>
+          </div>
+        </div>
+        
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+          <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-blue-600 text-sm font-medium">Total Products</p>
+                <p class="text-2xl font-bold text-blue-900">{{ products.length }}</p>
+              </div>
+              <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
+                <span class="text-white text-xl">📦</span>
+              </div>
+            </div>
+          </div>
+          <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 border border-green-200">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-green-600 text-sm font-medium">Active</p>
+                <p class="text-2xl font-bold text-green-900">{{ products.filter(p => p.is_active).length }}</p>
+              </div>
+              <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
+                <span class="text-white text-xl">✅</span>
+              </div>
+            </div>
+          </div>
+          <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl p-4 border border-yellow-200">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-yellow-600 text-sm font-medium">Low Stock</p>
+                <p class="text-2xl font-bold text-yellow-900">{{ products.filter(p => p.stock > 0 && p.stock <= 10).length }}</p>
+              </div>
+              <div class="w-12 h-12 bg-yellow-500 rounded-xl flex items-center justify-center">
+                <span class="text-white text-xl">⚠️</span>
+              </div>
+            </div>
+          </div>
+          <div class="bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-4 border border-red-200">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-red-600 text-sm font-medium">Out of Stock</p>
+                <p class="text-2xl font-bold text-red-900">{{ products.filter(p => p.stock === 0).length }}</p>
+              </div>
+              <div class="w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center">
+                <span class="text-white text-xl">🚫</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -339,145 +392,281 @@
       <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
         <!-- Add Product Section -->
         <div class="xl:col-span-2">
-          <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-            <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-4">
-              <h2 class="text-xl font-semibold flex items-center">
-                <span class="mr-2">➕</span>
+          <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+            <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-6">
+              <h2 class="text-2xl font-bold flex items-center">
+                <span class="mr-3">➕</span>
                 Add New Product
               </h2>
+              <p class="text-purple-100 mt-2">Expand your inventory with new products</p>
             </div>
-            <form @submit.prevent="addProduct" class="p-6">
+            <form @submit.prevent="addProduct" class="p-8">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Product Name</label>
+                  <label class="block text-sm font-bold text-gray-700 mb-3 flex items-center">
+                    <span class="mr-2">📝</span> Product Name
+                  </label>
                   <input
                     v-model="newProduct.name"
                     type="text"
                     required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md"
                     placeholder="Enter product name"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Price (Tsh)</label>
+                  <label class="block text-sm font-bold text-gray-700 mb-3 flex items-center">
+                    <span class="mr-2">💰</span> Price (Tsh)
+                  </label>
                   <input
                     v-model.number="newProduct.price"
                     type="number"
                     required
                     min="0"
                     step="0.01"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md"
                     placeholder="Enter price"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                  <label class="block text-sm font-bold text-gray-700 mb-3 flex items-center">
+                    <span class="mr-2">📂</span> Category
+                  </label>
                   <select
                     v-model="newProduct.category"
                     required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md bg-white"
                   >
                     <option value="">Select category</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Phones">Phones</option>
-                    <option value="Laptops">Laptops</option>
-                    <option value="Accessories">Accessories</option>
-                    <option value="Other">Other</option>
+                    <option value="Electronics">💻 Electronics</option>
+                    <option value="Phones">📱 Phones</option>
+                    <option value="Laptops">💻 Laptops</option>
+                    <option value="Accessories">🎧 Accessories</option>
+                    <option value="Other">📦 Other</option>
                   </select>
                 </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Product Image</label>
-                <div class="space-y-2">
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-3 flex items-center">
+                    <span class="mr-2">📊</span> Stock Quantity
+                  </label>
+                  <input
+                    v-model.number="newProduct.stock"
+                    type="number"
+                    required
+                    min="0"
+                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md"
+                    placeholder="Enter stock quantity"
+                  />
+                </div>
+              </div>
+              
+              <div class="mt-6">
+                <label class="block text-sm font-bold text-gray-700 mb-3 flex items-center">
+                  <span class="mr-2">📄</span> Description
+                </label>
+                <textarea
+                  v-model="newProduct.description"
+                  rows="4"
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md"
+                  placeholder="Enter product description"
+                ></textarea>
+              </div>
+              
+              <div class="mt-6">
+                <label class="block text-sm font-bold text-gray-700 mb-3 flex items-center">
+                  <span class="mr-2">🖼️</span> Product Image
+                </label>
+                <div class="space-y-3">
                   <input
                     v-model="newProduct.image"
                     type="url"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md"
                     placeholder="Enter image URL (optional)"
                   />
-                  <div class="text-sm text-gray-500 text-center">OR</div>
+                  <div class="text-center">
+                    <span class="text-gray-500 text-sm">OR</span>
+                  </div>
                   <input
                     type="file"
-                    accept="image/*"
                     @change="handleProductImageChange"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    accept="image/*"
+                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
                   />
-                  <p class="text-xs text-gray-500">Upload image from your device</p>
+                  <p class="text-xs text-gray-500 text-center">Upload image from your device</p>
                 </div>
               </div>
-            </div>
-            <div class="mt-6">
-              <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
-              <textarea
-                v-model="newProduct.description"
-                rows="3"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Enter product description"
-              ></textarea>
-            </div>
-            <div class="mt-6 flex justify-end space-x-3">
-              <button
-                type="button"
-                @click="resetProductForm"
-                class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-              >
-                Reset
-              </button>
-              <button
-                type="submit"
-                :disabled="isAddingProduct"
-                class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <span v-if="isAddingProduct">Adding...</span>
-                <span v-else>Add Product</span>
-              </button>
-            </div>
-          </form>
-        </div>
-        
-        <!-- Product List -->
-        <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden mt-8">
-          <div class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-4">
-            <h2 class="text-xl font-semibold flex items-center justify-between">
-              <span>
-                <span class="mr-2">📦</span>
-                Product Inventory ({{ filteredProducts.length }} items)
-              </span>
-              <span class="text-sm bg-white/20 px-3 py-1 rounded-full">
-                {{ filteredProducts.length }} of {{ products.length }} products
-              </span>
-            </h2>
+              
+              <div class="mt-8 flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4">
+                <button
+                  type="button"
+                  @click="resetProductForm"
+                  class="px-6 py-3 border-2 border-gray-300 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium"
+                >
+                  🔄 Reset
+                </button>
+                <button
+                  type="submit"
+                  :disabled="isAddingProduct"
+                  class="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
+                >
+                  <span v-if="isAddingProduct" class="flex items-center">
+                    <span class="animate-spin mr-2">⏳</span>
+                    Adding...
+                  </span>
+                  <span v-else class="flex items-center">
+                    <span class="mr-2">➕</span>
+                    Add Product
+                  </span>
+                </button>
+              </div>
+            </form>
           </div>
           
-          <div class="overflow-x-auto">
-            <table class="w-full">
-              <thead class="bg-gray-50 border-b">
-                <tr>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                <tr v-for="product in filteredProducts" :key="product.id" class="hover:bg-gray-50">
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center space-x-4">
-                      <div class="relative">
+          <!-- Product List - Modern Card Layout -->
+          <div class="mt-8">
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+              <div class="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-6">
+                <h2 class="text-2xl font-bold flex items-center justify-between">
+                  <span class="flex items-center">
+                    <span class="mr-3">📦</span>
+                    Product Inventory
+                  </span>
+                  <span class="text-sm bg-white/20 px-4 py-2 rounded-full">
+                    {{ filteredProducts.length }} of {{ products.length }} products
+                  </span>
+                </h2>
+              </div>
+              
+              <!-- Responsive Product Grid -->
+              <div class="p-6">
+                <!-- Desktop Table View -->
+                <div class="hidden lg:block">
+                  <div class="overflow-x-auto">
+                    <table class="w-full">
+                      <thead class="bg-gray-50 border-b-2 border-gray-200">
+                        <tr>
+                          <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Product</th>
+                          <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Price</th>
+                          <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Stock</th>
+                          <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Status</th>
+                          <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody class="bg-white divide-y divide-gray-200">
+                        <tr v-for="product in filteredProducts" :key="product.id" class="hover:bg-gray-50 transition-colors duration-200">
+                          <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center space-x-4">
+                              <div class="relative">
+                                <img 
+                                  v-if="product.image && product.image !== '' && product.image !== '/images/placeholder.jpg'" 
+                                  :src="getImageUrl(product.image)" 
+                                  :alt="product.name || 'Product'" 
+                                  class="w-16 h-16 object-cover rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
+                                  @error="handleImageError"
+                                >
+                                <div v-else class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center shadow-md">
+                                  <span class="text-2xl">📦</span>
+                                </div>
+                                <!-- Stock indicator badge -->
+                                <div :class="[
+                                  'absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold',
+                                  product.stock > 10 ? 'bg-green-500' : 
+                                  product.stock > 0 ? 'bg-yellow-500' : 
+                                  'bg-red-500'
+                                ]">
+                                  <span class="text-white">{{ product.stock || 0 }}</span>
+                                </div>
+                              </div>
+                              <div class="flex-1">
+                                <h4 class="text-sm font-bold text-gray-900 mb-1 line-clamp-1">{{ product.name || product.title || 'Unnamed Product' }}</h4>
+                                <p class="text-xs text-gray-600 line-clamp-2 mb-2">{{ product.description || 'No description available' }}</p>
+                                <div class="flex items-center space-x-2">
+                                  <span class="px-2 py-1 text-xs font-medium rounded-full bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 border border-blue-300">
+                                    {{ product.category }}
+                                  </span>
+                                  <span :class="[
+                                    'px-2 py-1 text-xs font-medium rounded-full',
+                                    product.is_active ? 'bg-green-100 text-green-800 border border-green-300' : 'bg-red-100 text-red-800 border border-red-300'
+                                  ]">
+                                    {{ product.is_active ? 'Active' : 'Inactive' }}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-lg font-bold text-transparent bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text">
+                              Tsh {{ Number(product.price).toLocaleString() }}
+                            </div>
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center space-x-2">
+                              <span :class="[
+                                'px-3 py-1 text-sm font-bold rounded-full border',
+                                product.stock > 10 ? 'bg-green-100 text-green-800 border-green-300' : 
+                                product.stock > 0 ? 'bg-yellow-100 text-yellow-800 border-yellow-300' : 
+                                'bg-red-100 text-red-800 border-red-300'
+                              ]">
+                                {{ product.stock || 0 }} units
+                              </span>
+                              <span v-if="product.stock <= 10 && product.stock > 0" class="text-xs text-yellow-600 font-medium">
+                                ⚠️ Low Stock
+                              </span>
+                              <span v-if="product.stock === 0" class="text-xs text-red-600 font-medium">
+                                🚫 Out of Stock
+                              </span>
+                            </div>
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap">
+                            <span :class="[
+                              'px-3 py-1 text-sm font-semibold rounded-full border',
+                              product.is_active ? 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border-green-300' : 'bg-gradient-to-r from-red-100 to-rose-100 text-red-800 border-red-300'
+                            ]">
+                              {{ product.is_active ? '✅ Active' : '❌ Inactive' }}
+                            </span>
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex flex-col space-y-2">
+                              <div class="flex space-x-2">
+                                <button @click="viewProduct(product)" class="px-3 py-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-sm hover:shadow-md">
+                                  👁️ View
+                                </button>
+                                <button @click="editProduct(product)" class="px-3 py-1 bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-medium rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-sm hover:shadow-md">
+                                  ✏️ Edit
+                                </button>
+                              </div>
+                              <button @click="deleteProduct(product.id)" class="px-3 py-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-medium rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-sm hover:shadow-md">
+                                🗑️ Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                
+                <!-- Mobile Card View -->
+                <div class="lg:hidden space-y-4">
+                  <div 
+                    v-for="product in filteredProducts" 
+                    :key="product.id"
+                    class="bg-white border-2 border-gray-200 rounded-2xl p-4 hover:shadow-lg transition-all duration-300 hover:border-purple-300"
+                  >
+                    <div class="flex items-start space-x-4">
+                      <div class="relative flex-shrink-0">
                         <img 
                           v-if="product.image && product.image !== '' && product.image !== '/images/placeholder.jpg'" 
                           :src="getImageUrl(product.image)" 
                           :alt="product.name || 'Product'" 
-                          class="w-16 h-16 object-cover rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
+                          class="w-20 h-20 object-cover rounded-xl shadow-md"
                           @error="handleImageError"
                         >
-                        <div v-else class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center shadow-md">
-                          <span class="text-2xl">📦</span>
+                        <div v-else class="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center shadow-md">
+                          <span class="text-3xl">📦</span>
                         </div>
-                        <!-- Stock indicator badge -->
                         <div :class="[
-                          'absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold',
+                          'absolute -top-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold',
                           product.stock > 10 ? 'bg-green-500' : 
                           product.stock > 0 ? 'bg-yellow-500' : 
                           'bg-red-500'
@@ -485,10 +674,12 @@
                           <span class="text-white">{{ product.stock || 0 }}</span>
                         </div>
                       </div>
-                      <div class="flex-1">
-                        <h4 class="text-sm font-bold text-gray-900 mb-1 line-clamp-1">{{ product.name || product.title || 'Unnamed Product' }}</h4>
-                        <p class="text-xs text-gray-600 line-clamp-2 mb-2">{{ product.description || 'No description available' }}</p>
-                        <div class="flex items-center space-x-2">
+                      
+                      <div class="flex-1 min-w-0">
+                        <h4 class="text-lg font-bold text-gray-900 mb-2">{{ product.name || product.title || 'Unnamed Product' }}</h4>
+                        <p class="text-sm text-gray-600 mb-3 line-clamp-2">{{ product.description || 'No description available' }}</p>
+                        
+                        <div class="flex flex-wrap gap-2 mb-3">
                           <span class="px-2 py-1 text-xs font-medium rounded-full bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 border border-blue-300">
                             {{ product.category }}
                           </span>
@@ -499,113 +690,62 @@
                             {{ product.is_active ? 'Active' : 'Inactive' }}
                           </span>
                         </div>
+                        
+                        <div class="flex items-center justify-between mb-3">
+                          <div class="text-lg font-bold text-transparent bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text">
+                            Tsh {{ Number(product.price).toLocaleString() }}
+                          </div>
+                          <div class="flex items-center space-x-2">
+                            <span :class="[
+                              'px-2 py-1 text-xs font-bold rounded-full border',
+                              product.stock > 10 ? 'bg-green-100 text-green-800 border-green-300' : 
+                              product.stock > 0 ? 'bg-yellow-100 text-yellow-800 border-yellow-300' : 
+                              'bg-red-100 text-red-800 border-red-300'
+                            ]">
+                              {{ product.stock || 0 }} units
+                            </span>
+                            <span v-if="product.stock <= 10 && product.stock > 0" class="text-xs text-yellow-600 font-medium">
+                              ⚠️
+                            </span>
+                            <span v-if="product.stock === 0" class="text-xs text-red-600 font-medium">
+                              🚫
+                            </span>
+                          </div>
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-2">
+                          <button @click="viewProduct(product)" class="px-3 py-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-sm">
+                            👁️ View
+                          </button>
+                          <button @click="editProduct(product)" class="px-3 py-1 bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-medium rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-sm">
+                            ✏️ Edit
+                          </button>
+                          <button @click="deleteProduct(product.id)" class="px-3 py-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-medium rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-sm">
+                            🗑️ Delete
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-lg font-bold text-transparent bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text">
-                      Tsh {{ Number(product.price).toLocaleString() }}
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center space-x-2">
-                      <span :class="[
-                        'px-3 py-1 text-sm font-bold rounded-full border',
-                        product.stock > 10 ? 'bg-green-100 text-green-800 border-green-300' : 
-                        product.stock > 0 ? 'bg-yellow-100 text-yellow-800 border-yellow-300' : 
-                        'bg-red-100 text-red-800 border-red-300'
-                      ]">
-                        {{ product.stock || 0 }} units
-                      </span>
-                      <span v-if="product.stock <= 10 && product.stock > 0" class="text-xs text-yellow-600 font-medium">
-                        ⚠️ Low Stock
-                      </span>
-                      <span v-if="product.stock === 0" class="text-xs text-red-600 font-medium">
-                        🚫 Out of Stock
-                      </span>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <span :class="[
-                      'px-3 py-1 text-sm font-semibold rounded-full border',
-                      product.is_active ? 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border-green-300' : 'bg-gradient-to-r from-red-100 to-rose-100 text-red-800 border-red-300'
-                    ]">
-                      {{ product.is_active ? '✅ Active' : '❌ Inactive' }}
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex flex-col space-y-2">
-                      <div class="flex space-x-2">
-                        <button @click="viewProduct(product)" class="px-3 py-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-sm hover:shadow-md">
-                          👁️ View
-                        </button>
-                        <button @click="editProduct(product)" class="px-3 py-1 bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-medium rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-sm hover:shadow-md">
-                          ✏️ Edit
-                        </button>
-                      </div>
-                      <button @click="deleteProduct(product.id)" class="px-3 py-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-medium rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-sm hover:shadow-md">
-                        🗑️ Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            
-            <div v-if="filteredProducts.length === 0" class="text-center py-8 text-gray-500">
-              <span class="text-4xl mb-4 block">📦</span>
-              <p>No products found</p>
-              <p class="text-sm">Try adjusting your search or filters</p>
+                  </div>
+                </div>
+                
+                <!-- Empty State -->
+                <div v-if="filteredProducts.length === 0" class="text-center py-12">
+                  <span class="text-6xl mb-4 block">📦</span>
+                  <h3 class="text-xl font-bold text-gray-800 mb-2">No products found</h3>
+                  <p class="text-gray-600 mb-4">Try adjusting your search or filters</p>
+                  <button 
+                    @click="productSearchQuery = ''; productCategoryFilter = ''; productStatusFilter = ''"
+                    class="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl"
+                  >
+                    🔄 Clear Filters
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       
-      <!-- Statistics Section -->
-      <div class="space-y-6">
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 gap-4">
-          <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-sm font-medium text-gray-600">Total Products</p>
-                <p class="text-3xl font-bold text-blue-600 mt-1">{{ products.length }}</p>
-              </div>
-              <div class="bg-blue-100 p-3 rounded-lg">
-                <span class="text-blue-600 font-bold text-xl">📦</span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-sm font-medium text-gray-600">Total Orders</p>
-                <p class="text-3xl font-bold text-green-600 mt-1">{{ orders.length }}</p>
-              </div>
-              <div class="bg-green-100 p-3 rounded-lg">
-                <span class="text-green-600 font-bold text-xl">📋</span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-sm font-medium text-gray-600">Total Revenue</p>
-                <p class="text-3xl font-bold text-yellow-600 mt-1">Tsh {{ Math.floor(totalSpend).toLocaleString() }}</p>
-              </div>
-              <div class="bg-yellow-100 p-3 rounded-lg">
-                <span class="text-yellow-600 font-bold text-xl">💰</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      </div>
-    </div>
-    </div>
-    
     <!-- Order Details Modal -->
     <div v-if="selectedOrder" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
