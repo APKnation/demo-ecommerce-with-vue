@@ -116,17 +116,35 @@ def admin_dashboard_stats(request):
     from orders.models import Order
     from products.models import Product
     
+    # Calculate order statistics
+    all_orders = Order.objects.all()
+    completed_orders = all_orders.filter(status='delivered')
+    pending_orders = all_orders.filter(status='pending')
+    
+    # Calculate revenue
+    total_revenue = sum(float(order.total_amount) for order in completed_orders)
+    
+    # Calculate average order value
+    avg_order_value = 0
+    if completed_orders.exists():
+        avg_order_value = total_revenue / completed_orders.count()
+    
+    # Calculate low stock products (less than 10 units)
+    low_stock_products = Product.objects.filter(stock__lt=10).count()
+    
     stats = {
         'total_users': User.objects.count(),
         'total_customers': User.objects.filter(role='customer').count(),
         'total_authors': User.objects.filter(role='author').count(),
         'total_admins': User.objects.filter(role='admin').count(),
-        'total_orders': Order.objects.count(),
-        'pending_orders': Order.objects.filter(status='Pending').count(),
-        'confirmed_orders': Order.objects.filter(status='Confirmed').count(),
-        'completed_orders': Order.objects.filter(status='Completed').count(),
+        'total_orders': all_orders.count(),
+        'pending_orders': pending_orders.count(),
+        'confirmed_orders': all_orders.filter(status='paid').count(),
+        'completed_orders': completed_orders.count(),
         'total_products': Product.objects.count(),
-        'total_revenue': sum(float(order.total_amount) for order in Order.objects.filter(status__in=['Confirmed', 'Completed'])),
+        'total_revenue': total_revenue,
+        'avg_order_value': round(avg_order_value, 2),
+        'low_stock_products': low_stock_products,
     }
     
     return Response(stats)

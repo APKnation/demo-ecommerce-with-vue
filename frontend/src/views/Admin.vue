@@ -35,18 +35,39 @@
     </div>
 
     <!-- Dashboard Stats Section -->
-    <div v-if="activeTab === 'dashboard'" class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div v-for="stat in dashboardStats" :key="stat.label" 
-           class="bg-white rounded-xl shadow-lg p-6">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm font-medium text-gray-600">{{ stat.label }}</p>
-            <p class="text-2xl font-bold text-gray-900 mt-1">{{ stat.value }}</p>
+    <div v-if="activeTab === 'dashboard'" class="mt-8">
+      <!-- Main Stats Row -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div v-for="stat in dashboardStats.slice(0, 4)" :key="stat.label" 
+             class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">{{ stat.label }}</p>
+              <p class="text-2xl font-bold text-gray-900 mt-1">{{ stat.value }}</p>
+            </div>
+            <div :class="`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center`">
+              <svg class="w-6 h-6" :class="stat.iconColor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="stat.icon"></path>
+              </svg>
+            </div>
           </div>
-          <div :class="`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center`">
-            <svg class="w-6 h-6" :class="stat.iconColor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="stat.icon"></path>
-            </svg>
+        </div>
+      </div>
+      
+      <!-- Secondary Stats Row -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div v-for="stat in dashboardStats.slice(4)" :key="stat.label" 
+             class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">{{ stat.label }}</p>
+              <p class="text-2xl font-bold text-gray-900 mt-1">{{ stat.value }}</p>
+            </div>
+            <div :class="`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center`">
+              <svg class="w-6 h-6" :class="stat.iconColor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="stat.icon"></path>
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -273,54 +294,96 @@
     </div>
     
     <!-- Products Tab (existing content wrapped) -->
-    <div v-if="activeTab === 'products'" class="mt-8 grid grid-cols-1 xl:grid-cols-3 gap-8">
-      <!-- Add Product Section -->
-      <div class="xl:col-span-2">
-        <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-          <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-4">
-            <h2 class="text-xl font-semibold flex items-center">
-              Add New Product
-            </h2>
+    <div v-if="activeTab === 'products'" class="mt-8">
+      <!-- Product Management Header -->
+      <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6 mb-8">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-800">Product Management</h2>
+            <p class="text-gray-600 mt-1">Manage your store inventory</p>
           </div>
-          <form @submit.prevent="addProduct" class="p-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Product Name</label>
-                <input
-                  v-model="newProduct.name"
-                  type="text"
-                  required
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter product name"
-                />
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Price (Tsh)</label>
-                <input
-                  v-model.number="newProduct.price"
-                  type="number"
-                  required
-                  min="0"
-                  step="0.01"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter price"
-                />
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                <select
-                  v-model="newProduct.category"
-                  required
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                >
-                  <option value="">Select category</option>
-                  <option value="Electronics">Electronics</option>
-                  <option value="Phones">Phones</option>
-                  <option value="Laptops">Laptops</option>
-                  <option value="Accessories">Accessories</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <div class="relative">
+              <input
+                v-model="productSearchQuery"
+                type="text"
+                placeholder="Search products..."
+                class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full sm:w-64"
+              >
+              <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
+            </div>
+            <select
+              v-model="productCategoryFilter"
+              class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="">All Categories</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Phones">Phones</option>
+              <option value="Laptops">Laptops</option>
+              <option value="Accessories">Accessories</option>
+              <option value="Other">Other</option>
+            </select>
+            <select
+              v-model="productStatusFilter"
+              class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="">All Status</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+        <!-- Add Product Section -->
+        <div class="xl:col-span-2">
+          <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+            <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-4">
+              <h2 class="text-xl font-semibold flex items-center">
+                <span class="mr-2">➕</span>
+                Add New Product
+              </h2>
+            </div>
+            <form @submit.prevent="addProduct" class="p-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Product Name</label>
+                  <input
+                    v-model="newProduct.name"
+                    type="text"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Enter product name"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Price (Tsh)</label>
+                  <input
+                    v-model.number="newProduct.price"
+                    type="number"
+                    required
+                    min="0"
+                    step="0.01"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Enter price"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                  <select
+                    v-model="newProduct.category"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="">Select category</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Phones">Phones</option>
+                    <option value="Laptops">Laptops</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Product Image</label>
                 <div class="space-y-2">
@@ -368,6 +431,94 @@
               </button>
             </div>
           </form>
+        </div>
+        
+        <!-- Product List -->
+        <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden mt-8">
+          <div class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-4">
+            <h2 class="text-xl font-semibold flex items-center justify-between">
+              <span>
+                <span class="mr-2">📦</span>
+                Product Inventory ({{ filteredProducts.length }} items)
+              </span>
+              <span class="text-sm bg-white/20 px-3 py-1 rounded-full">
+                {{ filteredProducts.length }} of {{ products.length }} products
+              </span>
+            </h2>
+          </div>
+          
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-gray-50 border-b">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr v-for="product in filteredProducts" :key="product.id" class="hover:bg-gray-50">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <img 
+                        v-if="product.image" 
+                        :src="product.image" 
+                        :alt="product.name" 
+                        class="w-10 h-10 object-cover rounded-lg mr-3"
+                      >
+                      <div v-else class="w-10 h-10 bg-gray-200 rounded-lg mr-3 flex items-center justify-center">
+                        <span class="text-gray-400 text-xs">No img</span>
+                      </div>
+                      <div>
+                        <div class="text-sm font-medium text-gray-900">{{ product.name }}</div>
+                        <div class="text-sm text-gray-500">{{ product.description?.substring(0, 50) || 'No description' }}...</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                      {{ product.category }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    Tsh {{ Number(product.price).toLocaleString() }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span :class="[
+                      'px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full',
+                      product.stock > 10 ? 'bg-green-100 text-green-800' : 
+                      product.stock > 0 ? 'bg-yellow-100 text-yellow-800' : 
+                      'bg-red-100 text-red-800'
+                    ]">
+                      {{ product.stock || 0 }} units
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span :class="[
+                      'px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full',
+                      product.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    ]">
+                      {{ product.is_active ? 'Active' : 'Inactive' }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                    <button @click="viewProduct(product)" class="text-blue-600 hover:text-blue-900">View</button>
+                    <button @click="editProduct(product)" class="text-green-600 hover:text-green-900">Edit</button>
+                    <button @click="deleteProduct(product.id)" class="text-red-600 hover:text-red-900">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <div v-if="filteredProducts.length === 0" class="text-center py-8 text-gray-500">
+              <span class="text-4xl mb-4 block">📦</span>
+              <p>No products found</p>
+              <p class="text-sm">Try adjusting your search or filters</p>
+            </div>
+          </div>
         </div>
       </div>
       
@@ -504,10 +655,14 @@ export default {
     ])
     
     const dashboardStats = computed(() => [
-      { label: 'Total Users', value: stats.value.total_users || 0, bgColor: 'bg-blue-100', iconColor: 'text-blue-600', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z' },
-      { label: 'Total Orders', value: stats.value.total_orders || 0, bgColor: 'bg-green-100', iconColor: 'text-green-600', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2 2v10a2 2 0 002 2h6a2 2 0 002-2V9a2 2 0 00-2-2H9z' },
+      { label: 'Total Revenue', value: `Tsh ${(stats.value.total_revenue || 0).toLocaleString()}`, bgColor: 'bg-green-100', iconColor: 'text-green-600', icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1l-1 1m-1-1l1-1m-1 1H8m8 0h-1m0 0l-1 1m1-1V6m0 2c.657 0 1.5-.895 1.5-2s-.843-2-1.5-2M8 12c-.657 0-1.5.895-1.5 2s.843 2 1.5 2m0-8c.657 0 1.5.895 1.5 2s-.843 2-1.5 2m0 0V6m0 2v2m0-4h.01M8 8v8m0-4h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' },
+      { label: 'Total Orders', value: stats.value.total_orders || 0, bgColor: 'bg-blue-100', iconColor: 'text-blue-600', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2 2v10a2 2 0 002 2h6a2 2 0 002-2V9a2 2 0 00-2-2H9z' },
       { label: 'Total Products', value: stats.value.total_products || 0, bgColor: 'bg-orange-100', iconColor: 'text-orange-600', icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4' },
-      { label: 'Total Revenue', value: `Tsh ${Number(stats.value.total_revenue || 0).toLocaleString()}`, bgColor: 'bg-purple-100', iconColor: 'text-purple-600', icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z' }
+      { label: 'Active Users', value: stats.value.total_users || 0, bgColor: 'bg-purple-100', iconColor: 'text-purple-600', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z' },
+      { label: 'Pending Orders', value: stats.value.pending_orders || 0, bgColor: 'bg-yellow-100', iconColor: 'text-yellow-600', icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' },
+      { label: 'Completed Orders', value: stats.value.completed_orders || 0, bgColor: 'bg-green-100', iconColor: 'text-green-600', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
+      { label: 'Avg Order Value', value: `Tsh ${stats.value.avg_order_value || 0}`, bgColor: 'bg-indigo-100', iconColor: 'text-indigo-600', icon: 'M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z' },
+      { label: 'Low Stock Items', value: stats.value.low_stock_products || 0, bgColor: 'bg-red-100', iconColor: 'text-red-600', icon: 'M20 12H4l1.586-1.586a2 2 0 012.828 0L12 15.414l3.586-3.586a2 2 0 012.828 0L20 12z' }
     ])
 
     const filteredOrdersList = computed(() => {
@@ -519,10 +674,41 @@ export default {
       name: '',
       price: 0,
       category: '',
+      description: '',
       image: '',
-      imageFile: null,
-      description: ''
+      stock: 0,
+      condition: 'new'
     })
+
+    const productSearchQuery = ref('')
+    const productCategoryFilter = ref('')
+    const productStatusFilter = ref('')
+
+    const filteredProducts = computed(() => {
+      let filtered = products.value
+
+      if (productSearchQuery.value) {
+        const query = productSearchQuery.value.toLowerCase()
+        filtered = filtered.filter(product => 
+          product.name.toLowerCase().includes(query) ||
+          product.category.toLowerCase().includes(query) ||
+          product.description.toLowerCase().includes(query)
+        )
+      }
+
+      if (productCategoryFilter.value) {
+        filtered = filtered.filter(product => product.category === productCategoryFilter.value)
+      }
+
+      if (productStatusFilter.value) {
+        filtered = filtered.filter(product => 
+          productStatusFilter.value === 'active' ? product.is_active : !product.is_active
+        )
+      }
+
+      return filtered
+    })
+
     const isAddingProduct = ref(false)
     const editingProduct = ref(null)
     const isEditing = ref(false)
@@ -921,12 +1107,15 @@ export default {
       isEditing,
       viewingProduct,
       productToDelete,
+      productSearchQuery,
+      productCategoryFilter,
+      productStatusFilter,
+      filteredProducts,
       searchQuery,
       filterDropdownOpen,
       selectedProducts,
       currentFilter,
       totalRevenue,
-      filteredProducts,
       saveProducts,
       addProduct,
       resetProductForm,
