@@ -6,22 +6,34 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=8)
     password_confirm = serializers.CharField(write_only=True)
     phone = serializers.CharField(required=True)  # Make phone required
-    role = serializers.ChoiceField(choices=User.ROLE_CHOICES, default='customer', read_only=True)
+    role = serializers.ChoiceField(choices=User.ROLE_CHOICES, default='customer')
+    theme = serializers.ChoiceField(choices=User.THEME_CHOICES, default='system')
     
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'password_confirm', 'first_name', 'last_name', 'phone', 'address', 'role']
+        fields = ['username', 'email', 'password', 'password_confirm', 'first_name', 'last_name', 'phone', 'address', 'role', 'theme']
     
     def validate(self, attrs):
         if attrs['password'] != attrs['password_confirm']:
             raise serializers.ValidationError("Passwords don't match")
+        
+        # Validate vendor registration
+        if attrs.get('role') == 'vendor':
+            # Additional validation for vendors if needed
+            pass
+            
         return attrs
     
     def create(self, validated_data):
         validated_data.pop('password_confirm')
-        # Set default role if not provided
-        if 'role' not in validated_data:
-            validated_data['role'] = 'customer'
+        # Set default theme if not provided
+        if 'theme' not in validated_data:
+            validated_data['theme'] = 'system'
+        
+        # Set vendor approval status
+        if validated_data.get('role') == 'vendor':
+            validated_data['is_vendor_approved'] = False
+        
         user = User.objects.create_user(**validated_data)
         return user
 
@@ -66,11 +78,41 @@ class UserLoginSerializer(serializers.Serializer):
         if not user.is_active:
             raise serializers.ValidationError('User account is disabled')
         
+        # Check vendor approval
+        if user.role == 'vendor' and not user.is_vendor_approved:
+            raise serializers.ValidationError('Vendor account is not yet approved by admin')
+        
         attrs['user'] = user
         return attrs
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'phone', 'address', 'role', 'created_at']
-        read_only_fields = ['id', 'created_at']
+        fields = [
+            'id', 'username', 'email', 'first_name', 'last_name', 'phone', 
+            'address', 'role', 'theme', 'is_active', 'is_vendor_approved', 
+            'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at', 'is_vendor_approved']
+
+class UserThemeSerializer(serializers.ModelSerializer):
+    """Serializer for updating user theme preferences"""
+    class Meta:
+        model = User
+        fields = ['theme']
+        
+    def update(self, instance, validated_data):
+        instance.theme = validated_data.get('theme', instance.theme)
+        instance.save()
+        return instance
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    """Extended user profile serializer with theme info"""
+    class Meta:
+        model = User
+        fields = [
+            'id', 'username', 'email', 'first_name', 'last_name', 'phone', 
+            'address', 'role', 'theme', 'is_active', 'is_vendor_approved', 
+            'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at', 'is_vendor_approved']

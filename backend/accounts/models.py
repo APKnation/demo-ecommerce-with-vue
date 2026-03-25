@@ -5,8 +5,14 @@ from django.core.validators import RegexValidator
 class User(AbstractUser):
     ROLE_CHOICES = [
         ('customer', 'Customer'),
-        ('author', 'Author'),
+        ('vendor', 'Vendor'),
         ('admin', 'Admin'),
+    ]
+    
+    THEME_CHOICES = [
+        ('light', 'Light Theme'),
+        ('dark', 'Dark Theme'),
+        ('system', 'System Theme'),
     ]
     
     # Phone number validator for international formats
@@ -25,6 +31,12 @@ class User(AbstractUser):
         help_text="Enter phone number with country code (e.g., +255123456789)"
     )
     address = models.TextField(blank=True, null=True)
+    
+    # Theme preferences
+    theme = models.CharField(max_length=10, choices=THEME_CHOICES, default='system')
+    is_active = models.BooleanField(default=True)
+    is_vendor_approved = models.BooleanField(default=False)  # For vendor approval
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -32,9 +44,13 @@ class User(AbstractUser):
         return f"{self.username} ({self.role})"
     
     @property
-    def is_author(self):
-        return self.role == 'author'
+    def is_vendor(self):
+        return self.role == 'vendor'
     
     @property
     def is_admin_user(self):
         return self.role == 'admin'
+    
+    @property
+    def is_customer(self):
+        return self.role == 'customer'
