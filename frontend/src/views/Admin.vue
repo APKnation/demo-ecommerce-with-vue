@@ -1240,13 +1240,11 @@ export default {
           } else {
             // Load default products with real images from home page
             products.value = [
-              { 
-                id: 1,
-                name: 'Mac Book', 
-                title: 'Mac Book',
-                price: 1000000, 
-                category: 'laptops', 
-                image: '/images/w.jpg',
+              { id: 1, name: 'Mac Book', title: 'Mac Book', price: 1000000, category: 'laptops', image: '/images/w.jpg', description: 'High-performance laptop for professionals', stock: 10, is_active: true },
+              { id: 2, name: 'HP-Brand', title: 'HP-Brand', price: 150000, category: 'laptops', image: '/images/j.jpg', description: 'Reliable laptop for everyday use', stock: 15, is_active: true },
+              { id: 3, name: 'Dell', title: 'Dell', price: 200000, category: 'laptops', image: '/images/k.jpg', description: 'Business laptop with great performance', stock: 8, is_active: true },
+              { id: 4, name: 'Apple', title: 'Apple', price: 1000000, category: 'phones', image: '/images/d.jpg', description: 'Latest smartphone with advanced features', stock: 20, is_active: true },
+              { id: 5, name: 'HP-Elite', title: 'HP-Elite', price: 1500000, category: 'laptops', image: '/images/a.jpg', description: 'Premium laptop for power users', stock: 5, is_active: true },
                 description: 'High-performance MacBook with latest M2 chip, 16GB RAM, 512GB SSD. Perfect for professionals and creators.',
                 stock: 5,
                 is_active: true
@@ -1340,6 +1338,11 @@ export default {
                 is_active: true
               }
             ]
+            // Remove duplicates by id
+            const uniqueProducts = defaultProducts.filter((product, index, self) => 
+              index === self.findIndex((p) => p.id === product.id)
+            )
+            products.value = uniqueProducts
             saveProducts()
           }
         }
