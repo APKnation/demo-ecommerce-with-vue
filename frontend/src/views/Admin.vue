@@ -465,17 +465,18 @@
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex items-center">
                       <img 
-                        v-if="product.image" 
+                        v-if="product.image && product.image !== '' && product.image !== '/images/placeholder.jpg'" 
                         :src="product.image" 
-                        :alt="product.name" 
+                        :alt="product.name || 'Product'" 
                         class="w-10 h-10 object-cover rounded-lg mr-3"
+                        @error="$event.target.src='/images/placeholder.jpg'"
                       >
                       <div v-else class="w-10 h-10 bg-gray-200 rounded-lg mr-3 flex items-center justify-center">
-                        <span class="text-gray-400 text-xs">No img</span>
+                        <span class="text-gray-400 text-xs">📦</span>
                       </div>
                       <div>
-                        <div class="text-sm font-medium text-gray-900">{{ product.name }}</div>
-                        <div class="text-sm text-gray-500">{{ product.description?.substring(0, 50) || 'No description' }}...</div>
+                        <div class="text-sm font-medium text-gray-900">{{ product.name || product.title || 'Unnamed Product' }}</div>
+                        <div class="text-sm text-gray-500">{{ (product.description || 'No description available').substring(0, 50) }}{{ (product.description || '').length > 50 ? '...' : '' }}</div>
                       </div>
                     </div>
                   </td>
@@ -686,8 +687,13 @@ export default {
     const productStatusFilter = ref('')
 
     const filteredProducts = computed(() => {
+      console.log('=== PRODUCT INVENTORY DEBUG ===')
+      console.log('Raw products.value:', products.value)
+      console.log('Number of products:', products.value.length)
+      
       let filtered = products.value
 
+      // Search filter
       if (productSearchQuery.value) {
         const query = productSearchQuery.value.toLowerCase()
         filtered = filtered.filter(product => 
@@ -697,16 +703,35 @@ export default {
         )
       }
 
+      // Category filter
       if (productCategoryFilter.value) {
         filtered = filtered.filter(product => product.category === productCategoryFilter.value)
       }
 
+      // Status filter
       if (productStatusFilter.value) {
         filtered = filtered.filter(product => 
           productStatusFilter.value === 'active' ? product.is_active : !product.is_active
         )
       }
 
+      console.log('Filtered products:', filtered)
+      
+      // Log each product's structure
+      filtered.forEach((product, index) => {
+        console.log(`Product ${index + 1}:`, {
+          id: product.id,
+          name: product.name,
+          description: product.description,
+          image: product.image,
+          category: product.category,
+          price: product.price,
+          stock: product.stock,
+          is_active: product.is_active
+        })
+      })
+      
+      console.log('=== END DEBUG ===')
       return filtered
     })
 
@@ -848,15 +873,94 @@ export default {
           } else {
             // Load default products
             products.value = [
-              { name: 'Mac Book', price: 1000000, category: 'laptops', image: '/images/w.jpg' },
-              { name: 'HP-Brand', price: 150000, category: 'laptops', image: '/images/j.jpg' },
-              { name: 'Dell', price: 200000, category: 'laptops', image: '/images/k.jpg' },
-              { name: 'Apple', price: 1000000, category: 'phones', image: '/images/d.jpg' },
-              { name: 'HP-Elite', price: 1500000, category: 'laptops', image: '/images/a.jpg' },
-              { name: 'Sony', price: 200000, category: 'accessories', image: '/images/f.jpg' },
-              { name: 'Infinix', price: 400000, category: 'phones', image: '/images/g.jpg' },
-              { name: 'iPhone', price: 1500000, category: 'phones', image: '/images/p.jpg' },
-              { name: 'Samsung', price: 3000000, category: 'phones', image: '/images/l.jpg' }
+              { 
+                id: 1,
+                name: 'MacBook Pro', 
+                title: 'MacBook Pro',
+                price: 1000000, 
+                category: 'Laptops', 
+                image: '/images/laptop-placeholder.jpg',
+                description: 'High-performance laptop with M2 chip, 16GB RAM, 512GB SSD. Perfect for professionals and creators.',
+                stock: 5,
+                is_active: true
+              },
+              { 
+                id: 2,
+                name: 'HP EliteBook', 
+                title: 'HP EliteBook',
+                price: 150000, 
+                category: 'Laptops', 
+                image: '/images/laptop-placeholder.jpg',
+                description: 'Business laptop with Intel Core i5, 8GB RAM, 256GB SSD. Reliable and secure for business use.',
+                stock: 10,
+                is_active: true
+              },
+              { 
+                id: 3,
+                name: 'Dell XPS', 
+                title: 'Dell XPS',
+                price: 200000, 
+                category: 'Laptops', 
+                image: '/images/laptop-placeholder.jpg',
+                description: 'Premium ultrabook with Intel Core i7, 16GB RAM, 1TB SSD. Stunning 4K display and thin design.',
+                stock: 3,
+                is_active: true
+              },
+              { 
+                id: 4,
+                name: 'iPhone 15', 
+                title: 'iPhone 15',
+                price: 1000000, 
+                category: 'Phones', 
+                image: '/images/phone-placeholder.jpg',
+                description: 'Latest iPhone with A17 Pro chip, 48MP camera, Dynamic Island. Available in multiple colors.',
+                stock: 8,
+                is_active: true
+              },
+              { 
+                id: 5,
+                name: 'Samsung Galaxy', 
+                title: 'Samsung Galaxy S24',
+                price: 800000, 
+                category: 'Phones', 
+                image: '/images/phone-placeholder.jpg',
+                description: 'Flagship Android phone with Snapdragon 8 Gen 3, 50MP camera, 120Hz AMOLED display.',
+                stock: 12,
+                is_active: true
+              },
+              { 
+                id: 6,
+                name: 'Wireless Headphones', 
+                title: 'Sony WH-1000XM5',
+                price: 300000, 
+                category: 'Accessories', 
+                image: '/images/accessory-placeholder.jpg',
+                description: 'Premium noise-cancelling headphones with 30-hour battery, superior sound quality.',
+                stock: 15,
+                is_active: true
+              },
+              { 
+                id: 7,
+                name: 'USB-C Hub', 
+                title: 'Multi-Port USB-C Hub',
+                price: 50000, 
+                category: 'Accessories', 
+                image: '/images/accessory-placeholder.jpg',
+                description: '7-in-1 USB-C hub with HDMI, USB 3.0, SD card reader. Perfect for modern laptops.',
+                stock: 20,
+                is_active: true
+              },
+              { 
+                id: 8,
+                name: 'Gaming Mouse', 
+                title: 'RGB Gaming Mouse',
+                price: 80000, 
+                category: 'Accessories', 
+                image: '/images/accessory-placeholder.jpg',
+                description: 'High-precision gaming mouse with 16000 DPI sensor, customizable RGB lighting.',
+                stock: 25,
+                is_active: true
+              }
             ]
             saveProducts()
           }
