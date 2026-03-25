@@ -10,12 +10,11 @@
       <router-link to="/" class="back-link">Back to Home</router-link>
     </div>
     
-    <ProductDetail 
+    <ProductDetailComponent
       v-else
       :product="product"
       :related-products="relatedProducts"
       @add-to-cart="handleAddToCart"
-      @toggle-wishlist="handleToggleWishlist"
       @add-to-compare="handleAddToCompare"
     />
   </div>
@@ -180,10 +179,6 @@ export default {
       emit('add-to-cart', cartItem)
     }
     
-    const handleToggleWishlist = (product) => {
-      emit('toggle-wishlist', product)
-    }
-    
     const handleAddToCompare = (product) => {
       emit('add-to-compare', product)
     }
@@ -193,11 +188,9 @@ export default {
     })
     
     return {
-      loading,
       product,
       relatedProducts,
       handleAddToCart,
-      handleToggleWishlist,
       handleAddToCompare
     }
   }

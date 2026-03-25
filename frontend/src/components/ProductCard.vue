@@ -65,9 +65,8 @@
           </button>
           
           <button 
-            @click="handleWishlistClick" 
-            class="btn btn-ghost btn-sm"
-            :class="{ 'text-red-500': isInWishlist }"
+            @click="likeProduct" 
+            class="btn btn-ghost btn-sm text-red-500 hover:text-red-600"
           >
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -89,16 +88,12 @@ export default {
       type: Object,
       required: true
     },
-    wishlist: {
-      type: Array,
-      default: () => []
-    },
     compareList: {
       type: Array,
       default: () => []
     }
   },
-  emits: ['add-to-cart', 'toggle-wishlist', 'add-to-compare', 'quick-view', 'select-all-products'],
+  emits: ['add-to-cart', 'add-to-compare', 'quick-view', 'select-all-products'],
   setup(props) {
     const discountedPrice = computed(() => {
       if (props.product.discount) {
@@ -109,10 +104,6 @@ export default {
     
     const inStock = computed(() => {
       return props.product.stock !== undefined ? props.product.stock > 0 : true
-    })
-    
-    const isInWishlist = computed(() => {
-      return props.wishlist.some(item => item.name === props.product.name)
     })
     
     const isInCompare = computed(() => {
@@ -130,22 +121,17 @@ export default {
       event.target.src = '/images/placeholder.jpg'
     }
     
-    const handleWishlistClick = () => {
-      // First, emit the original wishlist toggle
-      emit('toggle-wishlist', props.product)
-      
-      // Then emit select all products event
-      emit('select-all-products')
+    const likeProduct = () => {
+      // Simple like function without wishlist
     }
     
     return {
       discountedPrice,
       inStock,
-      isInWishlist,
       isInCompareList: isInCompare,
       cardClasses,
       handleImageError,
-      handleWishlistClick
+      likeProduct
     }
   }
 }

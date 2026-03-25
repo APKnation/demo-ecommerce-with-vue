@@ -101,13 +101,13 @@
               </button>
               
               <button 
-                @click="toggleWishlist"
-                class="btn btn-secondary wishlist-btn"
-                :class="{ 'is-active': isInWishlist }"
+                @click="likeProduct"
+                class="btn btn-secondary text-red-500 hover:text-red-600"
               >
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                 </svg>
+                Like
               </button>
               
               <button 
@@ -238,13 +238,16 @@ export default {
       default: () => []
     }
   },
-  emits: ['add-to-cart', 'toggle-wishlist', 'add-to-compare'],
+  emits: ['add-to-cart', 'add-to-compare'],
   setup(props, { emit }) {
     const router = useRouter()
     const quantity = ref(1)
     const activeTab = ref('specifications')
-    const isInWishlist = ref(false)
     const isInCompare = ref(false)
+    
+    const likeProduct = () => {
+      // Simple like function
+    }
     
     const tabs = [
       { key: 'specifications', label: 'Specifications' },
@@ -305,22 +308,6 @@ export default {
       })
     }
     
-    const toggleWishlist = () => {
-      isInWishlist.value = !isInWishlist.value
-      emit('toggle-wishlist', props.product)
-      
-      const message = isInWishlist.value ? 'Added to wishlist!' : 'Removed from wishlist'
-      
-      Swal.fire({
-        icon: 'info',
-        title: message,
-        timer: 1500,
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false
-      })
-    }
-    
     const addToCompare = () => {
       emit('add-to-compare', props.product)
       isInCompare.value = true
@@ -352,7 +339,6 @@ export default {
     return {
       quantity,
       activeTab,
-      isInWishlist,
       isInCompare,
       tabs,
       categoryName,
@@ -361,7 +347,7 @@ export default {
       increaseQuantity,
       decreaseQuantity,
       addToCart,
-      toggleWishlist,
+      likeProduct,
       addToCompare,
       handleImageChange,
       getDefaultDescription
@@ -503,8 +489,8 @@ export default {
   @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
 }
 
-.wishlist-btn.is-active {
-  @apply bg-red-500 text-white hover:bg-red-600;
+.btn-se.compare-btn:disabled {
+  @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
 }
 
 .product-features {
