@@ -244,7 +244,7 @@
                     <button @click="viewOrderDetails(order)" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-xs">View</button>
                     <button v-if="order.status === 'Pending'" @click="confirmOrder(order.id)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs">Confirm</button>
                     <button v-if="order.status === 'Confirmed'" @click="completeOrder(order.id)" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs">Complete</button>
-                    <button v-if="['Pending', 'Confirmed'].includes(order.status)" @click="cancelOrder(order.id)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">Cancel</button>,
+                    <button v-if="['Pending', 'Confirmed'].includes(order.status)" @click="cancelOrder(order.id)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">Cancel</button>
                     <button v-if="order.status !== 'Cancelled'" @click="deleteOrder(order.id)" class="bg-gray-700 hover:bg-gray-800 text-white px-3 py-1 rounded text-xs">Delete</button>
                   </div>
                 </td>
@@ -1245,105 +1245,11 @@ export default {
               { id: 3, name: 'Dell', title: 'Dell', price: 200000, category: 'laptops', image: '/images/k.jpg', description: 'Business laptop with great performance', stock: 8, is_active: true },
               { id: 4, name: 'Apple', title: 'Apple', price: 1000000, category: 'phones', image: '/images/d.jpg', description: 'Latest smartphone with advanced features', stock: 20, is_active: true },
               { id: 5, name: 'HP-Elite', title: 'HP-Elite', price: 1500000, category: 'laptops', image: '/images/a.jpg', description: 'Premium laptop for power users', stock: 5, is_active: true },
-                description: 'High-performance MacBook with latest M2 chip, 16GB RAM, 512GB SSD. Perfect for professionals and creators.',
-                stock: 5,
-                is_active: true
-              },
-              { 
-                id: 2,
-                name: 'HP-Brand', 
-                title: 'HP-Brand Laptop',
-                price: 150000, 
-                category: 'laptops', 
-                image: '/images/j.jpg',
-                description: 'Reliable HP laptop with Intel Core i5, 8GB RAM, 256GB SSD. Great for business and everyday use.',
-                stock: 10,
-                is_active: true
-              },
-              { 
-                id: 3,
-                name: 'Dell', 
-                title: 'Dell Laptop',
-                price: 200000, 
-                category: 'laptops', 
-                image: '/images/k.jpg',
-                description: 'Dell laptop with Intel Core i7, 16GB RAM, 1TB SSD. Excellent performance for demanding tasks.',
-                stock: 3,
-                is_active: true
-              },
-              { 
-                id: 4,
-                name: 'Apple', 
-                title: 'Apple iPhone',
-                price: 1000000, 
-                category: 'phones', 
-                image: '/images/d.jpg',
-                description: 'Latest Apple iPhone with A17 Pro chip, 48MP camera, Dynamic Island. Premium smartphone experience.',
-                stock: 8,
-                is_active: true
-              },
-              { 
-                id: 5,
-                name: 'HP-Elite', 
-                title: 'HP EliteBook',
-                price: 1500000, 
-                category: 'laptops', 
-                image: '/images/a.jpg',
-                description: 'Premium HP EliteBook with advanced security features, Intel Core i7, 32GB RAM, 2TB SSD.',
-                stock: 2,
-                is_active: true
-              },
-              { 
-                id: 6,
-                name: 'Sony', 
-                title: 'Sony Headphones',
-                price: 200000, 
-                category: 'accessories', 
-                image: '/images/f.jpg',
-                description: 'Premium Sony wireless headphones with noise cancellation, 30-hour battery life.',
-                stock: 15,
-                is_active: true
-              },
-              { 
-                id: 7,
-                name: 'Infinix', 
-                title: 'Infinix Smartphone',
-                price: 400000, 
-                category: 'phones', 
-                image: '/images/g.jpg',
-                description: 'Affordable Infinix smartphone with great features, large display, long battery life.',
-                stock: 20,
-                is_active: true
-              },
-              { 
-                id: 8,
-                name: 'iPhone', 
-                title: 'iPhone Pro',
-                price: 1500000, 
-                category: 'phones', 
-                image: '/images/p.jpg',
-                description: 'Professional iPhone with advanced camera system, A17 Pro chip, titanium design.',
-                stock: 6,
-                is_active: true
-              },
-              { 
-                id: 9,
-                name: 'Samsung', 
-                title: 'Samsung Galaxy',
-                price: 3000000, 
-                category: 'phones', 
-                image: '/images/l.jpg',
-                description: 'Flagship Samsung Galaxy with top-tier specifications, premium build quality, excellent camera.',
-                stock: 4,
-                is_active: true
-              }
+              { id: 6, name: 'Sony', title: 'Sony', price: 200000, category: 'accessories', image: '/images/f.jpg', description: 'High-quality wireless headphones', stock: 25, is_active: true },
+              { id: 7, name: 'Infinix', title: 'Infinix', price: 400000, category: 'phones', image: '/images/g.jpg', description: 'Budget-friendly smartphone with good features', stock: 30, is_active: true },
+              { id: 8, name: 'iPhone', title: 'iPhone', price: 1500000, category: 'phones', image: '/images/p.jpg', description: 'Professional smartphone with advanced camera', stock: 12, is_active: true },
+              { id: 9, name: 'Samsung', title: 'Samsung', price: 3000000, category: 'phones', image: '/images/l.jpg', description: 'Flagship smartphone with premium features', stock: 7, is_active: true }
             ]
-            // Remove duplicates by id
-            const uniqueProducts = defaultProducts.filter((product, index, self) => 
-              index === self.findIndex((p) => p.id === product.id)
-            )
-            products.value = uniqueProducts
-            saveProducts()
           }
         }
       } catch (error) {
