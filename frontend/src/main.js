@@ -8,6 +8,7 @@ import { useAuth } from './composables/useAuth'
 import Home from './views/Home.vue'
 import Cart from './views/Cart.vue'
 import Admin from './views/Admin.vue'
+import AdminOrders from './views/AdminOrders.vue'
 import Orders from './views/Orders.vue'
 import Order from './views/Order.vue'
 import ProductDetail from './views/ProductDetail.vue'
@@ -58,6 +59,16 @@ const routes = [
     meta: {
       title: 'Admin Panel - KAFUKA Electronics Store',
       description: 'Manage products and orders'
+    }
+  },
+  { 
+    path: '/admin/orders', 
+    component: AdminOrders,
+    name: 'admin-orders',
+    meta: {
+      title: 'Admin Orders - KAFUKA Electronics Store',
+      description: 'Manage all store orders',
+      requiresAdmin: true
     }
   },
   { 

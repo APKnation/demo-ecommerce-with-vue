@@ -19,10 +19,10 @@
       <button 
         v-for="tab in tabs" 
         :key="tab.id"
-        @click="activeTab = tab.id"
+        @click="tab.route ? $router.push(tab.route) : activeTab = tab.id"
         :class="[
           'px-6 py-2 rounded-md font-medium transition-all',
-          activeTab === tab.id 
+          (activeTab === tab.id && !tab.route) || $route.path === tab.route
             ? 'bg-white text-blue-600 shadow-md' 
             : 'text-white hover:bg-white/20'
         ]"
@@ -592,7 +592,7 @@ export default {
     
     const tabs = computed(() => [
       { id: 'dashboard', name: 'Dashboard' },
-      { id: 'orders', name: 'Orders', badge: stats.value.pending_orders },
+      { id: 'orders', name: 'Orders', badge: stats.value.pending_orders, route: '/admin/orders' },
       { id: 'users', name: 'Users' },
       { id: 'products', name: 'Products' }
     ])
