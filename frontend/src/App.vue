@@ -329,12 +329,6 @@ export default {
       }
     }
 
-    const clearCart = () => {
-      cart.value = []
-      saveData()
-      showNotificationMessage('Cart cleared successfully')
-    }
-
     // Compare functions
     const addToCompare = (name, price) => {
       if (compareList.value.length >= 3) {
