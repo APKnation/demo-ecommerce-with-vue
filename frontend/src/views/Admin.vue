@@ -564,6 +564,8 @@
           </div>
         </div>
       </div>
+      </div>
+    </div>
     </div>
     
     <!-- Order Details Modal -->
