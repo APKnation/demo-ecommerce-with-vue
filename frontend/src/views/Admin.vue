@@ -1207,6 +1207,24 @@ export default {
           const backendProducts = await productsResponse.json()
           console.log('Backend products loaded:', backendProducts)
           
+          // Map backend products to same images as home page
+          const imageMap = {
+            'Mac Book': '/images/w.jpg',
+            'HP-Brand': '/images/j.jpg', 
+            'Dell': '/images/k.jpg',
+            'Apple': '/images/d.jpg',
+            'Apple iPhone': '/images/d.jpg',
+            'HP-Elite': '/images/a.jpg',
+            'Sony': '/images/f.jpg',
+            'Sony Headphones': '/images/f.jpg',
+            'Infinix': '/images/g.jpg',
+            'Infinix Smartphone': '/images/g.jpg',
+            'iPhone': '/images/p.jpg',
+            'iPhone Pro': '/images/p.jpg',
+            'Samsung': '/images/l.jpg',
+            'Samsung Galaxy': '/images/l.jpg'
+          }
+          
           // Transform backend products to match admin format with real data
           products.value = backendProducts.map(product => ({
             id: product.id,
@@ -1214,7 +1232,7 @@ export default {
             title: product.title || product.name,
             price: Number(product.price),
             category: product.category?.name || 'Other',
-            image: product.image || '/images/placeholder.jpg',
+            image: product.image || imageMap[product.title] || imageMap[product.name] || '/images/placeholder.jpg',
             description: product.description || 'No description available',
             stock: product.stock || 0,
             is_active: product.is_active,
