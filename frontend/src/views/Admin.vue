@@ -299,133 +299,259 @@ export default {
     
     const getToken = () => localStorage.getItem('token')
     const API_BASE_URL = 'http://localhost:8000/api'
-                    placeholder="Enter product name"
-                  />
-                </div>
-                <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-3">
-                    Price (Tsh)
-                  </label>
-                  <input
-                    v-model.number="newProduct.price"
-                    type="number"
-                    required
-                    min="0"
-                    step="0.01"
-                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md"
-                    placeholder="Enter price"
-                  />
-                </div>
-                <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-3">
-                    Category
-                  </label>
-                  <select
-                    v-model="newProduct.category"
-                    required
-                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md bg-white"
-                  >
-                    <option value="">Select category</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Phones">Phones</option>
-                    <option value="Laptops">Laptops</option>
-                    <option value="Accessories">Accessories</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-3">
-                    Stock Quantity
-                  </label>
-                  <input
-                    v-model.number="newProduct.stock"
-                    type="number"
-                    required
-                    min="0"
-                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md"
-                    placeholder="Enter stock quantity"
-                  />
-                </div>
-              </div>
-              
-              <div class="mt-6">
-                <label class="block text-sm font-bold text-gray-700 mb-3 flex items-center">
-                  <span class="mr-2">📄</span> Description
-                </label>
-                <textarea
-                  v-model="newProduct.description"
-                  rows="4"
-                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md"
-                  placeholder="Enter product description"
-                ></textarea>
-              </div>
-              
-              <div class="mt-6">
-                <label class="block text-sm font-bold text-gray-700 mb-3 flex items-center">
-                  <span class="mr-2">🖼️</span> Product Image
-                </label>
-                <div class="space-y-3">
-                  <input
-                    v-model="newProduct.image"
-                    type="url"
-                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md"
-                    placeholder="Enter image URL (optional)"
-                  />
-                  <div class="text-center">
-                    <span class="text-gray-500 text-sm">OR</span>
-                  </div>
-                  <input
-                    type="file"
-                    @change="handleProductImageChange"
-                    accept="image/*"
-                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
-                  />
-                  <p class="text-xs text-gray-500 text-center">Upload image from your device</p>
-                </div>
-              </div>
-              
-              <div class="mt-8 flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4">
-                <button
-                  type="button"
-                  @click="resetProductForm"
-                  class="px-6 py-3 border-2 border-gray-300 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium"
-                >
-                  Reset
-                </button>
-                <button
-                  type="submit"
-                  :disabled="isAddingProduct"
-                  class="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
-                >
-                  <span v-if="isAddingProduct" class="flex items-center">
-                    <span class="animate-spin mr-2">⟳</span>
-                    Adding...
-                  </span>
-                  <span v-else class="flex items-center">
-                    Add Product
-                  </span>
-                </button>
-              </div>
-            </form>
-          </div>
+    
+    const tabs = computed(() => [
+      { id: 'dashboard', name: 'Dashboard' },
+      { id: 'orders', name: 'Orders', badge: stats.value.pending_orders },
+      { id: 'users', name: 'Users' },
+      { id: 'products', name: 'Products' }
+    ])
+    
+    const dashboardStats = computed(() => [
+      { label: 'Total Revenue', value: `Tsh ${(stats.value.total_revenue || 0).toLocaleString()}`, bgColor: 'bg-green-100', iconColor: 'text-green-600', icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1l-1 1m-1-1l1-1m-1 1H8m8 0h-1m0 0l-1 1m1-1V6m0 2c.657 0 1.5-.895 1.5-2s-.843-2-1.5-2M8 12c-.657 0-1.5.895-1.5 2s.843 2 1.5 2m0-8c.657 0 1.5.895 1.5 2s-.843 2-1.5 2m0 0V6m0 2v2m0-4h.01M8 8v8m0-4h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' },
+      { label: 'Total Orders', value: stats.value.total_orders || 0, bgColor: 'bg-blue-100', iconColor: 'text-blue-600', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2 2v10a2 2 0 002 2h6a2 2 0 002-2V9a2 2 0 00-2-2H9z' },
+      { label: 'Total Products', value: stats.value.total_products || 0, bgColor: 'bg-orange-100', iconColor: 'text-orange-600', icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4' },
+      { label: 'Active Users', value: stats.value.total_users || 0, bgColor: 'bg-purple-100', iconColor: 'text-purple-600', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z' },
+      { label: 'Pending Orders', value: stats.value.pending_orders || 0, bgColor: 'bg-yellow-100', iconColor: 'text-yellow-600', icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' },
+      { label: 'Completed Orders', value: stats.value.completed_orders || 0, bgColor: 'bg-green-100', iconColor: 'text-green-600', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
+      { label: 'Avg Order Value', value: `Tsh ${stats.value.avg_order_value || 0}`, bgColor: 'bg-indigo-100', iconColor: 'text-indigo-600', icon: 'M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z' },
+      { label: 'Low Stock Items', value: stats.value.low_stock_products || 0, bgColor: 'bg-red-100', iconColor: 'text-red-600', icon: 'M20 12H4l1.586-1.586a2 2 0 012.828 0L12 15.414l3.586-3.586a2 2 0 012.828 0L20 12z' }
+    ])
+
+    const filteredOrdersList = computed(() => {
+      if (orderStatusFilter.value === 'all') return allOrders.value
+      return allOrders.value.filter(order => order.status === orderStatusFilter.value)
+    })
+
+    const newProduct = ref({
+      name: '',
+      price: 0,
+      category: '',
+      image: '',
+      condition: 'new'
+    })
+
+    const imagePreview = ref('')
+    const imageFile = ref(null)
+    const showAddProductForm = ref(false)
+    const productSearchQuery = ref('')
+    const productCategoryFilter = ref('')
+    const productStatusFilter = ref('')
+
+    const filteredProducts = computed(() => {
+      let filtered = products.value
+
+      // Search filter
+      if (productSearchQuery.value) {
+        const query = productSearchQuery.value.toLowerCase()
+        filtered = filtered.filter(product => 
+          product.name.toLowerCase().includes(query) ||
+          product.category.toLowerCase().includes(query) ||
+          product.description.toLowerCase().includes(query)
+        )
+      }
+
+      // Category filter
+      if (productCategoryFilter.value) {
+        filtered = filtered.filter(product => product.category === productCategoryFilter.value)
+      }
+
+      // Status filter
+      if (productStatusFilter.value) {
+        const isActive = productStatusFilter.value === 'active'
+        filtered = filtered.filter(product => product.is_active === isActive)
+      }
+
+      return filtered
+    })
+
+    const isAddingProduct = ref(false)
+    const editingProduct = ref(null)
+    const isEditing = ref(false)
+    const viewingProduct = ref(null)
+    const productToDelete = ref(null)
+    const showConfirmDialog = ref(false)
+
+    // Handle product image file change
+    const handleProductImageChange = (event) => {
+      const file = event.target.files[0]
+      if (file) {
+        newProduct.value.imageFile = file
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          newProduct.value.image = e.target.result
+        }
+        reader.readAsDataURL(file)
+      }
+    }
+
+    // Notification system
+    const showNotificationMessage = inject('showNotification')
+
+    // Computed properties for dashboard
+    const totalRevenue = computed(() => {
+      const total = allOrders.value.reduce((total, order) => {
+        const orderTotal = Number(order.total_amount || order.total || 0)
+        return total + orderTotal
+      }, 0)
+      return Math.round(total)
+    })
+
+    const totalSpend = computed(() => {
+      const deliveredOrders = allOrders.value.filter(order => {
+        const status = (order.status || '').toLowerCase()
+        return status === 'delivered' || status === 'completed' || status === 'delivered'
+      })
+      
+      const total = deliveredOrders.reduce((total, order) => {
+        const orderTotal = Number(order.total_amount || order.total || 0)
+        return total + orderTotal
+      }, 0)
+      
+      return Math.round(total)
+    })
+
+    const pendingOrders = computed(() => {
+      return allOrders.value.filter(order => order.status === 'Pending').length
+    })
+
+    // View product functions
+    const viewProduct = (product) => {
+      viewingProduct.value = { ...product, addedDate: new Date().toISOString() }
+    }
+
+    const closeViewModal = () => {
+      viewingProduct.value = null
+    }
+
+    // Edit product functions
+    const editProduct = (product) => {
+      editingProduct.value = JSON.parse(JSON.stringify(product))
+      isEditing.value = true
+      closeViewModal()
+    }
+
+    const closeEditModal = () => {
+      editingProduct.value = null
+      isEditing.value = false
+    }
+
+    // Vue confirm dialog
+    const confirmDelete = (index) => {
+      productToDelete.value = index
+      showConfirmDialog.value = true
+    }
+
+    const cancelDelete = () => {
+      productToDelete.value = null
+      showConfirmDialog.value = false
+    }
+
+    const executeDelete = async () => {
+      if (productToDelete.value !== null) {
+        try {
+          const token = getToken()
+          if (!token) {
+            showNotificationMessage('Authentication required to delete product', 'error')
+            return
+          }
+
+          const product = products.value[productToDelete.value]
+          const response = await fetch(`${API_BASE_URL}/products/${product.id}/manage/`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Token ${token}`
+            }
+          })
           
-          <!-- Product List - Modern Card Layout -->
-          <div class="mt-8">
-            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-              <div class="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-6">
-                <h2 class="text-2xl font-bold flex items-center justify-between">
-                  <span class="flex items-center">
-                    Product Inventory
-                  </span>
-                  <span class="text-sm bg-white/20 px-4 py-2 rounded-full">
-                    {{ filteredProducts.length }} of {{ products.length }} products
-                  </span>
-                </h2>
-              </div>
-              
-              <!-- Responsive Product Grid -->
-              <div class="p-6">
-                <!-- Desktop Table View -->
+          if (response.ok) {
+            const productName = product.name
+            products.value.splice(productToDelete.value, 1)
+            showNotificationMessage(`${productName} removed successfully!`)
+            cancelDelete()
+          } else {
+            const error = await response.json()
+            showNotificationMessage('Failed to delete product: ' + JSON.stringify(error), 'error')
+          }
+        } catch (error) {
+          console.error('Error deleting product:', error)
+          showNotificationMessage('Failed to delete product', 'error')
+        }
+      }
+    }
+
+    // Enhanced remove product function with Vue confirm
+    const deleteProduct = (productId) => {
+      const index = products.value.findIndex(p => p.id === productId)
+      if (index !== -1) {
+        confirmDelete(index)
+      }
+    }
+
+    // Format date function
+    const formatDate = (dateString) => {
+      return new Date(dateString).toLocaleDateString()
+    }
+
+    const saveProduct = async () => {
+      try {
+        const token = getToken()
+        if (!token) {
+          showNotificationMessage('Authentication required to update product', 'error')
+          return
+        }
+
+        // Category mapping for backend
+        const categoryMap = {
+          'Electronics': 1,
+          'Phones': 2, 
+          'Laptops': 3,
+          'Accessories': 4,
+          'Other': 5
+        }
+
+        // Use FormData for potential image upload
+        const formData = new FormData()
+        formData.append('title', editingProduct.value.name || editingProduct.value.title)
+        formData.append('price', editingProduct.value.price)
+        formData.append('category', categoryMap[editingProduct.value.category] || 4)
+        formData.append('description', editingProduct.value.description)
+        formData.append('is_active', editingProduct.value.is_active !== false)
+        formData.append('stock', editingProduct.value.stock || 0)
+        
+        // Add image if provided
+        if (editingProduct.value.imageFile) {
+          formData.append('image', editingProduct.value.imageFile)
+        }
+
+        const response = await fetch(`${API_BASE_URL}/products/${editingProduct.value.id}/manage/`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Token ${token}` },
+          body: formData
+        })
+        
+        if (response.ok) {
+          const updatedProduct = await response.json()
+          const index = products.value.findIndex(p => p.id === editingProduct.value.id)
+          if (index !== -1) {
+            products.value[index] = updatedProduct
+          }
+          closeEditModal()
+          showNotificationMessage('Product updated successfully!')
+        } else {
+          const error = await response.json()
+          showNotificationMessage('Failed to update product: ' + JSON.stringify(error), 'error')
+        }
+      } catch (error) {
+        console.error('Error updating product:', error)
+        showNotificationMessage('Failed to update product', 'error')
+      }
+    }
+
+    const cancelEdit = () => {
+      editingProduct.value = null
+      isEditing.value = false
+    }
                 <div class="hidden lg:block">
                   <div class="overflow-x-auto">
                     <table class="w-full">
