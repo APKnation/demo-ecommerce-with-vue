@@ -463,53 +463,90 @@
               <tbody class="bg-white divide-y divide-gray-200">
                 <tr v-for="product in filteredProducts" :key="product.id" class="hover:bg-gray-50">
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center">
-                      <img 
-                        v-if="product.image && product.image !== '' && product.image !== '/images/placeholder.jpg'" 
-                        :src="product.image" 
-                        :alt="product.name || 'Product'" 
-                        class="w-10 h-10 object-cover rounded-lg mr-3"
-                        @error="$event.target.src='/images/placeholder.jpg'"
-                      >
-                      <div v-else class="w-10 h-10 bg-gray-200 rounded-lg mr-3 flex items-center justify-center">
-                        <span class="text-gray-400 text-xs">📦</span>
+                    <div class="flex items-center space-x-4">
+                      <div class="relative">
+                        <img 
+                          v-if="product.image && product.image !== '' && product.image !== '/images/placeholder.jpg'" 
+                          :src="product.image" 
+                          :alt="product.name || 'Product'" 
+                          class="w-16 h-16 object-cover rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
+                          @error="$event.target.src='/images/placeholder.jpg'"
+                        >
+                        <div v-else class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center shadow-md">
+                          <span class="text-2xl">📦</span>
+                        </div>
+                        <!-- Stock indicator badge -->
+                        <div :class="[
+                          'absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold',
+                          product.stock > 10 ? 'bg-green-500' : 
+                          product.stock > 0 ? 'bg-yellow-500' : 
+                          'bg-red-500'
+                        ]">
+                          <span class="text-white">{{ product.stock || 0 }}</span>
+                        </div>
                       </div>
-                      <div>
-                        <div class="text-sm font-medium text-gray-900">{{ product.name || product.title || 'Unnamed Product' }}</div>
-                        <div class="text-sm text-gray-500">{{ (product.description || 'No description available').substring(0, 50) }}{{ (product.description || '').length > 50 ? '...' : '' }}</div>
+                      <div class="flex-1">
+                        <h4 class="text-sm font-bold text-gray-900 mb-1 line-clamp-1">{{ product.name || product.title || 'Unnamed Product' }}</h4>
+                        <p class="text-xs text-gray-600 line-clamp-2 mb-2">{{ product.description || 'No description available' }}</p>
+                        <div class="flex items-center space-x-2">
+                          <span class="px-2 py-1 text-xs font-medium rounded-full bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 border border-blue-300">
+                            {{ product.category }}
+                          </span>
+                          <span :class="[
+                            'px-2 py-1 text-xs font-medium rounded-full',
+                            product.is_active ? 'bg-green-100 text-green-800 border border-green-300' : 'bg-red-100 text-red-800 border border-red-300'
+                          ]">
+                            {{ product.is_active ? 'Active' : 'Inactive' }}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                      {{ product.category }}
-                    </span>
+                    <div class="text-lg font-bold text-transparent bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text">
+                      Tsh {{ Number(product.price).toLocaleString() }}
+                    </div>
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    Tsh {{ Number(product.price).toLocaleString() }}
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center space-x-2">
+                      <span :class="[
+                        'px-3 py-1 text-sm font-bold rounded-full border',
+                        product.stock > 10 ? 'bg-green-100 text-green-800 border-green-300' : 
+                        product.stock > 0 ? 'bg-yellow-100 text-yellow-800 border-yellow-300' : 
+                        'bg-red-100 text-red-800 border-red-300'
+                      ]">
+                        {{ product.stock || 0 }} units
+                      </span>
+                      <span v-if="product.stock <= 10 && product.stock > 0" class="text-xs text-yellow-600 font-medium">
+                        ⚠️ Low Stock
+                      </span>
+                      <span v-if="product.stock === 0" class="text-xs text-red-600 font-medium">
+                        🚫 Out of Stock
+                      </span>
+                    </div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <span :class="[
-                      'px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full',
-                      product.stock > 10 ? 'bg-green-100 text-green-800' : 
-                      product.stock > 0 ? 'bg-yellow-100 text-yellow-800' : 
-                      'bg-red-100 text-red-800'
+                      'px-3 py-1 text-sm font-semibold rounded-full border',
+                      product.is_active ? 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border-green-300' : 'bg-gradient-to-r from-red-100 to-rose-100 text-red-800 border-red-300'
                     ]">
-                      {{ product.stock || 0 }} units
+                      {{ product.is_active ? '✅ Active' : '❌ Inactive' }}
                     </span>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <span :class="[
-                      'px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full',
-                      product.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                    ]">
-                      {{ product.is_active ? 'Active' : 'Inactive' }}
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                    <button @click="viewProduct(product)" class="text-blue-600 hover:text-blue-900">View</button>
-                    <button @click="editProduct(product)" class="text-green-600 hover:text-green-900">Edit</button>
-                    <button @click="deleteProduct(product.id)" class="text-red-600 hover:text-red-900">Delete</button>
+                    <div class="flex flex-col space-y-2">
+                      <div class="flex space-x-2">
+                        <button @click="viewProduct(product)" class="px-3 py-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-sm hover:shadow-md">
+                          👁️ View
+                        </button>
+                        <button @click="editProduct(product)" class="px-3 py-1 bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-medium rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-sm hover:shadow-md">
+                          ✏️ Edit
+                        </button>
+                      </div>
+                      <button @click="deleteProduct(product.id)" class="px-3 py-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-medium rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-sm hover:shadow-md">
+                        🗑️ Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -687,10 +724,6 @@ export default {
     const productStatusFilter = ref('')
 
     const filteredProducts = computed(() => {
-      console.log('=== PRODUCT INVENTORY DEBUG ===')
-      console.log('Raw products.value:', products.value)
-      console.log('Number of products:', products.value.length)
-      
       let filtered = products.value
 
       // Search filter
@@ -715,23 +748,6 @@ export default {
         )
       }
 
-      console.log('Filtered products:', filtered)
-      
-      // Log each product's structure
-      filtered.forEach((product, index) => {
-        console.log(`Product ${index + 1}:`, {
-          id: product.id,
-          name: product.name,
-          description: product.description,
-          image: product.image,
-          category: product.category,
-          price: product.price,
-          stock: product.stock,
-          is_active: product.is_active
-        })
-      })
-      
-      console.log('=== END DEBUG ===')
       return filtered
     })
 
@@ -871,94 +887,105 @@ export default {
           if (savedProducts) {
             products.value = JSON.parse(savedProducts)
           } else {
-            // Load default products
+            // Load default products with real images from home page
             products.value = [
               { 
                 id: 1,
-                name: 'MacBook Pro', 
-                title: 'MacBook Pro',
+                name: 'Mac Book', 
+                title: 'Mac Book',
                 price: 1000000, 
-                category: 'Laptops', 
-                image: '/images/laptop-placeholder.jpg',
-                description: 'High-performance laptop with M2 chip, 16GB RAM, 512GB SSD. Perfect for professionals and creators.',
+                category: 'laptops', 
+                image: '/images/w.jpg',
+                description: 'High-performance MacBook with latest M2 chip, 16GB RAM, 512GB SSD. Perfect for professionals and creators.',
                 stock: 5,
                 is_active: true
               },
               { 
                 id: 2,
-                name: 'HP EliteBook', 
-                title: 'HP EliteBook',
+                name: 'HP-Brand', 
+                title: 'HP-Brand Laptop',
                 price: 150000, 
-                category: 'Laptops', 
-                image: '/images/laptop-placeholder.jpg',
-                description: 'Business laptop with Intel Core i5, 8GB RAM, 256GB SSD. Reliable and secure for business use.',
+                category: 'laptops', 
+                image: '/images/j.jpg',
+                description: 'Reliable HP laptop with Intel Core i5, 8GB RAM, 256GB SSD. Great for business and everyday use.',
                 stock: 10,
                 is_active: true
               },
               { 
                 id: 3,
-                name: 'Dell XPS', 
-                title: 'Dell XPS',
+                name: 'Dell', 
+                title: 'Dell Laptop',
                 price: 200000, 
-                category: 'Laptops', 
-                image: '/images/laptop-placeholder.jpg',
-                description: 'Premium ultrabook with Intel Core i7, 16GB RAM, 1TB SSD. Stunning 4K display and thin design.',
+                category: 'laptops', 
+                image: '/images/k.jpg',
+                description: 'Dell laptop with Intel Core i7, 16GB RAM, 1TB SSD. Excellent performance for demanding tasks.',
                 stock: 3,
                 is_active: true
               },
               { 
                 id: 4,
-                name: 'iPhone 15', 
-                title: 'iPhone 15',
+                name: 'Apple', 
+                title: 'Apple iPhone',
                 price: 1000000, 
-                category: 'Phones', 
-                image: '/images/phone-placeholder.jpg',
-                description: 'Latest iPhone with A17 Pro chip, 48MP camera, Dynamic Island. Available in multiple colors.',
+                category: 'phones', 
+                image: '/images/d.jpg',
+                description: 'Latest Apple iPhone with A17 Pro chip, 48MP camera, Dynamic Island. Premium smartphone experience.',
                 stock: 8,
                 is_active: true
               },
               { 
                 id: 5,
-                name: 'Samsung Galaxy', 
-                title: 'Samsung Galaxy S24',
-                price: 800000, 
-                category: 'Phones', 
-                image: '/images/phone-placeholder.jpg',
-                description: 'Flagship Android phone with Snapdragon 8 Gen 3, 50MP camera, 120Hz AMOLED display.',
-                stock: 12,
+                name: 'HP-Elite', 
+                title: 'HP EliteBook',
+                price: 1500000, 
+                category: 'laptops', 
+                image: '/images/a.jpg',
+                description: 'Premium HP EliteBook with advanced security features, Intel Core i7, 32GB RAM, 2TB SSD.',
+                stock: 2,
                 is_active: true
               },
               { 
                 id: 6,
-                name: 'Wireless Headphones', 
-                title: 'Sony WH-1000XM5',
-                price: 300000, 
-                category: 'Accessories', 
-                image: '/images/accessory-placeholder.jpg',
-                description: 'Premium noise-cancelling headphones with 30-hour battery, superior sound quality.',
+                name: 'Sony', 
+                title: 'Sony Headphones',
+                price: 200000, 
+                category: 'accessories', 
+                image: '/images/f.jpg',
+                description: 'Premium Sony wireless headphones with noise cancellation, 30-hour battery life.',
                 stock: 15,
                 is_active: true
               },
               { 
                 id: 7,
-                name: 'USB-C Hub', 
-                title: 'Multi-Port USB-C Hub',
-                price: 50000, 
-                category: 'Accessories', 
-                image: '/images/accessory-placeholder.jpg',
-                description: '7-in-1 USB-C hub with HDMI, USB 3.0, SD card reader. Perfect for modern laptops.',
+                name: 'Infinix', 
+                title: 'Infinix Smartphone',
+                price: 400000, 
+                category: 'phones', 
+                image: '/images/g.jpg',
+                description: 'Affordable Infinix smartphone with great features, large display, long battery life.',
                 stock: 20,
                 is_active: true
               },
               { 
                 id: 8,
-                name: 'Gaming Mouse', 
-                title: 'RGB Gaming Mouse',
-                price: 80000, 
-                category: 'Accessories', 
-                image: '/images/accessory-placeholder.jpg',
-                description: 'High-precision gaming mouse with 16000 DPI sensor, customizable RGB lighting.',
-                stock: 25,
+                name: 'iPhone', 
+                title: 'iPhone Pro',
+                price: 1500000, 
+                category: 'phones', 
+                image: '/images/p.jpg',
+                description: 'Professional iPhone with advanced camera system, A17 Pro chip, titanium design.',
+                stock: 6,
+                is_active: true
+              },
+              { 
+                id: 9,
+                name: 'Samsung', 
+                title: 'Samsung Galaxy',
+                price: 3000000, 
+                category: 'phones', 
+                image: '/images/l.jpg',
+                description: 'Flagship Samsung Galaxy with top-tier specifications, premium build quality, excellent camera.',
+                stock: 4,
                 is_active: true
               }
             ]
