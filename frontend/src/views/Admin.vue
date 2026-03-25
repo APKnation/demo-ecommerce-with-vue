@@ -750,59 +750,176 @@
     
     <!-- Order Details Modal -->
     <div v-if="selectedOrder" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold">Order Details #{{ selectedOrder.order_number || selectedOrder.id }}</h3>
-          <button @click="selectedOrder = null" class="text-gray-500 hover:text-gray-700">
+      <div class="bg-white rounded-xl p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Order Details #{{ selectedOrder.order_number || selectedOrder.id }}
+          </h3>
+          <button @click="selectedOrder = null" class="text-gray-500 hover:text-gray-700 transition-colors">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
         </div>
-        <div class="space-y-4">
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <p class="text-sm text-gray-600">Customer</p>
-              <p class="font-medium">{{ selectedOrder.customer?.username || 'Unknown' }}</p>
-            </div>
-            <div>
-              <p class="text-sm text-gray-600">Status</p>
-              <span :class="getStatusClass(selectedOrder.status)">{{ selectedOrder.status }}</span>
-            </div>
-          </div>
-          <div>
-            <p class="text-sm text-gray-600 mb-2">Items</p>
-            <div class="bg-gray-50 rounded-lg p-4 space-y-2">
-              <div v-for="item in selectedOrder.items" :key="item.id" class="flex justify-between items-center py-2 border-b last:border-0">
-                <div class="flex items-center space-x-3">
-                  <img v-if="item.product?.image || item.image" :src="item.product?.image || item.image" class="w-12 h-12 object-cover rounded" />
-                  <div>
-                    <p class="font-medium">{{ item.product?.title || item.name }}</p>
-                    <p class="text-sm text-gray-500">Qty: {{ item.quantity }}</p>
-                  </div>
-                </div>
-                <span class="font-semibold">Tsh {{ Number(item.price).toLocaleString() }}</span>
+        
+        <!-- Debug Info (remove in production) -->
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
+          <p class="text-xs text-yellow-800">Debug: Order data = {{ JSON.stringify(selectedOrder, null, 2) }}</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Customer Info -->
+          <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
+            <h4 class="font-bold text-blue-900 mb-3 flex items-center">
+              <span class="mr-2">👤</span> Customer Information
+            </h4>
+            <div class="space-y-2">
+              <div>
+                <p class="text-sm text-blue-600">Name</p>
+                <p class="font-medium text-blue-900">{{ selectedOrder.customer?.username || selectedOrder.user?.username || 'Unknown Customer' }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-blue-600">Email</p>
+                <p class="font-medium text-blue-900">{{ selectedOrder.customer?.email || selectedOrder.user?.email || 'No email' }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-blue-600">Phone</p>
+                <p class="font-medium text-blue-900">{{ selectedOrder.customer?.phone || selectedOrder.user?.phone || 'No phone' }}</p>
               </div>
             </div>
           </div>
-          <div class="flex justify-between items-center pt-4 border-t">
-            <div>
-              <p class="text-sm text-gray-600">Order Date</p>
-              <p class="font-medium">{{ formatDate(selectedOrder.created_at || selectedOrder.date) }}</p>
-            </div>
-            <div class="text-right">
-              <p class="text-sm text-gray-600">Total Amount</p>
-              <p class="text-2xl font-bold text-blue-600">
-                Tsh {{ Number(selectedOrder.total_amount || selectedOrder.total).toLocaleString() }}
-              </p>
+          
+          <!-- Order Status -->
+          <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 border border-green-200">
+            <h4 class="font-bold text-green-900 mb-3 flex items-center">
+              <span class="mr-2">📊</span> Order Status
+            </h4>
+            <div class="space-y-2">
+              <div>
+                <p class="text-sm text-green-600">Current Status</p>
+                <span :class="getStatusClass(selectedOrder.status)" class="px-3 py-1 rounded-full text-sm font-bold">
+                  {{ selectedOrder.status }}
+                </span>
+              </div>
+              <div>
+                <p class="text-sm text-green-600">Order Date</p>
+                <p class="font-medium text-green-900">{{ formatDate(selectedOrder.created_at || selectedOrder.date) }}</p>
+              </div>
+              <div v-if="selectedOrder.updated_at">
+                <p class="text-sm text-green-600">Last Updated</p>
+                <p class="font-medium text-green-900">{{ formatDate(selectedOrder.updated_at) }}</p>
+              </div>
             </div>
           </div>
-          <div class="flex justify-end space-x-3 pt-4">
-            <button @click="selectedOrder = null" class="px-4 py-2 border rounded-lg hover:bg-gray-50">Close</button>
-            <button v-if="selectedOrder.status === 'Pending'" @click="confirmOrder(selectedOrder.id); selectedOrder = null" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Confirm</button>
-            <button v-if="selectedOrder.status === 'Confirmed'" @click="completeOrder(selectedOrder.id); selectedOrder = null" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Complete</button>
-            <button v-if="['Pending', 'Confirmed'].includes(selectedOrder.status)" @click="cancelOrder(selectedOrder.id); selectedOrder = null" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Cancel</button>
+          
+          <!-- Payment Info -->
+          <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 border border-purple-200">
+            <h4 class="font-bold text-purple-900 mb-3 flex items-center">
+              <span class="mr-2">💳</span> Payment Information
+            </h4>
+            <div class="space-y-2">
+              <div>
+                <p class="text-sm text-purple-600">Subtotal</p>
+                <p class="font-medium text-purple-900">Tsh {{ Number(selectedOrder.subtotal || 0).toLocaleString() }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-purple-600">Shipping</p>
+                <p class="font-medium text-purple-900">Tsh {{ Number(selectedOrder.shipping || 0).toLocaleString() }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-purple-600">Tax</p>
+                <p class="font-medium text-purple-900">Tsh {{ Number(selectedOrder.tax || 0).toLocaleString() }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-purple-600 font-bold">Total Amount</p>
+                <p class="font-bold text-xl text-purple-900">
+                  Tsh {{ Number(selectedOrder.total_amount || selectedOrder.total || 0).toLocaleString() }}
+                </p>
+              </div>
+            </div>
           </div>
+        </div>
+        
+        <!-- Order Items -->
+        <div class="mt-6">
+          <h4 class="font-bold text-gray-900 mb-4 flex items-center">
+            <span class="mr-2">📦</span> Order Items ({{ selectedOrder.items?.length || 0 }} items)
+          </h4>
+          <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+            <div v-if="!selectedOrder.items || selectedOrder.items.length === 0" class="text-center py-8">
+              <span class="text-4xl mb-2 block">📦</span>
+              <p class="text-gray-500">No items found in this order</p>
+            </div>
+            <div v-else class="space-y-3">
+              <div v-for="item in selectedOrder.items" :key="item.id || item.product_id" class="bg-white rounded-lg p-4 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                <div class="flex items-start space-x-4">
+                  <div class="flex-shrink-0">
+                    <img 
+                      v-if="item.product?.image || item.image" 
+                      :src="getImageUrl(item.product?.image || item.image)" 
+                      :alt="item.product?.title || item.name || 'Product'" 
+                      class="w-16 h-16 object-cover rounded-lg shadow-md"
+                      @error="handleImageError"
+                    />
+                    <div v-else class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center shadow-md">
+                      <span class="text-2xl">📦</span>
+                    </div>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <h5 class="font-bold text-gray-900 mb-1">{{ item.product?.title || item.name || 'Unknown Product' }}</h5>
+                    <p class="text-sm text-gray-600 mb-2">{{ item.product?.description || 'No description available' }}</p>
+                    <div class="flex justify-between items-center">
+                      <div>
+                        <p class="text-sm text-gray-500">Unit Price</p>
+                        <p class="font-medium text-gray-900">Tsh {{ Number(item.price || item.unit_price || 0).toLocaleString() }}</p>
+                      </div>
+                      <div>
+                        <p class="text-sm text-gray-500">Quantity</p>
+                        <p class="font-medium text-gray-900">{{ item.quantity || 1 }}</p>
+                      </div>
+                      <div>
+                        <p class="text-sm text-gray-500">Subtotal</p>
+                        <p class="font-bold text-lg text-blue-600">
+                          Tsh {{ Number((item.price || item.unit_price || 0) * (item.quantity || 1)).toLocaleString() }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap gap-3 justify-end mt-6 pt-6 border-t border-gray-200">
+          <button 
+            @click="selectedOrder = null" 
+            class="px-6 py-3 border-2 border-gray-300 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium"
+          >
+            ❌ Close
+          </button>
+          <button 
+            v-if="selectedOrder.status === 'Pending'" 
+            @click="confirmOrder(selectedOrder.id); selectedOrder = null" 
+            class="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
+          >
+            ✅ Confirm Order
+          </button>
+          <button 
+            v-if="selectedOrder.status === 'Confirmed'" 
+            @click="completeOrder(selectedOrder.id); selectedOrder = null" 
+            class="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-300 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
+          >
+            🚚 Complete Order
+          </button>
+          <button 
+            v-if="['Pending', 'Confirmed'].includes(selectedOrder.status)" 
+            @click="cancelOrder(selectedOrder.id); selectedOrder = null" 
+            class="px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-300 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
+          >
+            🗑️ Cancel Order
+          </button>
         </div>
       </div>
     </div>
