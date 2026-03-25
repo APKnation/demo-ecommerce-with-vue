@@ -322,13 +322,23 @@
                 </select>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
-                <input
-                  v-model="newProduct.image"
-                  type="url"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter image URL (optional)"
-                />
+                <label class="block text-sm font-medium text-gray-700 mb-2">Product Image</label>
+                <div class="space-y-2">
+                  <input
+                    v-model="newProduct.image"
+                    type="url"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Enter image URL (optional)"
+                  />
+                  <div class="text-sm text-gray-500 text-center">OR</div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    @change="handleProductImageChange"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                  <p class="text-xs text-gray-500">Upload image from your device</p>
+                </div>
               </div>
             </div>
             <div class="mt-6">
@@ -510,6 +520,7 @@ export default {
       price: 0,
       category: '',
       image: '',
+      imageFile: null,
       description: ''
     })
     const isAddingProduct = ref(false)
@@ -517,6 +528,11 @@ export default {
     const isEditing = ref(false)
     const viewingProduct = ref(null)
     const productToDelete = ref(null)
+
+    // Handle product image file change
+    const handleProductImageChange = (event) => {
+      newProduct.value.imageFile = event.target.files[0]
+    }
     
     // New table functionality
     const searchQuery = ref('')
@@ -575,19 +591,29 @@ export default {
           'Other': 4
         }
         
+        // Use FormData for potential image upload
+        const formData = new FormData()
+        formData.append('title', newProduct.value.name)
+        formData.append('price', newProduct.value.price)
+        formData.append('category', categoryMap[newProduct.value.category] || 4)
+        formData.append('description', newProduct.value.description)
+        formData.append('is_active', true)
+        formData.append('stock', 1) // Default stock
+        
+        // Add image if provided
+        if (newProduct.value.imageFile) {
+          formData.append('image', newProduct.value.imageFile)
+        } else if (newProduct.value.image) {
+          formData.append('image_url', newProduct.value.image)
+        }
+        
         const response = await fetch(`${API_BASE_URL}/products/create/`, {
           method: 'POST',
           headers: {
-            'Authorization': `Token ${getToken()}`,
-            'Content-Type': 'application/json'
+            'Authorization': `Token ${getToken()}`
+            // Don't set Content-Type for FormData
           },
-          body: JSON.stringify({
-            title: newProduct.value.name,
-            price: newProduct.value.price,
-            category: categoryMap[newProduct.value.category] || 4,
-            image: newProduct.value.image,
-            description: newProduct.value.description
-          })
+          body: formData
         })
         
         if (response.ok) {
@@ -595,7 +621,7 @@ export default {
           products.value.push(newProductData)
           showNotificationMessage('Product added successfully!')
           resetProductForm()
-          loadData() // Refresh products list
+          await loadData() // Refresh products list
         } else {
           const error = await response.json()
           showNotificationMessage('Failed to add product: ' + JSON.stringify(error), 'error')
@@ -613,6 +639,7 @@ export default {
         price: 0,
         category: '',
         image: '',
+        imageFile: null,
         description: ''
       }
     }
@@ -903,6 +930,7 @@ export default {
       saveProducts,
       addProduct,
       resetProductForm,
+      handleProductImageChange,
       isAddingProduct,
       viewProduct,
       closeViewModal,

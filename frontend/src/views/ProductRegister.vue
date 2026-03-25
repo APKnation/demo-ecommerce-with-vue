@@ -230,24 +230,34 @@ export default {
           throw new Error('You must be logged in to register a product')
         }
         
-        // Create JSON payload (not FormData for this API)
-        const payload = {
-          title: form.value.title,
-          description: form.value.description,
-          price: form.value.price,
-          stock: form.value.stock,
-          condition: form.value.condition,
-          category: form.value.category_id,
-          is_active: form.value.is_active
+        // Use FormData for file upload
+        const formData = new FormData()
+        
+        // Add all form fields
+        formData.append('title', form.value.title)
+        formData.append('description', form.value.description)
+        formData.append('price', form.value.price)
+        formData.append('stock', form.value.stock)
+        formData.append('condition', form.value.condition)
+        formData.append('is_active', form.value.is_active)
+        
+        // Add category if selected
+        if (form.value.category_id) {
+          formData.append('category', form.value.category_id)
+        }
+        
+        // Add image if selected
+        if (form.value.image) {
+          formData.append('image', form.value.image)
         }
         
         const response = await fetch('http://localhost:8000/api/products/create/', {
           method: 'POST',
           headers: {
-            'Authorization': `Token ${token}`,
-            'Content-Type': 'application/json'
+            'Authorization': `Token ${token}`
+            // Don't set Content-Type for FormData - browser sets it automatically with boundary
           },
-          body: JSON.stringify(payload)
+          body: formData
         })
         
         const data = await response.json()
