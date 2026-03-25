@@ -302,7 +302,12 @@ export default {
           
           if (response.ok) {
             const data = await response.json()
-            orders.value = data
+            // Handle null or empty response
+            if (data && Array.isArray(data)) {
+              orders.value = data
+            } else {
+              orders.value = []
+            }
           } else {
             throw new Error('Failed to fetch orders from backend')
           }

@@ -273,11 +273,22 @@ export default {
     }
 
     // Cart functions
-    const addToCart = (name, price) => {
+    const addToCart = (item) => {
+      // Handle both object and string parameters
+      let name, price
+      
+      if (typeof item === 'object' && item !== null) {
+        name = item.name || 'Unknown Product'
+        price = item.price || 0
+      } else {
+        name = item || 'Unknown Product'
+        price = 0
+      }
+      
       // Debug logging
       console.log('App.vue addToCart called with:', { name, price, nameType: typeof name })
       
-      const existingItemIndex = cart.value.findIndex(item => item.name === name)
+      const existingItemIndex = cart.value.findIndex(cartItem => cartItem.name === name)
       if (existingItemIndex !== -1) {
         cart.value[existingItemIndex].quantity += 1
       } else {

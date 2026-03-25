@@ -425,12 +425,9 @@ export default {
       // Extract product name and price from the product object
       const productName = product.title || product.name || 'Unknown Product'
       const productPrice = Number(product.price)
-      
-      console.log('Extracted values:', { productName, productPrice })
-      
       // Always use guest cart first (localStorage)
       if (guestAddToCart) {
-        guestAddToCart({ name: productName, price: productPrice })
+        guestAddToCart(product)
         showNotificationMessage(`${productName} added to cart!`, 'success')
         
         // If user is authenticated and has token, also try to add to backend cart
@@ -620,7 +617,9 @@ export default {
       handleImageError,
       viewProduct,
       editProduct,
-      deleteProduct
+      deleteProduct,
+      isAuthenticated,
+      user
     }
   }
 }
