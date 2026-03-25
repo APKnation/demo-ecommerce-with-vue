@@ -309,12 +309,6 @@ export default {
       showNotificationMessage(`${itemName} removed from cart`, 'success')
     }
 
-    const clearCart = () => {
-      cart.value = []
-      saveCart()
-      showNotificationMessage('Cart cleared', 'success')
-    }
-
     const saveCart = () => {
       localStorage.setItem('cart', JSON.stringify(cart.value))
     }
