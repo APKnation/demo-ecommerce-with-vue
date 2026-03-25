@@ -81,6 +81,310 @@
         </div>
       </div>
 
+      <!-- Orders Section -->
+      <div v-if="activeTab === 'orders'" class="space-y-6 sm:space-y-8">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+          <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 sm:px-8 py-4 sm:py-6">
+            <h2 class="text-xl sm:text-2xl font-bold flex items-center justify-between">
+              <span class="flex items-center">
+                <span class="mr-3">📋</span>
+                Order Management
+              </span>
+              <span class="text-sm bg-white/20 px-4 py-2 rounded-full">
+                {{ allOrders.length }} total orders
+              </span>
+            </h2>
+          </div>
+          
+          <div class="p-4 sm:p-6">
+            <!-- Order Status Filter -->
+            <div class="mb-6 flex flex-wrap gap-2">
+              <button 
+                v-for="status in ['all', 'Pending', 'Confirmed', 'Completed', 'Cancelled']" 
+                :key="status"
+                @click="orderStatusFilter = status"
+                :class="[
+                  'px-4 py-2 rounded-lg font-medium transition-all text-sm',
+                  orderStatusFilter === status 
+                    ? 'bg-blue-600 text-white shadow-md' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ]"
+              >
+                {{ status === 'all' ? 'All Orders' : status }}
+                <span v-if="status !== 'all'" class="ml-2 bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full text-xs">
+                  {{ allOrders.filter(o => o.status === status).length }}
+                </span>
+              </button>
+            </div>
+
+            <!-- Orders Table -->
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-gray-50 border-b-2 border-gray-200">
+                  <tr>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Order #</th>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Customer</th>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Status</th>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Total</th>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Date</th>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr v-for="order in filteredOrdersList" :key="order.id" class="hover:bg-gray-50 transition-colors">
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm font-bold text-gray-900">#{{ order.order_number || order.id }}</div>
+                    </td>
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{{ order.customer?.username || 'Unknown' }}</div>
+                      <div class="text-xs text-gray-500">{{ order.customer?.email || '' }}</div>
+                    </td>
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <span :class="getStatusClass(order.status)" class="px-3 py-1 rounded-full text-xs font-bold">
+                        {{ order.status }}
+                      </span>
+                    </td>
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm font-bold text-green-600">
+                        Tsh {{ Number(order.total_amount || order.total || 0).toLocaleString() }}
+                      </div>
+                    </td>
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{{ formatDate(order.created_at) }}</div>
+                    </td>
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <div class="flex space-x-2">
+                        <button @click="viewOrderDetails(order)" class="px-3 py-1 bg-blue-500 text-white text-xs font-medium rounded-lg hover:bg-blue-600 transition-colors">
+                          View
+                        </button>
+                        <button @click="deleteOrder(order.id)" class="px-3 py-1 bg-red-500 text-white text-xs font-medium rounded-lg hover:bg-red-600 transition-colors">
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              <!-- Empty State -->
+              <div v-if="filteredOrdersList.length === 0" class="text-center py-12">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">No orders found</h3>
+                <p class="text-gray-600">Try adjusting your status filter</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users Section -->
+      <div v-if="activeTab === 'users'" class="space-y-6 sm:space-y-8">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+          <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 sm:px-8 py-4 sm:py-6">
+            <h2 class="text-xl sm:text-2xl font-bold flex items-center justify-between">
+              <span class="flex items-center">
+                <span class="mr-3">👥</span>
+                User Management
+              </span>
+              <span class="text-sm bg-white/20 px-4 py-2 rounded-full">
+                {{ allUsers.length }} total users
+              </span>
+            </h2>
+          </div>
+          
+          <div class="p-4 sm:p-6">
+            <!-- Users Table -->
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-gray-50 border-b-2 border-gray-200">
+                  <tr>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">User</th>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Email</th>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Role</th>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Joined</th>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr v-for="user in allUsers" :key="user.id" class="hover:bg-gray-50 transition-colors">
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold mr-3">
+                          {{ user.username?.charAt(0).toUpperCase() || 'U' }}
+                        </div>
+                        <div class="text-sm font-bold text-gray-900">{{ user.username }}</div>
+                      </div>
+                    </td>
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{{ user.email }}</div>
+                    </td>
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <span :class="getRoleClass(user.role)" class="px-3 py-1 rounded-full text-xs font-bold">
+                        {{ user.role || 'customer' }}
+                      </span>
+                    </td>
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{{ formatDate(user.date_joined) }}</div>
+                    </td>
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <button @click="deleteUser(user.id)" class="px-3 py-1 bg-red-500 text-white text-xs font-medium rounded-lg hover:bg-red-600 transition-colors">
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              <!-- Empty State -->
+              <div v-if="allUsers.length === 0" class="text-center py-12">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">No users found</h3>
+                <p class="text-gray-600">Users will appear here when they register</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products Section -->
+      <div v-if="activeTab === 'products'" class="space-y-6 sm:space-y-8">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+          <div class="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 sm:px-8 py-4 sm:py-6">
+            <h2 class="text-xl sm:text-2xl font-bold flex items-center justify-between">
+              <span class="flex items-center">
+                <span class="mr-3">📦</span>
+                Product Management
+              </span>
+              <span class="text-sm bg-white/20 px-4 py-2 rounded-full">
+                {{ products.length }} total products
+              </span>
+            </h2>
+          </div>
+          
+          <div class="p-4 sm:p-6">
+            <!-- Product Filters -->
+            <div class="mb-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Search Products</label>
+                <input
+                  v-model="productSearchQuery"
+                  type="text"
+                  placeholder="Search by name, category..."
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                >
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                <select v-model="productCategoryFilter" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                  <option value="">All Categories</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Phones">Phones</option>
+                  <option value="Laptops">Laptops</option>
+                  <option value="Accessories">Accessories</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                <select v-model="productStatusFilter" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                  <option value="">All Status</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Products Table -->
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-gray-50 border-b-2 border-gray-200">
+                  <tr>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Product</th>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Price</th>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Stock</th>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Status</th>
+                    <th class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr v-for="product in filteredProducts" :key="product.id" class="hover:bg-gray-50 transition-colors">
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center space-x-4">
+                        <div class="relative">
+                          <img 
+                            v-if="product.image && product.image !== '' && product.image !== '/images/placeholder.jpg'" 
+                            :src="getImageUrl(product.image)" 
+                            :alt="product.name || 'Product'" 
+                            class="w-16 h-16 object-cover rounded-xl shadow-md"
+                            @error="handleImageError"
+                          >
+                          <div v-else class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center shadow-md">
+                            <span class="text-xs font-bold text-gray-500">No Image</span>
+                          </div>
+                        </div>
+                        <div class="flex-1">
+                          <h4 class="text-sm font-bold text-gray-900 mb-1">{{ product.name || product.title || 'Unnamed Product' }}</h4>
+                          <p class="text-xs text-gray-600 mb-2 line-clamp-2">{{ product.description || 'No description available' }}</p>
+                          <span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                            {{ product.category }}
+                          </span>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <div class="text-lg font-bold text-green-600">
+                        Tsh {{ Number(product.price).toLocaleString() }}
+                      </div>
+                    </td>
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <span :class="[
+                        'px-3 py-1 text-sm font-bold rounded-full',
+                        product.stock > 10 ? 'bg-green-100 text-green-800' : 
+                        product.stock > 0 ? 'bg-yellow-100 text-yellow-800' : 
+                        'bg-red-100 text-red-800'
+                      ]">
+                        {{ product.stock || 0 }} units
+                      </span>
+                    </td>
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <span :class="[
+                        'px-3 py-1 text-sm font-semibold rounded-full',
+                        product.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                      ]">
+                        {{ product.is_active ? 'Active' : 'Inactive' }}
+                      </span>
+                    </td>
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <div class="flex space-x-2">
+                        <button @click="viewProduct(product)" class="px-3 py-1 bg-blue-500 text-white text-xs font-medium rounded-lg hover:bg-blue-600 transition-colors">
+                          View
+                        </button>
+                        <button @click="editProduct(product)" class="px-3 py-1 bg-green-500 text-white text-xs font-medium rounded-lg hover:bg-green-600 transition-colors">
+                          Edit
+                        </button>
+                        <button @click="deleteProduct(product.id)" class="px-3 py-1 bg-red-500 text-white text-xs font-medium rounded-lg hover:bg-red-600 transition-colors">
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              <!-- Empty State -->
+              <div v-if="filteredProducts.length === 0" class="text-center py-12">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">No products found</h3>
+                <p class="text-gray-600 mb-4">Try adjusting your search or filters</p>
+                <button 
+                  @click="productSearchQuery = ''; productCategoryFilter = ''; productStatusFilter = ''"
+                  class="px-6 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors font-medium"
+                >
+                  Clear Filters
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     <!-- View Product Modal -->
     <div v-if="viewingProduct" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div class="bg-white rounded-xl p-4 sm:p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
