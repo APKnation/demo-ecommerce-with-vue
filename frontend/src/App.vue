@@ -375,6 +375,7 @@ export default {
     provide('compareList', compareList)
     provide('addToCart', addToCart)
     provide('addToCompare', addToCompare)
+    provide('notification', notification)
 
     return {
       cart,
