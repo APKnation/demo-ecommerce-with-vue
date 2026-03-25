@@ -1,121 +1,134 @@
 <template>
-  <div>
+  <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
     <!-- Admin Header -->
-    <div class="bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded-lg shadow-xl p-8 mb-8">
-    <div class="flex items-center justify-between">
-      <div>
-        <h1 class="text-4xl font-bold mb-2">Admin Dashboard</h1>
-        <p class="text-primary-100">Manage your e-commerce store</p>
+    <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-2xl">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">Admin Dashboard</h1>
+            <p class="text-blue-100 text-sm sm:text-base">Manage your e-commerce store</p>
+          </div>
+          <div class="text-center sm:text-right">
+            <div class="text-2xl sm:text-3xl lg:text-4xl font-bold">{{ products.length }}</div>
+            <div class="text-sm sm:text-base text-blue-100">Total Products</div>
+          </div>
+        </div>
       </div>
-      <div class="text-right">
-        <div class="text-3xl font-bold">{{ products.length }}</div>
-        <div class="text-sm text-primary-100">Total Products</div>
-      </div>
-    </div>
     </div>
 
     <!-- Navigation Tabs -->
-    <div class="mt-8 flex space-x-1 bg-white rounded-lg p-1 shadow-md">
-      <button 
-        v-for="tab in tabs" 
-        :key="tab.id"
-        @click="tab.route ? $router.push(tab.route) : activeTab = tab.id"
-        :class="[
-          'px-6 py-3 rounded-md font-medium transition-all text-sm',
-          (activeTab === tab.id && !tab.route) || $route.path === tab.route
-            ? 'bg-blue-600 text-white shadow-md' 
-            : 'text-gray-600 hover:bg-gray-100'
-        ]"
-      >
-        {{ tab.name }}
-        <span v-if="tab.badge" class="ml-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
-          {{ tab.badge }}
-        </span>
-      </button>
+    <div class="bg-white shadow-lg sticky top-0 z-40 border-b border-gray-200">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col sm:flex-row sm:space-x-1 p-2 sm:p-1">
+          <button 
+            v-for="tab in tabs" 
+            :key="tab.id"
+            @click="tab.route ? $router.push(tab.route) : activeTab = tab.id"
+            :class="[
+              'px-3 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition-all text-xs sm:text-sm mb-1 sm:mb-0',
+              (activeTab === tab.id && !tab.route) || $route.path === tab.route
+                ? 'bg-blue-600 text-white shadow-md' 
+                : 'text-gray-600 hover:bg-gray-100'
+            ]"
+          >
+            {{ tab.name }}
+            <span v-if="tab.badge" class="ml-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+              {{ tab.badge }}
+            </span>
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- Dashboard Stats Section -->
-    <div v-if="activeTab === 'dashboard'" class="mt-8">
-      <!-- Main Stats Row -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div v-for="stat in dashboardStats.slice(0, 4)" :key="stat.label" 
-             class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm font-medium text-gray-600">{{ stat.label }}</p>
-              <p class="text-2xl font-bold text-gray-900 mt-1">{{ stat.value }}</p>
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <!-- Dashboard Stats Section -->
+      <div v-if="activeTab === 'dashboard'" class="space-y-6 sm:space-y-8">
+        <!-- Main Stats Row -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div v-for="stat in dashboardStats.slice(0, 4)" :key="stat.label" 
+               class="bg-white rounded-xl shadow-lg p-4 sm:p-6 hover:shadow-xl transition-shadow duration-300">
+            <div class="flex items-center justify-between">
+              <div class="flex-1">
+                <p class="text-xs sm:text-sm font-medium text-gray-600">{{ stat.label }}</p>
+                <p class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mt-1">{{ stat.value }}</p>
+              </div>
+              <div :class="`w-10 h-10 sm:w-12 sm:h-12 ${stat.bgColor} rounded-xl flex items-center justify-center flex-shrink-0`">
+                <svg class="w-5 h-5 sm:w-6 sm:h-6" :class="stat.iconColor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="stat.icon"></path>
+                </svg>
+              </div>
             </div>
-            <div :class="`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center`">
-              <svg class="w-6 h-6" :class="stat.iconColor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="stat.icon"></path>
-              </svg>
+          </div>
+        </div>
+        
+        <!-- Secondary Stats Row -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div v-for="stat in dashboardStats.slice(4)" :key="stat.label" 
+               class="bg-white rounded-xl shadow-lg p-4 sm:p-6 hover:shadow-xl transition-shadow duration-300">
+            <div class="flex items-center justify-between">
+              <div class="flex-1">
+                <p class="text-xs sm:text-sm font-medium text-gray-600">{{ stat.label }}</p>
+                <p class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mt-1">{{ stat.value }}</p>
+              </div>
+              <div :class="`w-10 h-10 sm:w-12 sm:h-12 ${stat.bgColor} rounded-xl flex items-center justify-center flex-shrink-0`">
+                <svg class="w-5 h-5 sm:w-6 sm:h-6" :class="stat.iconColor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="stat.icon"></path>
+                </svg>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      
-      <!-- Secondary Stats Row -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div v-for="stat in dashboardStats.slice(4)" :key="stat.label" 
-             class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm font-medium text-gray-600">{{ stat.label }}</p>
-              <p class="text-2xl font-bold text-gray-900 mt-1">{{ stat.value }}</p>
-            </div>
-            <div :class="`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center`">
-              <svg class="w-6 h-6" :class="stat.iconColor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="stat.icon"></path>
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- View Product Modal -->
-    <div v-if="viewingProduct" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold text-gray-900">Product Details</h2>
-          <button @click="closeViewModal" class="text-gray-500 hover:text-gray-700 font-medium">
+    <div v-if="viewingProduct" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div class="bg-white rounded-xl p-4 sm:p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-900">Product Details</h2>
+          <button @click="closeViewModal" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors font-medium">
             Close
           </button>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
-            <img v-if="viewingProduct.image" :src="viewingProduct.image" :alt="viewingProduct.name" 
-                 class="w-full h-64 object-cover rounded-lg">
-            <div v-else class="w-full h-64 bg-gray-200 rounded-lg flex items-center justify-center">
+            <img v-if="viewingProduct.image" :src="getImageUrl(viewingProduct.image)" :alt="viewingProduct.name" 
+                 class="w-full h-48 sm:h-64 lg:h-80 object-cover rounded-lg">
+            <div v-else class="w-full h-48 sm:h-64 lg:h-80 bg-gray-200 rounded-lg flex items-center justify-center">
               <span class="text-gray-400">No Image</span>
             </div>
           </div>
           
           <div class="space-y-4">
             <div>
-              <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ viewingProduct.name }}</h3>
+              <h3 class="text-lg sm:text-xl font-semibold text-gray-900 mb-2">{{ viewingProduct.name }}</h3>
               <span class="px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-800">
                 {{ viewingProduct.category }}
               </span>
             </div>
             
-            <div class="text-2xl font-bold text-blue-600">
-              Tsh {{ viewingProduct.price.toLocaleString() }}
+            <div class="text-xl sm:text-2xl font-bold text-blue-600">
+              Tsh {{ Number(viewingProduct.price).toLocaleString() }}
             </div>
             
-            <div class="text-sm text-gray-600">
-              <p><strong>Status:</strong> <span class="px-2 py-1 rounded-full bg-green-100 text-green-800">Active</span></p>
+            <div class="text-sm text-gray-600 space-y-1">
+              <p><strong>Status:</strong> 
+                <span :class="viewingProduct.is_active ? 'px-2 py-1 rounded-full bg-green-100 text-green-800' : 'px-2 py-1 rounded-full bg-red-100 text-red-800'">
+                  {{ viewingProduct.is_active ? 'Active' : 'Inactive' }}
+                </span>
+              </p>
+              <p><strong>Stock:</strong> {{ viewingProduct.stock || 0 }} units</p>
               <p><strong>Added:</strong> {{ formatDate(viewingProduct.addedDate) }}</p>
             </div>
           </div>
         </div>
         
-        <div class="flex justify-end space-x-3 mt-6 pt-4 border-t">
-          <button @click="closeViewModal" class="btn btn-secondary">
+        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+          <button @click="closeViewModal" class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium">
             Close
           </button>
-          <button @click="editProduct(viewingProduct)" class="btn btn-primary">
+          <button @click="editProduct(viewingProduct)" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
             Edit Product
           </button>
         </div>
@@ -123,22 +136,23 @@
     </div>
 
     <!-- Edit Product Modal -->
-    <div v-if="isEditing && editingProduct" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold text-gray-900 mb-4">Edit Product</h2>
+    <div v-if="isEditing && editingProduct" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div class="bg-white rounded-xl p-4 sm:p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-900">Edit Product</h2>
           <div class="flex items-center space-x-2">
             <div class="flex items-center">
               <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-              <span class="text-sm text-green-600 font-medium">Editing Mode</span>
+              <span class="text-sm text-green-600 font-medium ml-2">Editing Mode</span>
             </div>
-            <button @click="closeEditModal" class="text-gray-500 hover:text-gray-700 font-medium">
-            Cancel
-          </button>
+            <button @click="closeEditModal" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors font-medium">
+              Cancel
+            </button>
+          </div>
         </div>
         
         <form @submit.prevent="saveProduct" class="space-y-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-2">Product Name</label>
               <input
@@ -148,11 +162,36 @@
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
               >
             </div>
-            
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-2">Price (Tsh)</label>
               <input
                 v-model.number="editingProduct.price"
+                type="number"
+                required
+                min="0"
+                step="0.01"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Category</label>
+              <select
+                v-model="editingProduct.category"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
+              >
+                <option value="">Select category</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Phones">Phones</option>
+                <option value="Laptops">Laptops</option>
+                <option value="Accessories">Accessories</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Stock Quantity</label>
+              <input
+                v-model.number="editingProduct.stock"
                 type="number"
                 required
                 min="0"
@@ -161,34 +200,27 @@
             </div>
           </div>
           
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">Category</label>
-              <select
-                v-model="editingProduct.category"
-                required
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
-              >
-                <option value="">Select Category</option>
-                <option value="laptops">Laptops</option>
-                <option value="phones">Smartphones</option>
-                <option value="accessories">Accessories</option>
-              </select>
-            </div>
-            
-            <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">Image URL</label>
-              <input
-                v-model="editingProduct.image"
-                type="text"
-                required
-                placeholder="/images/product.jpg"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
-              >
-            </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Description</label>
+            <textarea
+              v-model="editingProduct.description"
+              rows="4"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
+              placeholder="Enter product description"
+            ></textarea>
           </div>
           
-          <div class="flex space-x-3">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Image URL</label>
+            <input
+              v-model="editingProduct.image"
+              type="text"
+              placeholder="/images/product.jpg"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
+            >
+          </div>
+          
+          <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
             <button type="button" @click="closeEditModal" class="px-6 py-3 border-2 border-gray-300 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium">
               Cancel
             </button>
@@ -202,17 +234,17 @@
     </div>
     
     <!-- Delete Confirmation Modal -->
-    <div v-if="showConfirmDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+    <div v-if="showConfirmDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div class="bg-white rounded-xl p-4 sm:p-6 max-w-md w-full mx-4">
         <div class="flex items-center mb-4">
-          <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
+          <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
             <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
             </svg>
           </div>
-          <div>
+          <div class="flex-1">
             <h3 class="text-lg font-bold text-gray-900">Confirm Delete</h3>
-            <p class="text-gray-600">Are you sure you want to delete this product?</p>
+            <p class="text-gray-600 text-sm sm:text-base">Are you sure you want to delete this product?</p>
           </div>
         </div>
         
@@ -223,7 +255,7 @@
           <p class="text-sm text-gray-500 mt-1">This action cannot be undone.</p>
         </div>
         
-        <div class="flex space-x-3">
+        <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
           <button @click="cancelDelete" class="flex-1 px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-300 font-medium">
             Cancel
           </button>
@@ -234,215 +266,39 @@
       </div>
     </div>
     
-    <!-- Orders Management Section -->
-    <div v-if="activeTab === 'orders'" class="mt-8">
-      <div class="bg-white rounded-xl shadow-lg p-6">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold">Order Management</h2>
-          <div class="flex gap-4">
-            <select v-model="orderStatusFilter" class="border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500">
-              <option value="all">All Orders</option>
-              <option value="Pending">Pending</option>
-              <option value="Confirmed">Confirmed</option>
-              <option value="Completed">Completed</option>
-              <option value="Cancelled">Cancelled</option>
-            </select>
-          </div>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order #</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Items</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="order in filteredOrdersList" :key="order.id">
-                <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ order.order_number || order.id }}</td>
-                <td class="px-6 py-4 text-sm text-gray-500">{{ order.customer?.username || 'Unknown' }}</td>
-                <td class="px-6 py-4 text-sm text-gray-500">{{ order.items?.length || 0 }} items</td>
-                <td class="px-6 py-4 text-sm text-gray-900 font-semibold">Tsh {{ Number(order.total_amount || order.total).toLocaleString() }}</td>
-                <td class="px-6 py-4">
-                  <span :class="getStatusClass(order.status)">{{ order.status }}</span>
-                </td>
-                <td class="px-6 py-4 text-sm text-gray-500">{{ formatDate(order.created_at || order.date) }}</td>
-                <td class="px-6 py-4 text-sm">
-                  <div class="flex flex-wrap gap-2">
-                    <button @click="viewOrderDetails(order)" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-xs">View</button>
-                    <button v-if="order.status === 'Pending'" @click="confirmOrder(order.id)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs">Confirm</button>
-                    <button v-if="order.status === 'Confirmed'" @click="completeOrder(order.id)" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs">Complete</button>
-                    <button v-if="['Pending', 'Confirmed'].includes(order.status)" @click="cancelOrder(order.id)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">Cancel</button>
-                    <button v-if="order.status !== 'Cancelled'" @click="deleteOrder(order.id)" class="bg-gray-700 hover:bg-gray-800 text-white px-3 py-1 rounded text-xs">Delete</button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+    <!-- Close Main Content Container -->
     </div>
-    
-    <!-- Users Management Section -->
-    <div v-if="activeTab === 'users'" class="mt-8">
-      <div class="bg-white rounded-xl shadow-lg p-6">
-        <h2 class="text-2xl font-bold mb-4">User Management</h2>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">User</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Role</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Phone</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Joined</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="user in allUsers" :key="user.id">
-                <td class="px-6 py-4">
-                  <div class="flex items-center">
-                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-sm font-medium">{{ user.username?.charAt(0).toUpperCase() }}</div>
-                    <div class="ml-3">
-                      <p class="text-sm font-medium text-gray-900">{{ user.username }}</p>
-                      <p class="text-sm text-gray-500">{{ user.first_name }} {{ user.last_name }}</p>
-                    </div>
-                  </div>
-                </td>
-                <td class="px-6 py-4"><span :class="getRoleClass(user.role)">{{ user.role }}</span></td>
-                <td class="px-6 py-4 text-sm text-gray-500">{{ user.phone }}</td>
-                <td class="px-6 py-4 text-sm text-gray-500">{{ formatDate(user.created_at) }}</td>
-                <td class="px-6 py-4 text-sm">
-                  <button v-if="user.id !== currentUser?.id" @click="deleteUser(user.id)" class="bg-red-500 text-white px-3 py-1 rounded text-xs">Delete</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Products Tab (existing content wrapped) -->
-    <div v-if="activeTab === 'products'" class="mt-8">
-      <!-- Product Management Header -->
-      <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-8">
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-          <div class="flex items-center space-x-4">
-            <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
-              <span class="text-white text-2xl font-bold">PI</span>
-            </div>
-            <div>
-              <h2 class="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">Product Inventory</h2>
-              <p class="text-gray-600 text-sm">Manage your store products</p>
-            </div>
-          </div>
-          <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-            <div class="relative">
-              <input
-                v-model="productSearchQuery"
-                type="text"
-                placeholder="Search products..."
-                class="pl-4 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 w-full sm:w-80 shadow-sm hover:shadow-md"
-              >
-            </div>
-            <select
-              v-model="productCategoryFilter"
-              class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md bg-white"
-            >
-              <option value="">All Categories</option>
-              <option value="Electronics">Electronics</option>
-              <option value="Phones">Phones</option>
-              <option value="Laptops">Laptops</option>
-              <option value="Accessories">Accessories</option>
-              <option value="Other">Other</option>
-            </select>
-            <select
-              v-model="productStatusFilter"
-              class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md bg-white"
-            >
-              <option value="">All Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
-          </div>
-        </div>
-        
-        <!-- Stats Overview -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-          <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-blue-600 text-sm font-medium">Total Products</p>
-                <p class="text-2xl font-bold text-blue-900">{{ products.length }}</p>
-              </div>
-              <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
-                <span class="text-white text-xl font-bold">TP</span>
-              </div>
-            </div>
-          </div>
-          <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 border border-green-200">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-green-600 text-sm font-medium">Active Products</p>
-                <p class="text-2xl font-bold text-green-900">{{ products.filter(p => p.is_active).length }}</p>
-              </div>
-              <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
-                <span class="text-white text-xl font-bold">AP</span>
-              </div>
-            </div>
-          </div>
-          <div class="bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-4 border border-red-200">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-red-600 text-sm font-medium">Out of Stock</p>
-                <p class="text-2xl font-bold text-red-900">{{ products.filter(p => p.stock === 0).length }}</p>
-              </div>
-              <div class="w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center">
-                <span class="text-white text-xl font-bold">OS</span>
-              </div>
-            </div>
-          </div>
-          <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 border border-purple-200">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-purple-600 text-sm font-medium">Low Stock</p>
-                <p class="text-2xl font-bold text-purple-900">{{ products.filter(p => p.stock > 0 && p.stock <= 5).length }}</p>
-              </div>
-              <div class="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center">
-                <span class="text-white text-xl font-bold">LS</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  </div>
+</template>
 
-      <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-        <!-- Add Product Section -->
-        <div class="xl:col-span-2">
-          <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-            <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-6">
-              <h2 class="text-2xl font-bold flex items-center">
-                <span class="mr-3">➕</span>
-                Add New Product
-              </h2>
-              <p class="text-purple-100 mt-2">Expand your inventory with new products</p>
-            </div>
-            <form @submit.prevent="addProduct" class="p-8">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-3 flex items-center">
-                    <span class="mr-2">📝</span> Product Name
-                  </label>
-                  <input
-                    v-model="newProduct.name"
-                    type="text"
-                    required
-                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md"
+<script>
+import { ref, computed, inject, onMounted } from 'vue'
+import Swal from 'sweetalert2'
+
+export default {
+  name: 'Admin',
+  setup() {
+    const products = ref([])
+    const orders = ref([])
+    const allOrders = ref([])
+    const allUsers = ref([])
+    const stats = ref({
+      total_revenue: 0,
+      total_orders: 0,
+      total_products: 0,
+      total_users: 0,
+      pending_orders: 0,
+      completed_orders: 0,
+      avg_order_value: 0,
+      low_stock_products: 0
+    })
+    const currentUser = ref(null)
+    const activeTab = ref('dashboard')
+    const orderStatusFilter = ref('all')
+    const selectedOrder = ref(null)
+    
+    const getToken = () => localStorage.getItem('token')
+    const API_BASE_URL = 'http://localhost:8000/api'
                     placeholder="Enter product name"
                   />
                 </div>
