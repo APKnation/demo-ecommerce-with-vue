@@ -984,6 +984,29 @@ export default {
       return classes[role] || 'bg-gray-100 text-gray-800'
     }
 
+    // New table functionality methods
+    const searchQuery = ref('')
+    const filterDropdownOpen = ref(false)
+    const selectedProducts = ref([])
+    const currentFilter = ref('all')
+
+    const toggleFilterDropdown = () => {
+      filterDropdownOpen.value = !filterDropdownOpen.value
+    }
+
+    const setFilter = (filter) => {
+      currentFilter.value = filter
+      filterDropdownOpen.value = false
+    }
+
+    const toggleSelectAll = (event) => {
+      if (event.target.checked) {
+        selectedProducts.value = filteredProducts.value.map((_, index) => index)
+      } else {
+        selectedProducts.value = []
+      }
+    }
+
     onMounted(async () => {
       await loadData()
       loadDashboardStats()
@@ -1063,6 +1086,7 @@ export default {
       selectedProducts,
       currentFilter,
       filterDropdownOpen,
+      searchQuery,
       // Data loading functions
       loadData,
       loadDashboardStats,
