@@ -15,16 +15,16 @@
     </div>
 
     <!-- Navigation Tabs -->
-    <div class="mt-8 flex space-x-1 bg-white/10 rounded-lg p-1">
+    <div class="mt-8 flex space-x-1 bg-white rounded-lg p-1 shadow-md">
       <button 
         v-for="tab in tabs" 
         :key="tab.id"
         @click="tab.route ? $router.push(tab.route) : activeTab = tab.id"
         :class="[
-          'px-6 py-2 rounded-md font-medium transition-all',
+          'px-6 py-3 rounded-md font-medium transition-all text-sm',
           (activeTab === tab.id && !tab.route) || $route.path === tab.route
-            ? 'bg-white text-blue-600 shadow-md' 
-            : 'text-white hover:bg-white/20'
+            ? 'bg-blue-600 text-white shadow-md' 
+            : 'text-gray-600 hover:bg-gray-100'
         ]"
       >
         {{ tab.name }}
