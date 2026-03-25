@@ -787,14 +787,47 @@
           <!-- Order Status -->
           <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 border border-green-200">
             <h4 class="font-bold text-green-900 mb-3 flex items-center">
-              <span class="mr-2">📊</span> Order Status
+              <span class="mr-2">📊</span> Order Status Management
             </h4>
-            <div class="space-y-2">
+            <div class="space-y-3">
               <div>
                 <p class="text-sm text-green-600">Current Status</p>
                 <span :class="getStatusClass(selectedOrder.status)" class="px-3 py-1 rounded-full text-sm font-bold">
                   {{ selectedOrder.status }}
                 </span>
+              </div>
+              <div>
+                <p class="text-sm text-green-600 font-medium mb-2">Change Status</p>
+                <div class="grid grid-cols-2 gap-2">
+                  <button 
+                    v-if="selectedOrder.status !== 'Pending'" 
+                    @click="updateOrderStatus(selectedOrder.id, 'Pending')"
+                    class="px-3 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors text-sm font-medium"
+                  >
+                    ⏳ Set Pending
+                  </button>
+                  <button 
+                    v-if="selectedOrder.status !== 'Confirmed'" 
+                    @click="updateOrderStatus(selectedOrder.id, 'Confirmed')"
+                    class="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium"
+                  >
+                    ✅ Confirm Order
+                  </button>
+                  <button 
+                    v-if="selectedOrder.status !== 'Completed'" 
+                    @click="updateOrderStatus(selectedOrder.id, 'Completed')"
+                    class="px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm font-medium"
+                  >
+                    🚚 Complete Order
+                  </button>
+                  <button 
+                    v-if="selectedOrder.status !== 'Cancelled'" 
+                    @click="updateOrderStatus(selectedOrder.id, 'Cancelled')"
+                    class="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm font-medium"
+                  >
+                    ❌ Cancel Order
+                  </button>
+                </div>
               </div>
               <div>
                 <p class="text-sm text-green-600">Order Date</p>
@@ -1553,6 +1586,51 @@ export default {
       }
     }
 
+    const updateOrderStatus = async (orderId, newStatus) => {
+      try {
+        console.log(`Updating order ${orderId} to status: ${newStatus}`)
+        
+        const response = await fetch(`${API_BASE_URL}/accounts/admin/orders/${orderId}/`, {
+          method: 'PUT',
+          headers: { 
+            'Authorization': `Token ${getToken()}`, 
+            'Content-Type': 'application/json' 
+          },
+          body: JSON.stringify({ status: newStatus })
+        })
+        
+        if (response.ok) {
+          const updatedOrder = await response.json()
+          console.log('Order updated successfully:', updatedOrder)
+          
+          // Update the order in allOrders array
+          const index = allOrders.value.findIndex(o => o.id === orderId)
+          if (index !== -1) {
+            allOrders.value[index] = updatedOrder
+          }
+          
+          // Update the selectedOrder if modal is open
+          if (selectedOrder.value && selectedOrder.value.id === orderId) {
+            selectedOrder.value = updatedOrder
+          }
+          
+          // Show success message
+          showNotificationMessage(`Order status updated to ${newStatus}!`, 'success')
+          
+          // Reload dashboard stats
+          loadDashboardStats()
+          
+        } else {
+          const errorData = await response.json()
+          console.error('Failed to update order status:', errorData)
+          showNotificationMessage('Failed to update order status', 'error')
+        }
+      } catch (error) {
+        console.error('Error updating order status:', error)
+        showNotificationMessage('Failed to update order status', 'error')
+      }
+    }
+
     const deleteUser = async (userId) => {
       if (!confirm('Are you sure you want to delete this user?')) return
       try {
@@ -1591,63 +1669,62 @@ export default {
     return {
       products,
       orders,
-      newProduct,
-      editingProduct,
-      isEditing,
-      viewingProduct,
-      productToDelete,
-      productSearchQuery,
-      productCategoryFilter,
-      productStatusFilter,
-      filteredProducts,
-      searchQuery,
-      filterDropdownOpen,
-      selectedProducts,
-      currentFilter,
-      totalRevenue,
-      totalSpend,
-      saveProducts,
-      addProduct,
-      resetProductForm,
-      handleProductImageChange,
-      isAddingProduct,
-      viewProduct,
-      closeViewModal,
-      editProduct,
-      closeEditModal,
-      updateProduct,
-      removeProduct,
-      confirmDelete,
-      cancelDelete,
-      executeDelete,
-      formatDate,
-      toggleFilterDropdown,
-      setFilter,
-      toggleSelectAll,
-      // Admin Dashboard
-      activeTab,
-      tabs,
-      dashboardStats,
       allOrders,
       allUsers,
       stats,
       currentUser,
-      loadDashboardStats,
-      loadAllOrders,
-      loadAllUsers,
+      activeTab,
+      tabs,
+      dashboardStats,
+      orderStatusFilter,
+      selectedOrder,
+      newProduct,
+      imagePreview,
+      imageFile,
+      productSearchQuery,
+      productCategoryFilter,
+      productStatusFilter,
+      showAddProductForm,
+      filteredProducts,
+      filteredOrdersList,
+      totalRevenue,
+      totalSpend,
+      pendingOrders,
+      // Product functions
+      addProduct,
+      deleteProduct,
+      editProduct,
+      saveProduct,
+      cancelEdit,
+      handleImageUpload,
+      removeImage,
+      // Order functions
       confirmOrder,
       cancelOrder,
       completeOrder,
       deleteOrder,
       viewOrderDetails,
-      selectedOrder,
-      orderStatusFilter,
-      filteredOrdersList,
+      updateOrderStatus,
+      // User functions
       deleteUser,
+      // Utility functions
       getStatusClass,
       getRoleClass,
       getImageUrl,
-      handleImageError
+      handleImageError,
+      // Filter functions
+      toggleFilterDropdown,
+      setFilter,
+      toggleSelectAll,
+      selectedProducts,
+      currentFilter,
+      filterDropdownOpen,
+      // Data loading functions
+      loadData,
+      loadDashboardStats,
+      loadAllOrders,
+      loadAllUsers,
+      showNotificationMessage
     }
   }
 }
