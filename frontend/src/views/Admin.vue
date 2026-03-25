@@ -137,7 +137,7 @@
           </button>
         </div>
         
-        <form @submit.prevent="updateProduct" class="space-y-6">
+        <form @submit.prevent="saveProduct" class="space-y-6">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-2">Product Name</label>
@@ -189,10 +189,10 @@
           </div>
           
           <div class="flex space-x-3">
-            <button type="button" @click="closeEditModal" class="btn btn-secondary">
+            <button type="button" @click="closeEditModal" class="px-6 py-3 border-2 border-gray-300 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium">
               Cancel
             </button>
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 font-bold shadow-lg hover:shadow-xl">
               Update Product
             </button>
           </div>
