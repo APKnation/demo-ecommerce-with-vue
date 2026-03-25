@@ -12,6 +12,8 @@ import AdminOrders from './views/AdminOrders.vue'
 import Orders from './views/Orders.vue'
 import Order from './views/Order.vue'
 import PlaceOrder from './views/PlaceOrder.vue'
+import OrderSuccess from './views/OrderSuccess.vue'
+import UserDashboard from './views/UserDashboard.vue'
 import ProductDetail from './views/ProductDetail.vue'
 import Login from './views/Login.vue'
 import Register from './views/Register.vue'
@@ -60,6 +62,24 @@ const routes = [
     meta: {
       title: 'Place Order - KAFUKA Electronics Store',
       description: 'Complete your order and checkout'
+    }
+  },
+  { 
+    path: '/order-success', 
+    component: OrderSuccess,
+    name: 'order-success',
+    meta: {
+      title: 'Order Success - KAFUKA Electronics Store',
+      description: 'Your order has been placed successfully'
+    }
+  },
+  { 
+    path: '/user-dashboard', 
+    component: UserDashboard,
+    name: 'user-dashboard',
+    meta: {
+      title: 'User Dashboard - KAFUKA Electronics Store',
+      description: 'Manage your account and view orders'
     }
   },
   { 

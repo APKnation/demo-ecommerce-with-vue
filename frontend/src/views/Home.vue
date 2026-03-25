@@ -47,7 +47,16 @@
             <div class="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
           </router-link>
           
-          <router-link to="/admin" class="relative inline-flex items-center justify-center px-12 py-5 bg-white/10 backdrop-blur-md text-white font-bold text-lg rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 border-2 border-white/30 hover:border-white/50 shadow-xl">
+          <router-link v-if="isAuthenticated" to="/user-dashboard" class="relative inline-flex items-center justify-center px-12 py-5 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold text-lg rounded-2xl hover:from-purple-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-2xl shadow-purple-500/30 hover:shadow-purple-600/40">
+            <span class="relative z-10">My Dashboard</span>
+            <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-purple-700 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+          </router-link>
+          
+          <router-link v-if="!isAuthenticated" to="/login" class="relative inline-flex items-center justify-center px-12 py-5 bg-white/10 backdrop-blur-md text-white font-bold text-lg rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 border-2 border-white/30 hover:border-white/50 shadow-xl">
+            <span class="relative z-10">Sign In</span>
+          </router-link>
+          
+          <router-link v-if="isAuthenticated && user?.is_staff" to="/admin" class="relative inline-flex items-center justify-center px-12 py-5 bg-white/10 backdrop-blur-md text-white font-bold text-lg rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 border-2 border-white/30 hover:border-white/50 shadow-xl">
             <span class="relative z-10">Admin Panel</span>
           </router-link>
         </div>

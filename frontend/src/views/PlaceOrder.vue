@@ -205,20 +205,32 @@ export default {
             <p>Total: Tsh ${totalPrice.value.toLocaleString()}</p>
             <p class="text-sm text-gray-600">You can track your order in Order History</p>
           `,
-          confirmButtonText: 'View Orders',
+          confirmButtonText: 'View Order Details',
           showCancelButton: true,
           cancelButtonText: 'Continue Shopping'
         })
 
+        // Save order data for success page
+        const orderData = {
+          items: cartItems.value,
+          total: totalPrice.value,
+          paymentMethod: orderForm.value.payment_method,
+          orderNumber: result.order.order_number || result.order.id
+        }
+        localStorage.setItem('recentOrder', JSON.stringify(orderData))
+
         // Clear cart
         await unifiedCart.clearCart()
 
-        // Navigate based on user choice
-        if (result.isConfirmed) {
-          router.push('/orders')
-        } else {
-          router.push('/')
-        }
+        // Navigate to success page
+        router.push({
+          path: '/order-success',
+          query: {
+            order: result.order.order_number || result.order.id,
+            total: totalPrice.value,
+            payment: orderForm.value.payment_method
+          }
+        })
 
       } catch (error) {
         console.error('Order placement error:', error)
