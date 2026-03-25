@@ -301,11 +301,11 @@
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <div class="flex items-center space-x-4">
             <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
-              <span class="text-white text-2xl">📦</span>
+              <span class="text-white text-2xl font-bold">PI</span>
             </div>
             <div>
               <h2 class="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">Product Inventory</h2>
-              <p class="text-gray-600 mt-1">Manage your store inventory with ease</p>
+              <p class="text-gray-600 text-sm">Manage your store products</p>
             </div>
           </div>
           <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
@@ -313,29 +313,28 @@
               <input
                 v-model="productSearchQuery"
                 type="text"
-                placeholder="🔍 Search products..."
-                class="pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 w-full sm:w-80 shadow-sm hover:shadow-md"
+                placeholder="Search products..."
+                class="pl-4 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 w-full sm:w-80 shadow-sm hover:shadow-md"
               >
-              <span class="absolute left-4 top-3.5 text-gray-400 text-lg">🔍</span>
             </div>
             <select
               v-model="productCategoryFilter"
               class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md bg-white"
             >
-              <option value="">📂 All Categories</option>
-              <option value="Electronics">💻 Electronics</option>
-              <option value="Phones">📱 Phones</option>
-              <option value="Laptops">💻 Laptops</option>
-              <option value="Accessories">🎧 Accessories</option>
-              <option value="Other">📦 Other</option>
+              <option value="">All Categories</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Phones">Phones</option>
+              <option value="Laptops">Laptops</option>
+              <option value="Accessories">Accessories</option>
+              <option value="Other">Other</option>
             </select>
             <select
               v-model="productStatusFilter"
               class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md bg-white"
             >
-              <option value="">🎯 All Status</option>
-              <option value="active">✅ Active</option>
-              <option value="inactive">❌ Inactive</option>
+              <option value="">All Status</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
             </select>
           </div>
         </div>
@@ -349,29 +348,18 @@
                 <p class="text-2xl font-bold text-blue-900">{{ products.length }}</p>
               </div>
               <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
-                <span class="text-white text-xl">📦</span>
+                <span class="text-white text-xl font-bold">TP</span>
               </div>
             </div>
           </div>
           <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 border border-green-200">
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-green-600 text-sm font-medium">Active</p>
+                <p class="text-green-600 text-sm font-medium">Active Products</p>
                 <p class="text-2xl font-bold text-green-900">{{ products.filter(p => p.is_active).length }}</p>
               </div>
               <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
-                <span class="text-white text-xl">✅</span>
-              </div>
-            </div>
-          </div>
-          <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl p-4 border border-yellow-200">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-yellow-600 text-sm font-medium">Low Stock</p>
-                <p class="text-2xl font-bold text-yellow-900">{{ products.filter(p => p.stock > 0 && p.stock <= 10).length }}</p>
-              </div>
-              <div class="w-12 h-12 bg-yellow-500 rounded-xl flex items-center justify-center">
-                <span class="text-white text-xl">⚠️</span>
+                <span class="text-white text-xl font-bold">AP</span>
               </div>
             </div>
           </div>
@@ -382,7 +370,18 @@
                 <p class="text-2xl font-bold text-red-900">{{ products.filter(p => p.stock === 0).length }}</p>
               </div>
               <div class="w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center">
-                <span class="text-white text-xl">🚫</span>
+                <span class="text-white text-xl font-bold">OS</span>
+              </div>
+            </div>
+          </div>
+          <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 border border-purple-200">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-purple-600 text-sm font-medium">Low Stock</p>
+                <p class="text-2xl font-bold text-purple-900">{{ products.filter(p => p.stock > 0 && p.stock <= 5).length }}</p>
+              </div>
+              <div class="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center">
+                <span class="text-white text-xl font-bold">LS</span>
               </div>
             </div>
           </div>
@@ -415,8 +414,8 @@
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-3 flex items-center">
-                    <span class="mr-2">💰</span> Price (Tsh)
+                  <label class="block text-sm font-bold text-gray-700 mb-3">
+                    Price (Tsh)
                   </label>
                   <input
                     v-model.number="newProduct.price"
@@ -429,8 +428,8 @@
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-3 flex items-center">
-                    <span class="mr-2">📂</span> Category
+                  <label class="block text-sm font-bold text-gray-700 mb-3">
+                    Category
                   </label>
                   <select
                     v-model="newProduct.category"
@@ -438,16 +437,16 @@
                     class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md bg-white"
                   >
                     <option value="">Select category</option>
-                    <option value="Electronics">💻 Electronics</option>
-                    <option value="Phones">📱 Phones</option>
-                    <option value="Laptops">💻 Laptops</option>
-                    <option value="Accessories">🎧 Accessories</option>
-                    <option value="Other">📦 Other</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Phones">Phones</option>
+                    <option value="Laptops">Laptops</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Other">Other</option>
                   </select>
                 </div>
                 <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-3 flex items-center">
-                    <span class="mr-2">📊</span> Stock Quantity
+                  <label class="block text-sm font-bold text-gray-700 mb-3">
+                    Stock Quantity
                   </label>
                   <input
                     v-model.number="newProduct.stock"
@@ -502,7 +501,7 @@
                   @click="resetProductForm"
                   class="px-6 py-3 border-2 border-gray-300 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium"
                 >
-                  🔄 Reset
+                  Reset
                 </button>
                 <button
                   type="submit"
@@ -510,11 +509,10 @@
                   class="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
                 >
                   <span v-if="isAddingProduct" class="flex items-center">
-                    <span class="animate-spin mr-2">⏳</span>
+                    <span class="animate-spin mr-2">⟳</span>
                     Adding...
                   </span>
                   <span v-else class="flex items-center">
-                    <span class="mr-2">➕</span>
                     Add Product
                   </span>
                 </button>
@@ -565,7 +563,7 @@
                                   @error="handleImageError"
                                 >
                                 <div v-else class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center shadow-md">
-                                  <span class="text-2xl">📦</span>
+                                  <span class="text-xs font-bold text-gray-500">No Image</span>
                                 </div>
                                 <!-- Stock indicator badge -->
                                 <div :class="[
@@ -622,21 +620,21 @@
                               'px-3 py-1 text-sm font-semibold rounded-full border',
                               product.is_active ? 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border-green-300' : 'bg-gradient-to-r from-red-100 to-rose-100 text-red-800 border-red-300'
                             ]">
-                              {{ product.is_active ? '✅ Active' : '❌ Inactive' }}
+                              {{ product.is_active ? 'Active' : 'Inactive' }}
                             </span>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex flex-col space-y-2">
                               <div class="flex space-x-2">
                                 <button @click="viewProduct(product)" class="px-3 py-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-sm hover:shadow-md">
-                                  👁️ View
+                                  View
                                 </button>
                                 <button @click="editProduct(product)" class="px-3 py-1 bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-medium rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-sm hover:shadow-md">
-                                  ✏️ Edit
+                                  Edit
                                 </button>
                               </div>
                               <button @click="deleteProduct(product.id)" class="px-3 py-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-medium rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-sm hover:shadow-md">
-                                🗑️ Delete
+                                Delete
                               </button>
                             </div>
                           </td>
@@ -1212,11 +1210,11 @@ export default {
           const backendProducts = await productsResponse.json()
           console.log('Backend products loaded:', backendProducts)
           
-          // Transform backend products to match admin format
+          // Transform backend products to match admin format with real data
           products.value = backendProducts.map(product => ({
             id: product.id,
-            name: product.title,
-            title: product.title,
+            name: product.title || product.name,
+            title: product.title || product.name,
             price: Number(product.price),
             category: product.category?.name || 'Other',
             image: product.image || '/images/placeholder.jpg',
