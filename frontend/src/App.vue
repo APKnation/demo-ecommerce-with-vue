@@ -52,14 +52,9 @@
               <router-link to="/orders" class="block py-2 px-3 text-white rounded hover:bg-indigo-700 md:hover:bg-transparent md:border-0 md:hover:text-primary-600 md:p-0">Orders</router-link>
             </li>
             
-            <!-- Wishlist Link -->
-            <li class="relative">
-              <button @click="showWishlist" class="block py-2 px-3 text-white rounded hover:bg-indigo-700 md:hover:bg-transparent md:border-0 md:hover:text-primary-600 md:p-0">
-                Wishlist
-                <span v-if="wishlist.length > 0" class="absolute -top-1 -right-1 bg-secondary-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
-                  {{ wishlist.length }}
-                </span>
-              </button>
+            <!-- Products Link -->
+            <li>
+              <router-link to="/register-product" class="block py-2 px-3 text-white rounded hover:bg-indigo-700 md:hover:bg-transparent md:border-0 md:hover:text-primary-600 md:p-0">Products</router-link>
             </li>
 
             <!-- Authentication Links -->
@@ -150,9 +145,10 @@
             </router-link>
           </li>
           <li>
-            <button @click="showWishlist" class="block py-2 px-3 text-white rounded hover:bg-indigo-700">
-              Wishlist ({{ wishlist.length }})
-            </button>
+            <router-link to="/register-product" class="block py-2 px-3 text-white rounded hover:bg-indigo-700">Products</router-link>
+          </li>
+          <li>
+            <router-link to="/orders" class="block py-2 px-3 text-white rounded hover:bg-indigo-700">Orders</router-link>
           </li>
         </ul>
       </div>
@@ -173,44 +169,6 @@
     <!-- Notification -->
     <div v-if="notification" class="notification slide-in">
       {{ notification }}
-    </div>
-
-    <!-- Wishlist Modal -->
-    <div v-if="wishlistModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-2xl font-bold">Your Wishlist</h2>
-          <button @click="closeWishlistModal" class="text-gray-500 hover:text-gray-700">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-          </button>
-        </div>
-        
-        <div v-if="wishlist.length === 0" class="text-gray-500 text-center py-8">
-          Your wishlist is empty.
-        </div>
-        
-        <div v-else class="space-y-4">
-          <div v-for="item in wishlist" :key="item.name" class="flex items-center justify-between p-4 border rounded-lg">
-            <div class="flex items-center space-x-4">
-              <img :src="item.image" :alt="item.name" class="w-16 h-16 object-cover rounded">
-              <div>
-                <h4 class="font-semibold">{{ item.name }}</h4>
-                <p class="text-gray-600">Tsh {{ item.price.toLocaleString() }}</p>
-              </div>
-            </div>
-            <div class="flex space-x-2">
-              <button @click="addToCart(item.name, item.price)" class="btn btn-primary text-sm">
-                Add to Cart
-              </button>
-              <button @click="toggleWishlist(item.name, item.price, item.image)" class="btn btn-danger text-sm">
-                Remove
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- Compare Modal -->
@@ -255,10 +213,8 @@ export default {
     const router = useRouter()
     const { user, isAuthenticated, logout } = useAuth()
     const cart = ref([])
-    const wishlist = ref([])
     const compareList = ref([])
     const mobileMenuOpen = ref(false)
-    const wishlistModalOpen = ref(false)
     const compareModalOpen = ref(false)
     const notification = ref('')
     const profileMenuOpen = ref(false)
@@ -270,14 +226,12 @@ export default {
     // Load data from localStorage
     const loadData = () => {
       cart.value = JSON.parse(localStorage.getItem('cart')) || []
-      wishlist.value = JSON.parse(localStorage.getItem('wishlist')) || []
       compareList.value = JSON.parse(localStorage.getItem('compareList')) || []
     }
 
     // Save data to localStorage
     const saveData = () => {
       localStorage.setItem('cart', JSON.stringify(cart.value))
-      localStorage.setItem('wishlist', JSON.stringify(wishlist.value))
       localStorage.setItem('compareList', JSON.stringify(compareList.value))
     }
 
@@ -353,29 +307,6 @@ export default {
       showNotificationMessage('Cart cleared successfully')
     }
 
-    // Wishlist functions
-    const toggleWishlist = (name, price, image) => {
-      const existingIndex = wishlist.value.findIndex(item => item.name === name)
-      
-      if (existingIndex !== -1) {
-        wishlist.value.splice(existingIndex, 1)
-        showNotificationMessage(`${name} removed from wishlist`)
-      } else {
-        wishlist.value.push({ name, price, image })
-        showNotificationMessage(`${name} added to wishlist`)
-      }
-      
-      saveData()
-    }
-
-    const showWishlist = () => {
-      wishlistModalOpen.value = true
-    }
-
-    const closeWishlistModal = () => {
-      wishlistModalOpen.value = false
-    }
-
     // Compare functions
     const addToCompare = (name, price) => {
       if (compareList.value.length >= 3) {
@@ -440,19 +371,16 @@ export default {
 
     // Provide data to child components
     provide('cart', cart)
-    provide('wishlist', wishlist)
+    provide('cartCount', cartCount)
     provide('compareList', compareList)
     provide('addToCart', addToCart)
-    provide('toggleWishlist', toggleWishlist)
     provide('addToCompare', addToCompare)
 
     return {
       cart,
       cartCount,
-      wishlist,
       compareList,
       mobileMenuOpen,
-      wishlistModalOpen,
       compareModalOpen,
       notification,
       profileMenuOpen,
@@ -463,8 +391,6 @@ export default {
       removeFromCart,
       updateQuantity,
       clearCart,
-      toggleWishlist,
-      showWishlist,
       addToCompare,
       removeFromCompare,
       closeCompareModal,
