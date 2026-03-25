@@ -886,13 +886,44 @@ export default {
     })
 
     const totalSpend = computed(() => {
-      const total = allOrders.value
-        .filter(order => order.status === 'delivered' || order.status === 'Delivered')
-        .reduce((total, order) => {
-          const orderTotal = Number(order.total_amount || order.total || 0)
-          return total + orderTotal
-        }, 0)
-      return Math.round(total) // Ensure we return an integer
+      console.log('=== DEBUGGING TOTAL SPEND ===')
+      console.log('allOrders.value:', allOrders.value)
+      console.log('Number of orders:', allOrders.value.length)
+      
+      // Check all possible status values
+      const statusCounts = {}
+      allOrders.value.forEach(order => {
+        const status = order.status || 'unknown'
+        statusCounts[status] = (statusCounts[status] || 0) + 1
+      })
+      console.log('Order status counts:', statusCounts)
+      
+      // Try multiple status variations
+      const deliveredOrders = allOrders.value.filter(order => {
+        const status = (order.status || '').toLowerCase()
+        return status === 'delivered' || status === 'completed' || status === 'delivered'
+      })
+      console.log('Delivered orders:', deliveredOrders)
+      console.log('Number of delivered orders:', deliveredOrders.length)
+      
+      if (deliveredOrders.length === 0) {
+        console.log('No delivered orders found, checking all orders for total_amount values...')
+        allOrders.value.forEach(order => {
+          console.log(`Order ${order.id}: status="${order.status}", total_amount="${order.total_amount}", total="${order.total}"`)
+        })
+      }
+      
+      const total = deliveredOrders.reduce((total, order) => {
+        const orderTotal = Number(order.total_amount || order.total || 0)
+        console.log(`Order ${order.id || 'unknown'}: ${order.total_amount || order.total || 0} -> ${orderTotal}`)
+        return total + orderTotal
+      }, 0)
+      
+      console.log('Raw total:', total)
+      const roundedTotal = Math.round(total)
+      console.log('Rounded total:', roundedTotal)
+      console.log('=== END DEBUGGING ===')
+      return roundedTotal
     })
 
     const pendingOrders = computed(() => {
@@ -980,7 +1011,19 @@ export default {
         const response = await fetch(`${API_BASE_URL}/orders/`, {
           headers: { 'Authorization': `Token ${getToken()}` }
         })
-        if (response.ok) allOrders.value = await response.json()
+        if (response.ok) {
+          const ordersData = await response.json()
+          console.log('Raw orders data from API:', ordersData)
+          
+          // Remove duplicates by order ID
+          const uniqueOrders = ordersData.filter((order, index, self) => 
+            index === self.findIndex((o) => o.id === order.id)
+          )
+          console.log('Unique orders:', uniqueOrders)
+          
+          allOrders.value = uniqueOrders
+          console.log('Final allOrders.value:', allOrders.value)
+        }
       } catch (error) { console.error('Failed to load orders:', error) }
     }
 
