@@ -199,6 +199,7 @@
         </form>
       </div>
     </div>
+    </div>
     
     <!-- Orders Management Section -->
     <div v-if="activeTab === 'orders'" class="mt-8">
