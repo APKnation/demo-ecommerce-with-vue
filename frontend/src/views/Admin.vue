@@ -1002,12 +1002,13 @@ export default {
       name: '',
       price: 0,
       category: '',
-      description: '',
       image: '',
-      stock: 0,
       condition: 'new'
     })
 
+    const imagePreview = ref('')
+    const imageFile = ref(null)
+    const showAddProductForm = ref(false)
     const productSearchQuery = ref('')
     const productCategoryFilter = ref('')
     const productStatusFilter = ref('')
@@ -1426,17 +1427,7 @@ export default {
       closeViewModal()
     }
 
-    const closeEditModal = () => {
-      editingProduct.value = null
-      isEditing.value = false
-    }
-
-    const updateProduct = () => {
-      if (!editingProduct.value || !editingProduct.value.name) {
-        showNotificationMessage('No product to update')
-        return
-      }
-      
+    const saveProduct = () => {
       const index = products.value.findIndex(p => p.name === editingProduct.value.name)
       if (index !== -1) {
         products.value[index] = JSON.parse(JSON.stringify(editingProduct.value))
@@ -1444,8 +1435,38 @@ export default {
         closeEditModal()
         showNotificationMessage('Product updated successfully!')
       } else {
-        showNotificationMessage('Product not found')
+        showNotificationMessage('Product not found!', 'error')
       }
+    }
+
+    const cancelEdit = () => {
+      editingProduct.value = null
+      isEditing.value = false
+    }
+
+    const handleImageUpload = (event) => {
+      const file = event.target.files[0]
+      if (file) {
+        imageFile.value = file
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          imagePreview.value = e.target.result
+        }
+        reader.readAsDataURL(file)
+      }
+    }
+
+    const removeImage = () => {
+      imagePreview.value = ''
+      imageFile.value = null
+      if (newProduct.value) {
+        newProduct.value.image = ''
+      }
+    }
+
+    const closeEditModal = () => {
+      editingProduct.value = null
+      isEditing.value = false
     }
 
     // Enhanced remove product function with Vue confirm
