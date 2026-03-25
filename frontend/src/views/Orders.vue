@@ -173,10 +173,6 @@
               
               <!-- Expandable Order Details -->
               <div v-show="expandedOrders.includes(order.id)" class="space-y-2">
-                <!-- Debug: Show order items structure -->
-                <div class="text-xs text-gray-500 p-2 bg-gray-100 rounded">
-                  Debug: Order items = {{ JSON.stringify(order.items, null, 2) }}
-                </div>
                 <div v-if="order.items && order.items.length > 0">
                   <div
                     v-for="(item, index) in order.items"
@@ -185,7 +181,7 @@
                   >
                     <div class="flex items-center space-x-3">
                       <img
-                        :src="getOrderItemImage(item)"
+                        :src="getProductImageWithFallback(item.product)"
                         :alt="item.product?.title || item.name || item.product_name || 'Unknown item'"
                         class="w-16 h-16 object-cover rounded-lg shadow-md"
                         @error="handleImageError"
@@ -424,25 +420,32 @@ export default {
       loadOrders()
     })
 
-    // Helper function to get order item image
-    const getOrderItemImage = (item) => {
-      // Try different possible image field locations
-      if (item.product?.image) {
-        return item.product.image
+    // Helper function to get order item image with better fallbacks
+    const getProductImageWithFallback = (product) => {
+      // If product has an image, use it
+      if (product?.image) {
+        return product.image
       }
-      if (item.image) {
-        return item.image
+      
+      // If product has images array with items, use first one
+      if (product?.images && product.images.length > 0) {
+        return product.images[0]
       }
-      if (item.product_image) {
-        return item.product_image
+      
+      // Use category-based placeholder images
+      const categoryName = product?.category?.name?.toLowerCase()
+      const categoryImages = {
+        'laptops': '/images/laptop-placeholder.jpg',
+        'phones': '/images/phone-placeholder.jpg',
+        'accessories': '/images/accessory-placeholder.jpg',
+        'electronics': '/images/electronics-placeholder.jpg'
       }
-      if (item.product?.image_url) {
-        return item.product.image_url
+      
+      if (categoryName && categoryImages[categoryName]) {
+        return categoryImages[categoryName]
       }
-      if (item.image_url) {
-        return item.image_url
-      }
-      // If no image found, return placeholder
+      
+      // Final fallback
       return '/images/placeholder.jpg'
     }
 
@@ -464,7 +467,7 @@ export default {
       cancelOrder,
       reorder,
       toggleOrderDetails,
-      getOrderItemImage,
+      getProductImageWithFallback,
       handleImageError
     }
   }
