@@ -11,6 +11,7 @@ import Admin from './views/Admin.vue'
 import AdminOrders from './views/AdminOrders.vue'
 import Orders from './views/Orders.vue'
 import Order from './views/Order.vue'
+import PlaceOrder from './views/PlaceOrder.vue'
 import ProductDetail from './views/ProductDetail.vue'
 import Login from './views/Login.vue'
 import Register from './views/Register.vue'
@@ -49,7 +50,16 @@ const routes = [
     name: 'cart',
     meta: {
       title: 'Shopping Cart - KAFUKA Electronics Store',
-      description: 'View and manage your shopping cart'
+      description: 'Review and manage your shopping cart items'
+    }
+  },
+  { 
+    path: '/place-order', 
+    component: PlaceOrder,
+    name: 'place-order',
+    meta: {
+      title: 'Place Order - KAFUKA Electronics Store',
+      description: 'Complete your order and checkout'
     }
   },
   { 

@@ -136,38 +136,32 @@
               <!-- Checkout button for logged-in users -->
               <router-link
                 v-if="isAuthenticated"
-                to="/checkout"
-                class="relative overflow-hidden bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold py-4 rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 shadow-xl text-center flex items-center justify-center"
+                to="/place-order"
+                class="relative overflow-hidden bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-4 rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-xl text-center flex items-center justify-center"
               >
                 <span class="relative z-10 flex items-center justify-center">
                   <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 9"></path>
                   </svg>
-                  Proceed to Checkout
+                  Place Order • Tsh {{ displayTotalPrice.toLocaleString() }}
                 </span>
-                <div class="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-green-600 to-green-700 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
               </router-link>
               
               <!-- Guest checkout button -->
-              <button
+              <router-link
                 v-if="!isAuthenticated"
-                @click="checkout"
-                :disabled="isProcessing"
-                class="relative overflow-hidden bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold py-4 rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-xl"
+                to="/place-order"
+                class="relative overflow-hidden bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-4 rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-xl text-center flex items-center justify-center"
               >
                 <span class="relative z-10 flex items-center justify-center">
-                  <svg v-if="!isProcessing" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 9"></path>
                   </svg>
-                  <svg v-if="isProcessing" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V8c4 10.09 4.91 12 6h4"></path>
-                  </svg>
-                  <span v-if="!isProcessing">Place Order (Guest)</span>
-                  <span v-else>Processing...</span>
+                  Place Order • Tsh {{ displayTotalPrice.toLocaleString() }}
                 </span>
-                <div class="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-              </button>
+                <div class="absolute inset-0 bg-gradient-to-r from-green-600 to-green-700 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+              </router-link>
               
               <!-- Login prompt for guests -->
               <router-link

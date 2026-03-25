@@ -204,14 +204,39 @@
             
             <!-- Order Actions -->
             <div class="flex justify-end space-x-3 p-6 bg-gray-50 border-t border-gray-200">
-              <button
-                v-if="order.status === 'Pending'"
-                @click="cancelOrder(order.id)"
-                class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center"
-              >
-                <span class="text-white text-xl">🗑️</span>
-                Cancel Order
-              </button>
+              <!-- Status Update Buttons -->
+              <div v-if="order.status === 'Pending'" class="flex space-x-2">
+                <button
+                  @click="markOrderAsPaid(order.id)"
+                  class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors"
+                >
+                  Mark Paid
+                </button>
+                <button
+                  @click="cancelOrder(order.id)"
+                  class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+              <div v-else-if="order.status === 'Paid'" class="flex space-x-2">
+                <button
+                  @click="markOrderAsShipped(order.id)"
+                  class="bg-purple-500 text-white px-3 py-1 rounded text-sm hover:bg-purple-600 transition-colors"
+                >
+                  Mark Shipped
+                </button>
+              </div>
+              <div v-else-if="order.status === 'Shipped'" class="flex space-x-2">
+                <button
+                  @click="markOrderAsDelivered(order.id)"
+                  class="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600 transition-colors"
+                >
+                  Mark Delivered
+                </button>
+              </div>
+              
+              <!-- Reorder Button -->
               <button
                 @click="reorder(order.items)"
                 class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 flex items-center"
@@ -231,6 +256,7 @@
 import { ref, computed, inject, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
+import { useOrderManagement } from '../composables/useOrderManagement'
 import Swal from 'sweetalert2'
 
 export default {
@@ -238,11 +264,11 @@ export default {
   setup() {
     const router = useRouter()
     const { isAuthenticated } = useAuth()
-    const orders = ref([])
+    const orderManagement = useOrderManagement()
     const cart = inject('cart', ref([]))
     const isLoading = ref(true)
-    const expandedOrders = ref([])
     const error = ref('')
+    const expandedOrders = ref([])
 
     // SweetAlert notification system
     const showNotificationMessage = (message, type = 'success') => {
@@ -261,110 +287,54 @@ export default {
       })
     }
 
-    // Load orders from backend or localStorage
+    // Load orders using order management
     const loadOrders = async () => {
-      isLoading.value = true
-      error.value = ''
       try {
-        if (isAuthenticated.value) {
-          // Fetch orders from backend for authenticated users
-          const token = localStorage.getItem('token')
-          const response = await fetch('http://localhost:8000/api/orders/', {
-            headers: {
-              'Authorization': `Token ${token}`,
-              'Content-Type': 'application/json',
-            }
-          })
-          
-          if (response.ok) {
-            const data = await response.json()
-            // Handle null or empty response
-            if (data && Array.isArray(data)) {
-              orders.value = data
-            } else {
-              orders.value = []
-            }
-          } else {
-            throw new Error('Failed to fetch orders from backend')
-          }
-        } else {
-          // Load orders from localStorage for guest users
-          const savedOrders = localStorage.getItem('orders')
-          if (savedOrders) {
-            orders.value = JSON.parse(savedOrders)
-          } else {
-            orders.value = []
-          }
-        }
+        await orderManagement.loadOrderHistory()
       } catch (err) {
-        console.error('Error loading orders:', err)
-        error.value = err.message
-        
-        // Fallback to localStorage for authenticated users if backend fails
-        if (isAuthenticated.value) {
-          const savedOrders = localStorage.getItem('orders')
-          if (savedOrders) {
-            orders.value = JSON.parse(savedOrders)
-          } else {
-            orders.value = []
-          }
-        } else {
-          orders.value = []
-        }
+        console.error('Failed to load orders:', err)
+        error.value = 'Failed to load orders'
       } finally {
         isLoading.value = false
       }
     }
 
-    const totalSpent = computed(() => {
-      return orders.value.reduce((total, order) => {
-        const amount = order?.total_amount || order?.total || 0
-        return total + Number(amount)
-      }, 0)
-    })
-
-    const pendingOrders = computed(() => {
-      return orders.value.filter(order => order?.status === 'Pending').length
-    })
-
-    const sortedOrders = computed(() => {
-      return [...orders.value].sort((a, b) => {
-        const dateA = new Date(a?.created_at || a?.date || 0)
-        const dateB = new Date(b?.created_at || b?.date || 0)
-        return dateB - dateA
-      })
-    })
+    // Computed properties from order management
+    const orders = computed(() => orderManagement.orders.value)
+    const totalSpent = computed(() => orderManagement.totalSpent.value)
+    const pendingOrders = computed(() => orderManagement.pendingOrders.value)
+    const sortedOrders = computed(() => orderManagement.sortedOrders.value)
 
     const formatDate = (dateString) => {
-      if (!dateString) return 'Unknown date'
-      try {
-        const date = new Date(dateString)
-        if (isNaN(date.getTime())) return 'Invalid date'
-        return date.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        })
-      } catch (error) {
-        return 'Invalid date'
-      }
+      return orderManagement.formatDate(dateString)
     }
 
     const getStatusClass = (status) => {
-      switch(status) {
-        case 'Pending':
-          return 'bg-yellow-100 text-yellow-800'
-        case 'Processing':
-          return 'bg-blue-100 text-blue-800'
-        case 'Completed':
-          return 'bg-green-100 text-green-800'
-        case 'Cancelled':
-          return 'bg-red-100 text-red-800'
-        default:
-          return 'bg-gray-100 text-gray-800'
+      return orderManagement.getStatusClass(status)
+    }
+
+    // Order status management functions
+    const updateOrderStatus = async (orderId, newStatus) => {
+      try {
+        const result = await orderManagement.updateOrderStatus(orderId, newStatus)
+        showNotificationMessage(`Order status updated to ${newStatus}`, 'success')
+        return result
+      } catch (err) {
+        showNotificationMessage('Failed to update order status', 'error')
+        throw err
       }
+    }
+
+    const markOrderAsPaid = async (orderId) => {
+      return updateOrderStatus(orderId, 'PAID')
+    }
+
+    const markOrderAsShipped = async (orderId) => {
+      return updateOrderStatus(orderId, 'SHIPPED')
+    }
+
+    const markOrderAsDelivered = async (orderId) => {
+      return updateOrderStatus(orderId, 'DELIVERED')
     }
 
     const cancelOrder = (orderId) => {
@@ -468,7 +438,11 @@ export default {
       reorder,
       toggleOrderDetails,
       getProductImageWithFallback,
-      handleImageError
+      handleImageError,
+      updateOrderStatus,
+      markOrderAsPaid,
+      markOrderAsShipped,
+      markOrderAsDelivered
     }
   }
 }
