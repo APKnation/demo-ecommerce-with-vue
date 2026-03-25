@@ -199,25 +199,30 @@
               
               <!-- Expandable Order Details -->
               <div v-show="expandedOrders.includes(order.id)" class="space-y-2">
-                <div
-                  v-for="(item, index) in (order?.items || [])"
-                  :key="index"
-                  class="flex justify-between items-center p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-300"
-                >
-                  <div class="flex items-center space-x-3">
-                    <img
-                      :src="item?.product?.image || item?.image || '/images/placeholder.jpg'"
-                      :alt="item?.product?.title || item?.name || 'Unknown item'"
-                      class="w-16 h-16 object-cover rounded-lg shadow-md"
-                    >
-                    <div>
-                      <span class="font-medium text-gray-800">{{ item?.product?.title || item?.name || 'Unknown item' }}</span>
-                      <span class="text-gray-600 ml-2">x{{ item?.quantity || 0 }}</span>
+                <div v-if="order.items && order.items.length > 0">
+                  <div
+                    v-for="(item, index) in order.items"
+                    :key="index"
+                    class="flex justify-between items-center p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-300"
+                  >
+                    <div class="flex items-center space-x-3">
+                      <img
+                        :src="item.product?.image || item.image || '/images/placeholder.jpg'"
+                        :alt="item.product?.title || item.name || 'Unknown item'"
+                        class="w-16 h-16 object-cover rounded-lg shadow-md"
+                      >
+                      <div>
+                        <span class="font-medium text-gray-800">{{ item.product?.title || item.name || 'Unknown item' }}</span>
+                        <span class="text-gray-600 ml-2">x{{ item.quantity || 0 }}</span>
+                      </div>
+                    </div>
+                    <div class="text-right">
+                      <span class="font-semibold text-gray-700">Tsh {{ Number(item.price || item.product?.price || 0).toLocaleString() }}</span>
                     </div>
                   </div>
-                  <div class="text-right">
-                    <span class="font-semibold text-gray-700">Tsh {{ Number(item?.price || item?.product?.price || 0).toLocaleString() }}</span>
-                  </div>
+                </div>
+                <div v-else class="text-center p-4 text-gray-500">
+                  <p>No items found for this order</p>
                 </div>
               </div>
             </div>
@@ -424,11 +429,16 @@ export default {
     }
 
     const toggleOrderDetails = (orderId) => {
+      console.log('toggleOrderDetails called with orderId:', orderId)
+      console.log('Current expandedOrders:', expandedOrders.value)
+      
       const index = expandedOrders.value.indexOf(orderId)
       if (index > -1) {
         expandedOrders.value.push(orderId)
+        console.log('Added to expanded orders:', expandedOrders.value)
       } else {
         expandedOrders.value.splice(index, 1)
+        console.log('Removed from expanded orders:', expandedOrders.value)
       }
     }
 
