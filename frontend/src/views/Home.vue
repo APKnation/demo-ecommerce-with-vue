@@ -382,23 +382,22 @@ export default {
 
     // Unified addToCart function for both authenticated and guest users
     const addToCart = async (productName, productPrice) => {
-      if (isAuthenticated.value) {
-        try {
-          // For authenticated users, find the product and add to backend cart
-          const product = products.value.find(p => p.title === productName || p.name === productName)
-          if (product && product.id) {
-            await addToAuthenticatedCart(product.id, 1)
-            showNotificationMessage(`${product.title || product.name} added to cart!`, 'success')
-          } else {
-            showNotificationMessage('Product not found or missing ID', 'error')
+      // Always use guest cart first (localStorage)
+      if (guestAddToCart) {
+        guestAddToCart({ name: productName, price: productPrice })
+        showNotificationMessage(`${productName} added to cart!`, 'success')
+        
+        // If user is authenticated and has token, also try to add to backend cart
+        if (isAuthenticated.value && localStorage.getItem('token')) {
+          try {
+            const product = products.value.find(p => p.title === productName || p.name === productName)
+            if (product && product.id) {
+              await addToAuthenticatedCart(product.id, 1)
+            }
+          } catch (error) {
+            // Silently ignore backend cart errors, guest cart already worked
+            console.log('Backend cart not available, using guest cart')
           }
-        } catch (error) {
-          showNotificationMessage('Failed to add to cart', 'error')
-        }
-      } else {
-        // For guest users, use the existing localStorage cart
-        if (guestAddToCart) {
-          guestAddToCart({ name: productName, price: productPrice })
         }
       }
     }
