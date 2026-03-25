@@ -123,6 +123,7 @@ def admin_dashboard_stats(request):
     
     # Calculate revenue
     total_revenue = sum(float(order.total_amount) for order in completed_orders)
+    total_revenue = round(total_revenue)  # Ensure integer value
     
     # Calculate average order value
     avg_order_value = 0
