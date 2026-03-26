@@ -71,7 +71,7 @@
         <!-- Product Image -->
         <div class="relative z-10 group">
           <img 
-            src="/images/w.jpg" 
+            src="http://localhost:8000/media/products/Computer.jpeg" 
             alt="Electronics Products" 
             class="w-full h-auto max-w-2xl mx-auto rounded-3xl shadow-2xl transform transition-all duration-500 group-hover:scale-105 group-hover:rotate-1"
           >
@@ -243,7 +243,7 @@
         >
           <div class="relative overflow-hidden rounded-t-lg">
             <img
-              :src="product.image || product.images?.[0] || `/images/${getProductImage(product.title || product.name)}`"
+              :src="getImageUrl(product.image)"
               :alt="product.title || product.name"
               class="w-full h-48 object-cover rounded-t-lg mb-4 group-hover:scale-110 transition-transform duration-500"
               @error="handleImageError"
@@ -509,34 +509,34 @@ export default {
       return filtered
     })
 
-    // Helper function to map product names to image files
-    const getProductImage = (productName) => {
-      const imageMap = {
-        'Mac Book': 'w.jpg',
-        'HP-Brand': 'j.jpg', 
-        'Dell': 'k.jpg',
-        'Apple iPhone': 'd.jpg',
-        'iPhone': 'd.jpg',
-        'HP-Elite': 'a.jpg',
-        'Sony Headphones': 'f.jpg',
-        'Sony': 'f.jpg',
-        'Infinix Smartphone': 'g.jpg',
-        'Infinix': 'g.jpg',
-        'iPhone Pro': 'p.jpg',
-        'Samsung Galaxy': 'l.jpg',
-        'Samsung': 'l.jpg'
+    // Helper function to get proper image URL from backend
+    const getImageUrl = (imagePath) => {
+      if (!imagePath) {
+        return '/images/Computer.jpeg' // Default fallback
       }
       
-      // Find matching image by checking if product name contains any key
-      for (const [key, image] of Object.entries(imageMap)) {
-        if (productName.toLowerCase().includes(key.toLowerCase())) {
-          return image
-        }
+      // If it's already a full URL, return as is
+      if (imagePath.startsWith('http')) {
+        return imagePath
       }
       
-      // Default fallback images
-      const defaultImages = ['Computer.jpeg', 'iPhone.jpg', 'watch1.jpeg']
-      return defaultImages[Math.floor(Math.random() * defaultImages.length)]
+      // If it starts with /media/, it's already a backend URL
+      if (imagePath.startsWith('/media/')) {
+        return imagePath
+      }
+      
+      // If it starts with products/, prepend the backend media URL
+      if (imagePath.startsWith('products/')) {
+        return `http://localhost:8000/media/${imagePath}`
+      }
+      
+      // If it starts with /images/, it's a frontend image
+      if (imagePath.startsWith('/images/')) {
+        return imagePath
+      }
+      
+      // Otherwise, assume it's a relative path to products folder
+      return `http://localhost:8000/media/products/${imagePath}`
     }
 
     // Handle image loading errors
@@ -622,7 +622,7 @@ export default {
       addToCart,
       filteredProducts,
       likeProduct,
-      getProductImage,
+      getImageUrl,
       handleImageError,
       viewProduct,
       editProduct,
