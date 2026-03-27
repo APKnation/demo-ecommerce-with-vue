@@ -112,6 +112,42 @@
             >
           </div>
 
+          <!-- Role Selection -->
+          <div>
+            <label for="role" class="block text-sm font-semibold text-gray-800 mb-2">
+              Account Type
+            </label>
+            <div class="relative">
+              <select
+                id="role"
+                v-model="form.role"
+                required
+                :disabled="isLoading"
+                class="w-full px-3 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed bg-white appearance-none cursor-pointer"
+              >
+                <option value="">Select account type...</option>
+                <option value="customer">Customer - Buy products</option>
+                <option value="vendor">Vendor - Sell products</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+            </div>
+            <p class="mt-2 text-xs text-gray-600">
+              <span v-if="form.role === 'vendor'" class="text-orange-600 font-medium">
+                📦 Vendors can add and sell products (requires admin approval)
+              </span>
+              <span v-else-if="form.role === 'customer'" class="text-blue-600 font-medium">
+                🛍️ Customers can browse and purchase products
+              </span>
+              <span v-else class="text-gray-500">
+                Choose how you want to use KAFUKA Store
+              </span>
+            </p>
+          </div>
+
           <!-- Password Field -->
           <div>
             <label for="password" class="block text-sm font-semibold text-gray-800 mb-2">
@@ -292,6 +328,7 @@ export default {
       email: '',
       username: '',
       phone: '',
+      role: '', // Add role selection
       password: '',
       confirmPassword: '',
       agreeTerms: false
@@ -337,6 +374,7 @@ export default {
         form.value.lastName &&
         form.value.email &&
         form.value.username &&
+        form.value.role && // Add role validation
         form.value.password &&
         form.value.confirmPassword &&
         passwordsMatch.value &&
@@ -355,6 +393,7 @@ export default {
         email: form.value.email,
         username: form.value.username,
         phone: form.value.phone,
+        role: form.value.role, // Include role selection
         password: form.value.password,
         password_confirm: form.value.confirmPassword
       })
