@@ -49,7 +49,7 @@
         :class="{ 'is-active': index === currentImageIndex }"
       >
         <img
-          :src="image"
+          :src="getImageUrl(image)"
           :alt="`Thumbnail ${index + 1}`"
           class="thumbnail-image"
         >
@@ -100,8 +100,37 @@ export default {
     const currentImageIndex = ref(props.initialIndex)
     const showZoom = ref(false)
     
+    // Helper function for image URL handling
+    const getImageUrl = (imagePath) => {
+      if (!imagePath) return '/images/placeholder.jpg'
+      
+      // If it's already a full URL, return as is
+      if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+        return imagePath
+      }
+      
+      // If it's a backend media URL, return as is
+      if (imagePath.startsWith('/media/')) {
+        return `http://localhost:8000${imagePath}` 
+      }
+      
+      // If it's a full URL from backend, return as is
+      if (imagePath.includes('localhost:8000')) {
+        return imagePath
+      }
+      
+      // If it's a relative path starting with /images/, use as is
+      if (imagePath.startsWith('/images/')) {
+        return imagePath
+      }
+      
+      // Otherwise, assume it's a relative path and construct backend URL
+      return `http://localhost:8000/media/${imagePath}` 
+    }
+    
     const currentImage = computed(() => {
-      return props.images[currentImageIndex.value] || ''
+      const imagePath = props.images[currentImageIndex.value] || ''
+      return getImageUrl(imagePath)
     })
     
     const hasPrevious = computed(() => {

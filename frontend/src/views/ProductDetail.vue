@@ -37,117 +37,6 @@ export default {
     const product = ref(null)
     const relatedProducts = ref([])
     
-    // Sample products data (in real app, this would come from API)
-    const sampleProducts = [
-      {
-        id: '1',
-        name: 'iPhone 15 Pro',
-        price: 2500000,
-        category: 'smartphones',
-        subcategory: 'iphone',
-        image: '/images/iPhone.jpg',
-        images: ['/images/iPhone.jpg', '/images/iPhone-16-Pro-max-300x300.jpg'],
-        rating: 4.8,
-        reviews: 156,
-        stock: 15,
-        discount: 10,
-        description: 'Latest iPhone with advanced features',
-        specifications: {
-          brand: 'Apple',
-          model: 'iPhone 15 Pro',
-          color: 'Titanium Blue',
-          weight: '187g',
-          dimensions: '146.6 x 70.6 x 8.25 mm',
-          warranty: '1 Year',
-          screen_size: '6.1 inches',
-          resolution: '2556 x 1179 pixels',
-          processor: 'A17 Pro',
-          ram: '8GB',
-          storage: '256GB',
-          camera: '48MP Main + 12MP Ultra Wide + 12MP Telephoto',
-          battery: '3274 mAh',
-          os: 'iOS 17'
-        }
-      },
-      {
-        id: '2',
-        name: 'MacBook Pro',
-        price: 4500000,
-        category: 'laptops',
-        subcategory: 'business',
-        image: '/images/Computer.jpeg',
-        images: ['/images/Computer.jpeg'],
-        rating: 4.6,
-        reviews: 89,
-        stock: 8,
-        specifications: {
-          brand: 'Apple',
-          model: 'MacBook Pro 14"',
-          color: 'Space Gray',
-          weight: '1.6kg',
-          dimensions: '312.6 x 220.7 x 15.5 mm',
-          warranty: '1 Year',
-          processor: 'M3 Pro',
-          ram: '18GB',
-          storage: '512GB SSD',
-          graphics: 'Integrated',
-          screen_size: '14.2 inches',
-          resolution: '3024 x 1964 pixels',
-          battery_life: '18 hours',
-          os: 'macOS Sonoma'
-        }
-      },
-      {
-        id: '3',
-        name: 'AirPods Pro',
-        price: 450000,
-        category: 'headphones',
-        subcategory: 'wireless',
-        image: '/images/airpods.jpg',
-        images: ['/images/airpods.jpg'],
-        rating: 4.7,
-        reviews: 234,
-        stock: 25,
-        specifications: {
-          brand: 'Apple',
-          model: 'AirPods Pro (2nd Gen)',
-          color: 'White',
-          weight: '5.3g (each earbud)',
-          warranty: '1 Year',
-          type: 'In-ear wireless',
-          connectivity: 'Bluetooth 5.3',
-          battery_life: '6 hours (30 hours with case)',
-          noise_cancelling: 'Active Noise Cancellation',
-          frequency_response: '20Hz - 20kHz'
-        }
-      },
-      {
-        id: '4',
-        name: 'Apple Watch Series 9',
-        price: 650000,
-        category: 'wearables',
-        subcategory: 'smartwatch',
-        image: '/images/watch1.jpeg',
-        images: ['/images/watch1.jpeg'],
-        rating: 4.5,
-        reviews: 67,
-        stock: 12,
-        specifications: {
-          brand: 'Apple',
-          model: 'Apple Watch Series 9',
-          color: 'Midnight',
-          weight: '38.7g',
-          warranty: '1 Year',
-          display: 'Always-On Retina LTPO OLED',
-          battery_life: '18 hours',
-          water_resistance: '50m water resistant',
-          compatibility: 'iPhone',
-          health_features: 'Heart rate, ECG, Blood oxygen, Sleep tracking',
-          gps: 'Built-in GPS'
-        }
-      }
-    ]
-    
     const loadProduct = async () => {
       loading.value = true
       
@@ -198,6 +87,38 @@ export default {
       emit('add-to-compare', product)
     }
     
+    // Helper functions for image handling
+    const getImageUrl = (imagePath) => {
+      if (!imagePath) return '/images/placeholder.jpg'
+      
+      // If it's already a full URL, return as is
+      if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+        return imagePath
+      }
+      
+      // If it's a backend media URL, return as is
+      if (imagePath.startsWith('/media/')) {
+        return `http://localhost:8000${imagePath}` 
+      }
+      
+      // If it's a full URL from backend, return as is
+      if (imagePath.includes('localhost:8000')) {
+        return imagePath
+      }
+      
+      // If it's a relative path starting with /images/, use as is
+      if (imagePath.startsWith('/images/')) {
+        return imagePath
+      }
+      
+      // Otherwise, assume it's a relative path and construct backend URL
+      return `http://localhost:8000/media/${imagePath}` 
+    }
+
+    const handleImageError = (event) => {
+      event.target.src = '/images/placeholder.jpg'
+    }
+    
     onMounted(() => {
       loadProduct()
     })
@@ -206,7 +127,9 @@ export default {
       product,
       relatedProducts,
       handleAddToCart,
-      handleAddToCompare
+      handleAddToCompare,
+      getImageUrl,
+      handleImageError
     }
   }
 }
