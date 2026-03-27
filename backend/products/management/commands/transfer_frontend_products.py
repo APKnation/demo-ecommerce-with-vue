@@ -39,7 +39,7 @@ class Command(BaseCommand):
                 # Check if product already exists
                 existing = Product.objects.filter(title__iexact=frontend_product['name']).first()
                 if existing:
-                    self.stdout.write(self.style.WARNING(f'Skipping (already exists): {frontend_product[\"name\"]}'))
+                    self.stdout.write(self.style.WARNING(f'Skipping (already exists): {frontend_product["name"]}'))
                     skipped_count += 1
                     continue
                 
@@ -60,7 +60,7 @@ class Command(BaseCommand):
                 # Create product
                 product = Product.objects.create(
                     title=frontend_product['name'],
-                    description=f'Transferred from frontend local storage: {frontend_product[\"name\"]}. High-quality product with excellent features.',
+                    description=f'Transferred from frontend local storage: {frontend_product["name"]}. High-quality product with excellent features.',
                     price=frontend_product['price'],
                     category=category,
                     condition='new',
@@ -74,10 +74,10 @@ class Command(BaseCommand):
                 )
                 
                 transferred_count += 1
-                self.stdout.write(self.style.SUCCESS(f'Transferred: {frontend_product[\"name\"]} - Tsh {frontend_product[\"price\"]:,}'))
+                self.stdout.write(self.style.SUCCESS(f'Transferred: {frontend_product["name"]} - Tsh {frontend_product["price"]:,}'))
                 
             except Exception as e:
-                self.stdout.write(self.style.ERROR(f'Error transferring {frontend_product.get(\"name\", \"Unknown\")}: {str(e)}'))
+                self.stdout.write(self.style.ERROR(f'Error transferring {frontend_product.get("name", "Unknown")}: {str(e)}'))
                 skipped_count += 1
         
         self.stdout.write(self.style.SUCCESS(f'\\n=== TRANSFER RESULTS ==='))
