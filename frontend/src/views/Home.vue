@@ -98,6 +98,13 @@
               </div>
             </div>
           </div>
+          
+          <!-- Premium Quality -->
+          <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg p-4 transition-all duration-300 hover:scale-105">
+            <div class="flex items-center space-x-3">
+              <div class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2M7 13h10l4-8H5.4M7 13l-2.293 2.293c-.63.63-.184 1.707.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                 </svg>
               </div>
               <div>
