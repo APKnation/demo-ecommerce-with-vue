@@ -36,9 +36,6 @@ class Command(BaseCommand):
         # Assign existing images to products with missing images
         for product in missing_images:
             if existing_images:
-                # Select a random existing image
-                selected_image = random.choice(existing_images)
-                product.image = selected_image
                 product.save()
                 self.stdout.write(self.style.SUCCESS(f'✅ Fixed {product.title}: {product.image}'))
             else:
