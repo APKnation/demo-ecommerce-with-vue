@@ -57,18 +57,22 @@ def product_create(request):
     
     # Handle both JSON and FormData
     if request.content_type and 'multipart/form-data' in request.content_type:
-        # FormData handling
-        serializer = ProductCreateSerializer(data=request.data)
+        # FormData handling - add author to data
+        data = request.data.copy()
+        data['author'] = request.user.id
+        serializer = ProductCreateSerializer(data=data)
     else:
-        # JSON handling
-        serializer = ProductCreateSerializer(data=request.data)
+        # JSON handling - add author to data
+        data = request.data.copy()
+        data['author'] = request.user.id
+        serializer = ProductCreateSerializer(data=data)
     
     print(f"DEBUG: Serializer valid: {serializer.is_valid()}")
     if not serializer.is_valid():
         print(f"DEBUG: Serializer errors: {serializer.errors}")
     
     if serializer.is_valid():
-        serializer.save(author=request.user)
+        serializer.save()
         return Response(ProductSerializer(serializer.instance).data, 
                        status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

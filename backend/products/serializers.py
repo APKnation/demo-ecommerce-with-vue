@@ -36,11 +36,12 @@ class ProductCreateSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             'title', 'description', 'price', 'condition', 'category', 'image',
-            'stock', 'is_active'
+            'stock', 'is_active', 'author'
         ]
     
     def create(self, validated_data):
-        # Remove author from validated_data as it's passed separately
-        validated_data.pop('author', None)
-        product = Product.objects.create(**validated_data)
+        # author will be passed from view, so remove it from validated_data
+        # but ensure it's set before creating the product
+        author = validated_data.pop('author', None)
+        product = Product.objects.create(author=author, **validated_data)
         return product
