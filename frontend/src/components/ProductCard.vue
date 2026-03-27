@@ -39,11 +39,27 @@
     </div>
     
     <div class="p-4">
-      <h3 class="product-title text-lg font-semibold text-neutral-900 mb-2">{{ product.name }}</h3>
+      <h3 class="product-title text-lg font-semibold text-neutral-900 mb-2">{{ product.title }}</h3>
       <p class="product-category text-sm text-neutral-500 mb-3">{{ product.category }}</p>
+      <p class="product-description text-sm text-neutral-600 mb-4 line-clamp-2">{{ product.description }}</p>
       <div class="product-price mb-4">
         <span v-if="product.discount" class="original-price text-sm text-neutral-500 line-through mr-2">Tsh {{ product.price.toLocaleString() }}</span>
         <span class="current-price text-2xl font-bold text-primary-600">Tsh {{ discountedPrice.toLocaleString() }}</span>
+      </div>
+      
+      <!-- Advanced Electronics Features -->
+      <div class="advanced-features mb-4">
+        <div class="flex items-center gap-2 text-xs text-neutral-500 mb-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2m0 0l-2-2m2 0l2 2m0 0l-2-2"></path>
+          </svg>
+          <span>Premium Electronics</span>
+        </div>
+        <div class="flex flex-wrap gap-1">
+          <span class="badge badge-accent text-xs">1 Year Warranty</span>
+          <span class="badge badge-success text-xs">Professional Grade</span>
+          <span class="badge badge-info text-xs">Advanced Tech</span>
+        </div>
       </div>
       
       <div class="flex items-center justify-between">

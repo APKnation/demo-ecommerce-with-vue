@@ -17,30 +17,49 @@ export function useCart() {
     localStorage.setItem('cart', JSON.stringify(cart.value))
   }
   
-  // Add item to cart
+  // Enhanced add to cart with advanced electronics features
   const addToCart = (product) => {
-    const existingItem = cart.value.find(item => item.name === product.name)
+    const existingItem = cart.value.find(item => item.id === product.id)
     
     if (existingItem) {
       existingItem.quantity += 1
       Swal.fire({
         icon: 'info',
-        title: 'Quantity Updated',
-        text: `${product.name} quantity increased to ${existingItem.quantity}`,
+        title: 'Cart Updated',
+        text: `${product.title} quantity increased to ${existingItem.quantity}`,
         timer: 2000,
         toast: true,
         position: 'top-end',
         showConfirmButton: false
       })
     } else {
-      cart.value.push({
-        ...product,
-        quantity: 1
-      })
+      // Enhanced cart item with full product data
+      const cartItem = {
+        id: product.id,
+        title: product.title,
+        name: product.name || product.title,
+        price: Number(product.price),
+        image: product.image,
+        category: product.category?.name || 'Electronics',
+        description: product.description,
+        quantity: 1,
+        addedAt: new Date().toISOString(),
+        // Advanced electronics features
+        specifications: {
+          brand: product.title.split(' ')[0],
+          model: product.title.split(' ')[1] || 'Pro',
+          category: product.category?.name || 'Electronics',
+          warranty: '1 Year Manufacturer Warranty',
+          features: ['Premium Quality', 'Advanced Technology', 'Professional Grade']
+        }
+      }
+      
+      cart.value.push(cartItem)
+      
       Swal.fire({
         icon: 'success',
         title: 'Added to Cart',
-        text: `${product.name} added to cart successfully`,
+        text: `${product.title} added to cart successfully`,
         timer: 2000,
         toast: true,
         position: 'top-end',
