@@ -388,6 +388,7 @@ export default {
         const response = await fetch('http://localhost:8000/api/products/')
         if (response.ok) {
           const data = await response.json()
+          console.log('Loaded products for Home:', data)
           products.value = data
         } else {
           // If API fails, show empty state

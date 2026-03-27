@@ -1133,10 +1133,8 @@ export default {
     // Load data from backend API
     const loadData = async () => {
       try {
-        // Load all products from backend API
-        const productsResponse = await fetch(`${API_BASE_URL}/products/`, {
-          headers: { 'Authorization': `Token ${getToken()}` }
-        })
+        // Load all products from backend API (no auth required for products)
+        const productsResponse = await fetch(`${API_BASE_URL}/products/`)
         
         if (productsResponse.ok) {
           const backendProducts = await productsResponse.json()
