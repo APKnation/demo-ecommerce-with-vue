@@ -8,15 +8,15 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Default products from Home.vue
         default_products = [
-            { id: 1, name: 'Mac Book', price: 1000000, category: 'laptops', image: '/images/w.jpg' },
-            { id: 2, name: 'HP-Brand', price: 150000, category: 'laptops', image: '/images/j.jpg' },
-            { id: 3, name: 'Dell', price: 200000, category: 'laptops', image: '/images/k.jpg' },
-            { id: 4, name: 'Apple', price: 1000000, category: 'phones', image: '/images/d.jpg' },
-            { id: 5, name: 'HP-Elite', price: 1500000, category: 'laptops', image: '/images/a.jpg' },
-            { id: 6, name: 'Sony', price: 200000, category: 'accessories', image: '/images/f.jpg' },
-            { id: 7, name: 'Infinix', price: 400000, category: 'phones', image: '/images/g.jpg' },
-            { id: 8, name: 'iPhone', price: 1500000, category: 'phones', image: '/images/p.jpg' },
-            { id: 9, name: 'Samsung', price: 3000000, category: 'phones', image: '/images/l.jpg' }
+            {'id': 1, 'name': 'Mac Book', 'price': 1000000, 'category': 'laptops', 'image': '/images/w.jpg'},
+            {'id': 2, 'name': 'HP-Brand', 'price': 150000, 'category': 'laptops', 'image': '/images/j.jpg'},
+            {'id': 3, 'name': 'Dell', 'price': 200000, 'category': 'laptops', 'image': '/images/k.jpg'},
+            {'id': 4, 'name': 'Apple', 'price': 1000000, 'category': 'phones', 'image': '/images/d.jpg'},
+            {'id': 5, 'name': 'HP-Elite', 'price': 1500000, 'category': 'laptops', 'image': '/images/a.jpg'},
+            {'id': 6, 'name': 'Sony', 'price': 200000, 'category': 'accessories', 'image': '/images/f.jpg'},
+            {'id': 7, 'name': 'Infinix', 'price': 400000, 'category': 'phones', 'image': '/images/g.jpg'},
+            {'id': 8, 'name': 'iPhone', 'price': 1500000, 'category': 'phones', 'image': '/images/p.jpg'},
+            {'id': 9, 'name': 'Samsung', 'price': 3000000, 'category': 'phones', 'image': '/images/l.jpg'}
         ]
         
         self.stdout.write(self.style.WARNING('=== TRANSFER DEFAULT FRONTEND PRODUCTS ==='))
