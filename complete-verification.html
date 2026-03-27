@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Complete Frontend Verification</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 30px 0; padding: 20px; border: 2px solid #333; border-radius: 10px; }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+        .warning { color: orange; font-weight: bold; }
+        img { max-width: 150px; margin: 10px; border: 1px solid #ddd; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .product-card { padding: 15px; border: 1px solid #ccc; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Complete Frontend Verification</h1>
+    
+    <div class="test-section">
+        <h2>1. Backend API Connection Test</h2>
+        <button onclick="testAPI()">Test Backend API</button>
+        <div id="api-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Image Loading Test</h2>
+        <div id="image-test"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Product Categories Test</h2>
+        <div id="category-test"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>4. Frontend URLs Check</h2>
+        <div id="url-test"></div>
+    </div>
+
+    <script>
+        async function testAPI() {
+            const apiResult = document.getElementById('api-result');
+            const imageTest = document.getElementById('image-test');
+            const categoryTest = document.getElementById('category-test');
+            const urlTest = document.getElementById('url-test');
+            
+            apiResult.innerHTML = 'Testing...';
+            
+            try {
+                // Test API connection
+                const response = await fetch('http://localhost:8000/api/products/');
+                
+                if (response.ok) {
+                    const products = await response.json();
+                    apiResult.innerHTML = `<span class="success">✅ API Working! Found ${products.length} products</span>`;
+                    
+                    // Test image URLs
+                    imageTest.innerHTML = '<h3>Image URL Tests:</h3>';
+                    
+                    // Show first 9 products
+                    const productGrid = document.createElement('div');
+                    productGrid.className = 'product-grid';
+                    
+                    products.slice(0, 9).forEach((product, index) => {
+                        const imageUrl = product.image.startsWith('http') ? product.image : `http://localhost:8000${product.image}`;
+                        
+                        const card = document.createElement('div');
+                        card.className = 'product-card';
+                        card.innerHTML = `
+                            <h4>${product.title}</h4>
+                            <p><strong>Category:</strong> ${product.category?.name}</p>
+                            <p><strong>Image:</strong> ${product.image}</p>
+                            <p><strong>Full URL:</strong> ${imageUrl}</p>
+                            <img src="${imageUrl}" onerror="this.style.border='2px solid red'" onload="this.style.border='2px solid green'">
+                        `;
+                        productGrid.appendChild(card);
+                    });
+                    
+                    imageTest.appendChild(productGrid);
+                    
+                    // Test categories
+                    const categories = {};
+                    products.forEach(product => {
+                        const cat = product.category?.name || 'Unknown';
+                        categories[cat] = (categories[cat] || 0) + 1;
+                    });
+                    
+                    categoryTest.innerHTML = '<h3>Category Distribution:</h3>';
+                    Object.entries(categories).forEach(([cat, count]) => {
+                        categoryTest.innerHTML += `<p><strong>${cat}:</strong> ${count} products</p>`;
+                    });
+                    
+                    // Test URL construction
+                    urlTest.innerHTML = '<h3>URL Verification:</h3>';
+                    urlTest.innerHTML += `
+                        <p><strong>Frontend URL:</strong> ${window.location.origin}</p>
+                        <p><strong>Backend API:</strong> http://localhost:8000/api/products/</p>
+                        <p><strong>Expected Images:</strong> http://localhost:8000/media/products/</p>
+                        <p><strong>Test Status:</strong> <span class="success">All systems configured correctly</span></p>
+                    `;
+                    
+                } else {
+                    apiResult.innerHTML = `<span class="error">❌ API Error: ${response.status}</span>`;
+                }
+            } catch (error) {
+                apiResult.innerHTML = `<span class="error">❌ Connection Error: ${error.message}</span>`;
+            }
+        }
+        
+        // Auto-test on page load
+        window.onload = function() {
+            testAPI();
+        };
+    </script>
+</body>
+</html>

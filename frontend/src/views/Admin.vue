@@ -327,9 +327,6 @@
                             <span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
                               {{ product.category?.name || product.category }}
                             </span>
-                            <span v-if="product.image" class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
-                              {{ getImageName(product.image) }}
-                            </span>
                           </div>
                         </div>
                       </div>
@@ -1114,18 +1111,6 @@ export default {
       return `http://localhost:8000/media/${imagePath}` 
     }
 
-    const getImageName = (imagePath) => {
-      if (!imagePath) return 'No Image'
-      
-      // Extract filename from full path
-      if (imagePath.includes('/')) {
-        const parts = imagePath.split('/')
-        return parts[parts.length - 1]
-      }
-      
-      return imagePath
-    }
-
     const handleImageError = (event) => {
       event.target.src = '/images/placeholder.jpg'
     }
@@ -1634,7 +1619,6 @@ export default {
       getStatusClass,
       getRoleClass,
       getImageUrl,
-      getImageName,
       handleImageError,
       formatDate,
       resetProductForm,
