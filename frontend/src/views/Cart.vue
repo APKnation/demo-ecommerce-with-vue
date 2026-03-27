@@ -133,59 +133,60 @@
               </div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <!-- Checkout button for logged-in users -->
-              <router-link
-                v-if="isAuthenticated"
-                to="/place-order"
-                class="relative overflow-hidden bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-4 rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-xl text-center flex items-center justify-center"
-              >
-                <span class="relative z-10 flex items-center justify-center">
+            <div class="space-y-4">
+              <!-- Checkout buttons - always visible -->
+              <div class="flex flex-col sm:flex-row gap-4">
+                <!-- Main checkout button -->
+                <router-link
+                  to="/place-order"
+                  class="flex-1 relative overflow-hidden bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-4 rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-xl text-center flex items-center justify-center"
+                >
+                  <span class="relative z-10 flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 9"></path>
+                    </svg>
+                    Proceed to Checkout • Tsh {{ displayTotalPrice.toLocaleString() }}
+                  </span>
+                  <div class="absolute inset-0 bg-gradient-to-r from-green-600 to-green-700 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                </router-link>
+                
+                <!-- Login prompt for guests -->
+                <router-link
+                  v-if="!isAuthenticated"
+                  to="/login"
+                  class="bg-blue-500 text-white font-semibold py-4 rounded-xl hover:bg-blue-600 transition-colors duration-300 text-center flex items-center justify-center px-6"
+                >
                   <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 9"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
                   </svg>
-                  Place Order • Tsh {{ displayTotalPrice.toLocaleString() }}
-                </span>
-                <div class="absolute inset-0 bg-gradient-to-r from-green-600 to-green-700 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-              </router-link>
+                  Login
+                </router-link>
+              </div>
               
-              <!-- Guest checkout button -->
-              <router-link
-                v-if="!isAuthenticated"
-                to="/place-order"
-                class="relative overflow-hidden bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-4 rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-xl text-center flex items-center justify-center"
-              >
-                <span class="relative z-10 flex items-center justify-center">
+              <!-- Additional options -->
+              <div class="flex flex-col sm:flex-row gap-4">
+                <!-- Clear cart button -->
+                <button
+                  @click="clearCart"
+                  class="flex-1 bg-gray-200 text-gray-700 font-semibold py-4 rounded-xl hover:bg-gray-300 transition-colors duration-300"
+                >
+                  <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 01-2.828 0H5a2 2 0 00-2.828 0l5.694 11.656a1 1 0 00.707.707 1.707z"></path>
+                  </svg>
+                  Clear Cart
+                </button>
+                
+                <!-- Continue shopping -->
+                <router-link
+                  to="/"
+                  class="flex-1 bg-orange-500 text-white font-semibold py-4 rounded-xl hover:bg-orange-600 transition-colors duration-300 text-center flex items-center justify-center"
+                >
                   <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 9"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l2.293 2.293c.63.63.184 1.707.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                   </svg>
-                  Place Order • Tsh {{ displayTotalPrice.toLocaleString() }}
-                </span>
-                <div class="absolute inset-0 bg-gradient-to-r from-green-600 to-green-700 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-              </router-link>
-              
-              <!-- Login prompt for guests -->
-              <router-link
-                v-if="!isAuthenticated"
-                to="/login"
-                class="bg-blue-500 text-white font-semibold py-4 rounded-xl hover:bg-blue-600 transition-colors duration-300 text-center flex items-center justify-center"
-              >
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
-                </svg>
-                Login for Better Checkout
-              </router-link>
-              
-              <!-- Clear cart button -->
-              <button
-                @click="clearCart"
-                class="bg-gray-200 text-gray-700 font-semibold py-4 rounded-xl hover:bg-gray-300 transition-colors duration-300"
-              >
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 01-2.828 0H5a2 2 0 00-2.828 0l5.694 11.656a1 1 0 00.707.707 1.707z"></path>
-                </svg>
-                Clear Cart
-              </button>
+                  Continue Shopping
+                </router-link>
+              </div>
             </div>
           </div>
         </div>
