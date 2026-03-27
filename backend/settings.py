@@ -123,6 +123,11 @@ CORS_ALLOW_CREDENTIALS = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# Django Admin Configuration
+ADMIN_SITE_HEADER = "E-commerce Admin"
+ADMIN_SITE_TITLE = "E-commerce Admin Portal"
+ADMIN_INDEX_TITLE = "Welcome to E-commerce Admin Portal"
+
 # Static files configuration
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
