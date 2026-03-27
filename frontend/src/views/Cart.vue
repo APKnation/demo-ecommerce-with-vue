@@ -69,9 +69,10 @@
               <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
                   <img
-                    :src="item.image || item.product?.image || '/images/placeholder.jpg'"
+                    :src="getImageUrl(item.image || item.product?.image)"
                     :alt="item.name || item.product?.title"
                     class="w-20 h-20 object-cover rounded-lg shadow-md group-hover:scale-110 transition-transform duration-300"
+                    @error="handleImageError"
                   >
                   <div>
                     <h3 class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors duration-300">
@@ -273,6 +274,40 @@ export default {
 
     const removeFromCart = (itemId) => {
       handleRemoveFromCart(itemId)
+    }
+
+    // Image handling functions
+    const getImageUrl = (imagePath) => {
+      if (!imagePath) {
+        return '/images/placeholder.jpg'
+      }
+      
+      // If it's already a full URL, return as is
+      if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+        return imagePath
+      }
+      
+      // If it's a backend media URL, return as is
+      if (imagePath.startsWith('/media/')) {
+        return `http://localhost:8000${imagePath}` 
+      }
+      
+      // If it's a full URL from backend, return as is
+      if (imagePath.includes('localhost:8000')) {
+        return imagePath
+      }
+      
+      // If it's a relative path starting with /images/, use as is
+      if (imagePath.startsWith('/images/')) {
+        return imagePath
+      }
+      
+      // Otherwise, assume it's a relative path to products folder
+      return `http://localhost:8000/media/products/${imagePath}`
+    }
+
+    const handleImageError = (event) => {
+      event.target.src = '/images/placeholder.jpg'
     }
 
     // Load cart on mount
