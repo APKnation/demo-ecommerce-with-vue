@@ -498,25 +498,25 @@ export default {
     // Helper function to get proper image URL from backend
     const getImageUrl = (imagePath) => {
       if (!imagePath) {
-        return '/images/Computer.jpeg' // Default fallback
+        return '/images/placeholder.jpg' // Default fallback
       }
       
       // If it's already a full URL, return as is
-      if (imagePath.startsWith('http')) {
+      if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
         return imagePath
       }
       
-      // If it starts with /media/, it's already a backend URL
+      // If it's a backend media URL, return as is
       if (imagePath.startsWith('/media/')) {
+        return `http://localhost:8000${imagePath}` 
+      }
+      
+      // If it's a full URL from backend, return as is
+      if (imagePath.includes('localhost:8000')) {
         return imagePath
       }
       
-      // If it starts with products/, prepend the backend media URL
-      if (imagePath.startsWith('products/')) {
-        return `http://localhost:8000/media/${imagePath}`
-      }
-      
-      // If it starts with /images/, it's a frontend image
+      // If it's a relative path starting with /images/, use as is
       if (imagePath.startsWith('/images/')) {
         return imagePath
       }
@@ -527,7 +527,7 @@ export default {
 
     // Handle image loading errors
     const handleImageError = (event) => {
-      event.target.src = '/images/Computer.jpeg'
+      event.target.src = '/images/placeholder.jpg'
     }
 
     // Admin CRUD Functions

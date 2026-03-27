@@ -164,63 +164,9 @@ export const useEcommerceStore = () => {
     }
   }
   
-  // Initialize with sample products
+  // Initialize with empty products - load from backend instead
   const initializeProducts = () => {
-    const sampleProducts = [
-      {
-        name: 'iPhone 15 Pro',
-        price: 2500000,
-        category: 'phones',
-        image: '/images/iphone.jpg',
-        isNew: true,
-        discount: 10,
-        stock: 15
-      },
-      {
-        name: 'Samsung Galaxy S24',
-        price: 2200000,
-        category: 'phones',
-        image: '/images/samsung.jpg',
-        isNew: true,
-        stock: 20
-      },
-      {
-        name: 'MacBook Pro',
-        price: 4500000,
-        category: 'laptops',
-        image: '/images/macbook.jpg',
-        isNew: false,
-        discount: 5,
-        stock: 8
-      },
-      {
-        name: 'Dell XPS 13',
-        price: 1800000,
-        category: 'laptops',
-        image: '/images/dell.jpg',
-        isNew: false,
-        stock: 12
-      },
-      {
-        name: 'AirPods Pro',
-        price: 450000,
-        category: 'accessories',
-        image: '/images/airpods.jpg',
-        isNew: true,
-        stock: 25
-      },
-      {
-        name: 'Sony WH-1000XM5',
-        price: 650000,
-        category: 'accessories',
-        image: '/images/sony.jpg',
-        isNew: false,
-        discount: 15,
-        stock: 10
-      }
-    ]
-    
-    setProducts(sampleProducts)
+    setProducts([])
   }
   
   return {
