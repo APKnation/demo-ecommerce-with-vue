@@ -50,7 +50,23 @@ def product_create(request):
         return Response({'error': 'Only staff and admins can create products'}, 
                        status=status.HTTP_403_FORBIDDEN)
     
-    serializer = ProductCreateSerializer(data=request.data)
+    # Debug: Print what we're receiving
+    print(f"DEBUG: Content-Type: {request.content_type}")
+    print(f"DEBUG: Request data: {request.data}")
+    print(f"DEBUG: Request FILES: {request.FILES}")
+    
+    # Handle both JSON and FormData
+    if request.content_type and 'multipart/form-data' in request.content_type:
+        # FormData handling
+        serializer = ProductCreateSerializer(data=request.data)
+    else:
+        # JSON handling
+        serializer = ProductCreateSerializer(data=request.data)
+    
+    print(f"DEBUG: Serializer valid: {serializer.is_valid()}")
+    if not serializer.is_valid():
+        print(f"DEBUG: Serializer errors: {serializer.errors}")
+    
     if serializer.is_valid():
         serializer.save(author=request.user)
         return Response(ProductSerializer(serializer.instance).data, 
