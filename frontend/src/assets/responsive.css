@@ -1,0 +1,262 @@
+/* Enhanced Responsive Design System */
+
+/* Custom Responsive Breakpoints */
+:root {
+  /* Extended breakpoints for better coverage */
+  --breakpoint-xs: 475px;    /* Extra small phones */
+  --breakpoint-sm: 640px;    /* Small phones */
+  --breakpoint-md: 768px;    /* Tablets */
+  --breakpoint-lg: 1024px;   /* Small laptops */
+  --breakpoint-xl: 1280px;   /* Laptops */
+  --breakpoint-2xl: 1536px;  /* Large desktops */
+}
+
+/* Responsive Container Utilities */
+.container-responsive {
+  @apply w-full max-w-7xl mx-auto px-4;
+}
+
+@media (min-width: 640px) {
+  .container-responsive {
+    @apply px-6;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-responsive {
+    @apply px-8;
+  }
+}
+
+/* Responsive Grid Systems */
+.grid-responsive {
+  @apply grid gap-4;
+}
+
+.grid-responsive {
+  @apply grid-cols-1;
+}
+
+@media (min-width: 640px) {
+  .grid-responsive {
+    @apply grid-cols-2;
+  }
+}
+
+@media (min-width: 768px) {
+  .grid-responsive {
+    @apply grid-cols-3;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-responsive {
+    @apply grid-cols-4;
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid-responsive {
+    @apply grid-cols-5;
+  }
+}
+
+/* Responsive Typography */
+.text-responsive {
+  @apply text-sm;
+}
+
+@media (min-width: 640px) {
+  .text-responsive {
+    @apply text-base;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-responsive {
+    @apply text-lg;
+  }
+}
+
+@media (min-width: 1024px) {
+  .text-responsive {
+    @apply text-xl;
+  }
+}
+
+/* Responsive Spacing */
+.spacing-responsive {
+  @apply p-4;
+}
+
+@media (min-width: 640px) {
+  .spacing-responsive {
+    @apply p-6;
+  }
+}
+
+@media (min-width: 768px) {
+  .spacing-responsive {
+    @apply p-8;
+  }
+}
+
+/* Responsive Cards */
+.card-responsive {
+  @apply w-full;
+}
+
+@media (min-width: 640px) {
+  .card-responsive {
+    @apply max-w-sm;
+  }
+}
+
+@media (min-width: 768px) {
+  .card-responsive {
+    @apply max-w-md;
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-responsive {
+    @apply max-w-lg;
+  }
+}
+
+/* Responsive Navigation */
+.nav-responsive {
+  @apply flex flex-col;
+}
+
+@media (min-width: 768px) {
+  .nav-responsive {
+    @apply flex-row;
+  }
+}
+
+/* Responsive Images */
+.image-responsive {
+  @apply w-full h-auto;
+}
+
+@media (min-width: 768px) {
+  .image-responsive {
+    @apply h-48;
+  }
+}
+
+@media (min-width: 1024px) {
+  .image-responsive {
+    @apply h-56;
+  }
+}
+
+/* Responsive Buttons */
+.btn-responsive {
+  @apply px-4 py-2 text-sm;
+}
+
+@media (min-width: 640px) {
+  .btn-responsive {
+    @apply px-6 py-3 text-base;
+  }
+}
+
+@media (min-width: 768px) {
+  .btn-responsive {
+    @apply px-8 py-4 text-lg;
+  }
+}
+
+/* Mobile-First Utilities */
+.mobile-only {
+  @apply block;
+}
+
+@media (min-width: 768px) {
+  .mobile-only {
+    @apply hidden;
+  }
+}
+
+.tablet-only {
+  @apply hidden;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .tablet-only {
+    @apply block;
+  }
+}
+
+.desktop-only {
+  @apply hidden;
+}
+
+@media (min-width: 1024px) {
+  .desktop-only {
+    @apply block;
+  }
+}
+
+/* Responsive Form Elements */
+.form-responsive {
+  @apply space-y-4;
+}
+
+@media (min-width: 768px) {
+  .form-responsive {
+    @apply space-y-6;
+  }
+}
+
+@media (min-width: 1024px) {
+  .form-responsive {
+    @apply space-y-8;
+  }
+}
+
+/* Responsive Sidebar */
+.sidebar-responsive {
+  @apply w-full;
+}
+
+@media (min-width: 768px) {
+  .sidebar-responsive {
+    @apply w-64;
+  }
+}
+
+/* Responsive Tables */
+.table-responsive {
+  @apply block;
+}
+
+@media (min-width: 768px) {
+  .table-responsive {
+    @apply table;
+  }
+}
+
+/* Responsive Animations */
+.animation-responsive {
+  @apply transition-all duration-200;
+}
+
+@media (min-width: 768px) {
+  .animation-responsive {
+    @apply transition-all duration-300;
+  }
+}
+
+/* Responsive Overflows */
+.overflow-responsive {
+  @apply overflow-x-auto;
+}
+
+@media (min-width: 768px) {
+  .overflow-responsive {
+    @apply overflow-visible;
+  }
+}
