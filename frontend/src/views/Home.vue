@@ -498,7 +498,7 @@ export default {
     // Helper function to get proper image URL from backend
     const getImageUrl = (imagePath) => {
       if (!imagePath) {
-        return '/images/placeholder.jpg' // Default fallback
+        return 'http://localhost:8000/media/products/default-product.jpg' // Default fallback
       }
       
       // If it's already a full URL, return as is
@@ -527,7 +527,7 @@ export default {
 
     // Handle image loading errors
     const handleImageError = (event) => {
-      event.target.src = '/images/placeholder.jpg'
+      event.target.src = 'http://localhost:8000/media/products/default-product.jpg'
     }
 
     // Admin CRUD Functions
