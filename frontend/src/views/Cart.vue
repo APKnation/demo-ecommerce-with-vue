@@ -384,6 +384,8 @@ export default {
       isAuthenticated,
       isLoading,
       error,
+      getImageUrl,
+      handleImageError,
       updateQuantity: handleUpdateQuantity,
       removeFromCart: handleRemoveFromCart,
       clearCart,
