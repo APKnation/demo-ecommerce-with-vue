@@ -14,11 +14,11 @@
             <h1 class="text-3xl font-bold text-gradient">Shopping Cart</h1>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-neutral-500">{{ cart.length }} item{{ cart.length !== 1 ? 's' : '' }}</span>
+            <span class="text-neutral-500">{{ displayCart.length }} item{{ displayCart.length !== 1 ? 's' : '' }}</span>
             <span class="text-neutral-400">•</span>
             <span class="font-semibold text-neutral-700">Tsh {{ totalPrice.toLocaleString() }}</span>
             <button
-              v-if="cart.length > 0"
+              v-if="displayCart.length > 0"
               @click="clearCart"
               class="ml-4 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-600 transition-colors duration-300"
             >
@@ -32,7 +32,7 @@
     <!-- Main Content -->
     <div class="container py-8">
       <!-- Empty State -->
-      <div v-if="cart.length === 0" class="text-center py-16">
+      <div v-if="displayCart.length === 0" class="text-center py-16">
         <div class="card card-elevated p-8 max-w-md mx-auto">
           <div class="w-24 h-24 mx-auto bg-gradient-to-br from-orange-100 to-orange-200 rounded-full flex items-center justify-center mb-6">
             <svg class="w-12 h-12 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,7 +62,7 @@
         <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
           <div class="divide-y divide-gray-200">
             <div
-              v-for="(item, index) in cart"
+              v-for="(item, index) in displayCart"
               :key="index"
               class="p-6 hover:bg-gradient-to-r from-orange-50 to-yellow-50 transition-colors duration-300 group"
             >
