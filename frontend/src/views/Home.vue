@@ -104,7 +104,7 @@
             <div class="flex items-center space-x-3">
               <div class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center">
                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2M7 13h10l4 8H5.4M7 13l2.293 2.293c.63.63.184 1.707.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2M7 13h10l4 8H5.4M7 13l2.293 2.293c.63.1.184 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                 </svg>
               </div>
               <div>
@@ -277,7 +277,7 @@
             <span class="relative z-10 flex items-center justify-center">
               <!-- Enhanced Cart Icon -->
               <svg class="w-4 h-4 mr-2 transform group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4 8H5.4M7 13l2.293 2.293c.63.63.184 1.707.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4 8H5.4M7 13l2.293 2.293c.63.1.184 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
               </svg>
               <span class="font-bold text-xs sm:text-xs lg:text-sm uppercase">Add to Cart</span>
             </span>
