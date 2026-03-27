@@ -170,8 +170,8 @@ export default {
     })
 
     // Computed properties
-    const cartItems = computed(() => unifiedCart.cartItems.value)
-    const totalPrice = computed(() => unifiedCart.totalPrice.value)
+    const cartItems = computed(() => unifiedCart?.cartItems?.value || [])
+    const totalPrice = computed(() => unifiedCart?.totalPrice?.value || 0)
 
     // Methods
     const getProductImage = (item) => {
