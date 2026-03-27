@@ -19,12 +19,22 @@ export function useUnifiedCart() {
 
   // Current total price
   const totalPrice = computed(() => {
+    // Add null check to prevent webextension errors
+    if (!cartItems.value || !Array.isArray(cartItems.value)) {
+      return 0
+    }
     return isAuthenticated.value ? authenticatedCart.totalPrice.value : guestCart.totalPrice.value
   })
 
-  // Current total items
+  // Calculate total items count
   const totalItems = computed(() => {
-    return isAuthenticated.value ? authenticatedCart.totalItems.value : guestCart.totalItems.value
+    // Add null check to prevent webextension errors
+    if (!cartItems.value || !Array.isArray(cartItems.value)) {
+      return 0
+    }
+    return cartItems.value.reduce((total, item) => {
+      return total + (item?.quantity || 0)
+    }, 0)
   })
 
   // Sync guest cart to authenticated cart when user logs in

@@ -44,7 +44,12 @@ export function useAuthenticatedCart() {
       }
 
       const data = await response.json()
-      cartItems.value = data.items || []
+      console.log('Cart data received:', data) // Debug log
+      cartItems.value = data.items || [] // Try both data.items and data
+      // Also try direct data array if items doesn't exist
+      if (!data.items && Array.isArray(data)) {
+        cartItems.value = data
+      }
       return data
     } catch (err) {
       error.value = err.message
