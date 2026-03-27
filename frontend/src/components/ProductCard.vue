@@ -1,10 +1,10 @@
 <template>
-  <div class="product-card card card-interactive overflow-hidden group" :class="cardClasses">
+  <div class="product-card card card-interactive overflow-hidden group w-full xs:w-full sm:w-full md:w-auto lg:w-auto" :class="cardClasses">
     <div class="relative overflow-hidden">
       <img 
         :src="product.image" 
         :alt="product.name"
-        class="product-image w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+        class="product-image w-full h-32 xs:h-32 sm:h-40 md:h-48 lg:h-56 object-cover group-hover:scale-105 transition-transform duration-300"
         @error="handleImageError"
       >
       <div class="absolute top-2 left-2 flex gap-2">

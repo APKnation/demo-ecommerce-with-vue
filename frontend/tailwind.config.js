@@ -130,6 +130,15 @@ export default {
       maxWidth: {
         '90': '22.5rem', // 360px
         '5xl': '16rem'    // 256px
+      },
+      // Custom breakpoints for better mobile support
+      screens: {
+        'xs': '475px',    // Extra small phones
+        'sm': '640px',    // Small phones
+        'md': '768px',    // Tablets
+        'lg': '1024px',   // Small laptops
+        'xl': '1280px',   // Laptops
+        '2xl': '1536px'   // Large desktops
       }
     },
   },
