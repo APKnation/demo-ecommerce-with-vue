@@ -1115,6 +1115,15 @@ export default {
       return new Date(dateString).toLocaleDateString()
     }
 
+    // Format currency function
+    const formatCurrency = (amount) => {
+      return new Intl.NumberFormat('en-RW', {
+        style: 'currency',
+        currency: 'RWF',
+        minimumFractionDigits: 0
+      }).format(amount)
+    }
+
     const saveProduct = async () => {
       try {
         const token = getToken()
@@ -1713,6 +1722,7 @@ export default {
       getImageUrl,
       handleImageError,
       formatDate,
+      formatCurrency,
       resetProductForm,
       // Product modal functions
       viewProduct,
