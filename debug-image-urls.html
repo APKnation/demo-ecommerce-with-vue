@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image URL Debug Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-item { margin: 20px 0; padding: 15px; border: 2px solid #333; }
+        img { max-width: 200px; border: 1px solid #ccc; margin: 10px; }
+        .success { color: green; }
+        .error { color: red; }
+        .url { font-family: monospace; background: #f0f0f0; padding: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Image URL Construction Test</h1>
+    
+    <div class="test-item">
+        <h2>Backend API Response</h2>
+        <div id="backend-response">Loading...</div>
+    </div>
+    
+    <div class="test-item">
+        <h2>getImageUrl Function Test</h2>
+        <div id="url-test">Testing...</div>
+    </div>
+    
+    <div class="test-item">
+        <h2>Image Loading Test</h2>
+        <div id="image-test">Testing...</div>
+    </div>
+
+    <script>
+        // Test the exact same getImageUrl function from Admin.vue
+        function getImageUrl(imagePath) {
+          if (!imagePath) return '/images/placeholder.jpg'
+          
+          // If it's already a full URL, return as is
+          if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+            return imagePath
+          }
+          
+          // If it's a backend media URL, return as is
+          if (imagePath.startsWith('/media/')) {
+            return `http://localhost:8000${imagePath}` 
+          }
+          
+          // If it's a full URL from backend, return as is
+          if (imagePath.includes('localhost:8000')) {
+            return imagePath
+          }
+          
+          // If it's a relative path starting with /images/, use as is
+          if (imagePath.startsWith('/images/')) {
+            return imagePath
+          }
+          
+          // Otherwise, assume it's a relative path and construct backend URL
+          return `http://localhost:8000/media/${imagePath}` 
+        }
+        
+        async function testImageUrls() {
+            try {
+                // Get backend data
+                const response = await fetch('http://localhost:8000/api/products/');
+                const products = await response.json();
+                
+                // Show backend response
+                const backendDiv = document.getElementById('backend-response');
+                backendDiv.innerHTML = '<h3>First 3 products from backend:</h3>';
+                products.slice(0, 3).forEach((product, index) => {
+                    backendDiv.innerHTML += `
+                        <p><strong>Product ${index + 1}:</strong> ${product.title}</p>
+                        <p><strong>Backend Image:</strong> <span class="url">${product.image}</span></p>
+                    `;
+                });
+                
+                // Test getImageUrl function
+                const urlDiv = document.getElementById('url-test');
+                urlDiv.innerHTML = '<h3>getImageUrl Function Results:</h3>';
+                products.slice(0, 3).forEach((product, index) => {
+                    const finalUrl = getImageUrl(product.image);
+                    urlDiv.innerHTML += `
+                        <p><strong>Product ${index + 1}:</strong> ${product.title}</p>
+                        <p><strong>Input:</strong> <span class="url">${product.image}</span></p>
+                        <p><strong>Output:</strong> <span class="url">${finalUrl}</span></p>
+                        <p><strong>Image:</strong></p>
+                        <img src="${finalUrl}" onerror="this.style.border='2px solid red'; this.nextSibling.innerHTML='LOAD ERROR'" onload="this.style.border='2px solid green'; this.nextSibling.innerHTML='LOAD SUCCESS'">
+                        <p id="status-${index}"></p>
+                    `;
+                });
+                
+                // Test direct image loading
+                const imageDiv = document.getElementById('image-test');
+                imageDiv.innerHTML = '<h3>Direct Image Tests:</h3>';
+                products.slice(0, 3).forEach((product, index) => {
+                    const finalUrl = getImageUrl(product.image);
+                    imageDiv.innerHTML += `
+                        <div style="margin: 15px 0; padding: 10px; border: 1px solid #ccc;">
+                            <h4>${product.title}</h4>
+                            <p>URL: <span class="url">${finalUrl}</span></p>
+                            <img src="${finalUrl}" style="max-width: 150px;" onerror="this.style.border='2px solid red'" onload="this.style.border='2px solid green'">
+                        </div>
+                    `;
+                });
+                
+            } catch (error) {
+                document.getElementById('backend-response').innerHTML = `<span class="error">Error: ${error.message}</span>`;
+            }
+        }
+        
+        // Auto-test on page load
+        window.onload = testImageUrls;
+    </script>
+</body>
+</html>
