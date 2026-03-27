@@ -63,30 +63,32 @@
       </div>
       
       <!-- Right Content - Product Showcase -->
-      <div class="relative scale-110 lg:scale-125">
+      <div class="relative">
         
-        <!-- Glow Effect -->
-        <div class="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-purple-500/20 rounded-3xl blur-3xl transform scale-110"></div>
+        <!-- Simplified Glow Effect -->
+        <div class="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-purple-500/10 rounded-3xl blur-2xl"></div>
         
-        <!-- Product Image -->
+        <!-- Dynamic Product Image -->
         <div class="relative z-10 group">
           <img 
             :src="getImageUrl('products/IMG-20240518-WA0002.jpg')" 
             alt="Electronics Products" 
-            class="w-full h-auto max-w-2xl mx-auto rounded-3xl shadow-2xl transform transition-all duration-500 group-hover:scale-105 group-hover:rotate-1"
+            class="w-full h-auto max-w-2xl mx-auto rounded-3xl shadow-2xl transition-all duration-300 group-hover:scale-105"
+            loading="lazy"
           >
           
-          <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent rounded-3xl"></div>
+          <!-- Simple Overlay -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent rounded-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
         </div>
         
-        <!-- Floating Features -->
+        <!-- Simplified Floating Features -->
         <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 flex gap-4">
           
           <!-- Fast Delivery -->
-          <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-4 transform hover:scale-110 transition-all duration-300 border">
+          <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg p-4 transition-all duration-300 hover:scale-105">
             <div class="flex items-center space-x-3">
-              <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                 </svg>
               </div>
@@ -96,13 +98,6 @@
               </div>
             </div>
           </div>
-          
-          <!-- Quality -->
-          <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-4 transform hover:scale-110 transition-all duration-300 border">
-            <div class="flex items-center space-x-3">
-              <div class="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
               </div>
               <div>
