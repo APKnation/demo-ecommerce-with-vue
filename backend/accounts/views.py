@@ -153,7 +153,7 @@ def admin_dashboard_stats(request):
     
     return Response(stats)
 
-@api_view(['GET', 'PUT'])
+@api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([permissions.IsAdminUser])
 def admin_order_detail(request, pk):
     """Get order details or update order status (admin only)"""
@@ -178,6 +178,11 @@ def admin_order_detail(request, pk):
             serializer = OrderSerializer(order)
             return Response(serializer.data)
         return Response({'error': 'Invalid status'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    elif request.method == 'DELETE':
+        # Admin can delete orders
+        order.delete()
+        return Response({'message': 'Order deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['PUT'])
 @permission_classes([permissions.IsAuthenticated])
