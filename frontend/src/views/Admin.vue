@@ -696,6 +696,98 @@
       </div>
     </div>
     
+    <!-- Order Detail Modal -->
+    <div v-if="selectedOrder" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div class="bg-white rounded-xl p-4 sm:p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-900">Order Details #{{ selectedOrder.id }}</h2>
+          <button @click="selectedOrder = null" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors font-medium">
+            Close
+          </button>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Order Information -->
+          <div class="space-y-4">
+            <div class="bg-gray-50 rounded-lg p-4">
+              <h3 class="font-semibold text-gray-900 mb-3">Order Information</h3>
+              <div class="space-y-2">
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Order ID:</span>
+                  <span class="font-medium">#{{ selectedOrder.id }}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Status:</span>
+                  <span :class="getStatusClass(selectedOrder.status)" class="px-2 py-1 rounded-full text-xs font-medium">
+                    {{ selectedOrder.status }}
+                  </span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Total Amount:</span>
+                  <span class="font-bold text-lg">{{ formatCurrency(selectedOrder.total_price) }}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Order Date:</span>
+                  <span class="font-medium">{{ formatDate(selectedOrder.created_at) }}</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Customer Information -->
+            <div class="bg-gray-50 rounded-lg p-4">
+              <h3 class="font-semibold text-gray-900 mb-3">Customer Information</h3>
+              <div class="space-y-2">
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Name:</span>
+                  <span class="font-medium">{{ selectedOrder.customer_name || 'N/A' }}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Email:</span>
+                  <span class="font-medium">{{ selectedOrder.customer_email || 'N/A' }}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Phone:</span>
+                  <span class="font-medium">{{ selectedOrder.customer_phone || 'N/A' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Order Items -->
+          <div class="bg-gray-50 rounded-lg p-4">
+            <h3 class="font-semibold text-gray-900 mb-3">Order Items</h3>
+            <div class="space-y-3">
+              <div v-for="item in selectedOrder.items" :key="item.id" class="bg-white rounded-lg p-3 border">
+                <div class="flex justify-between items-start">
+                  <div class="flex-1">
+                    <h4 class="font-medium text-gray-900">{{ item.product_name }}</h4>
+                    <p class="text-sm text-gray-600">Quantity: {{ item.quantity }}</p>
+                    <p class="text-sm text-gray-600">Price: {{ formatCurrency(item.price) }}</p>
+                  </div>
+                  <div class="text-right">
+                    <p class="font-bold">{{ formatCurrency(item.price * item.quantity) }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Order Actions -->
+        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+          <button @click="selectedOrder = null" class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium">
+            Close
+          </button>
+          <select v-model="selectedOrder.status" @change="updateOrderStatus(selectedOrder.id, selectedOrder.status)" class="px-4 py-2 border-2 border-blue-300 rounded-lg focus:border-blue-500 focus:outline-none">
+            <option value="Pending">Pending</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    
     <!-- Close Main Content Container -->
   </div>
 </template>
