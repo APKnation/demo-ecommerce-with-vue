@@ -323,9 +323,14 @@
                         <div class="flex-1">
                           <h4 class="text-sm font-bold text-gray-900 mb-1">{{ product.name || product.title || 'Unnamed Product' }}</h4>
                           <p class="text-xs text-gray-600 mb-2 line-clamp-2">{{ product.description || 'No description available' }}</p>
-                          <span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
-                            {{ product.category }}
-                          </span>
+                          <div class="flex items-center space-x-2">
+                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                              {{ product.category?.name || product.category }}
+                            </span>
+                            <span v-if="product.image" class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
+                              {{ getImageName(product.image) }}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </td>
@@ -1109,6 +1114,18 @@ export default {
       return `http://localhost:8000/media/${imagePath}` 
     }
 
+    const getImageName = (imagePath) => {
+      if (!imagePath) return 'No Image'
+      
+      // Extract filename from full path
+      if (imagePath.includes('/')) {
+        const parts = imagePath.split('/')
+        return parts[parts.length - 1]
+      }
+      
+      return imagePath
+    }
+
     const handleImageError = (event) => {
       event.target.src = '/images/placeholder.jpg'
     }
@@ -1116,82 +1133,61 @@ export default {
     // Load data from backend API
     const loadData = async () => {
       try {
-        // Load products from backend API first
+        // Load all products from backend API
         const productsResponse = await fetch(`${API_BASE_URL}/products/`, {
           headers: { 'Authorization': `Token ${getToken()}` }
         })
+        
         if (productsResponse.ok) {
           const backendProducts = await productsResponse.json()
-          console.log('Backend products loaded:', backendProducts)
+          console.log('Loaded backend products:', backendProducts)
           
-          // Map backend products to same images as home page
-          const imageMap = {
-            'Mac Book': '/images/w.jpg',
-            'HP-Brand': '/images/j.jpg', 
-            'Dell': '/images/k.jpg',
-            'Apple': '/images/d.jpg',
-            'Apple iPhone': '/images/d.jpg',
-            'HP-Elite': '/images/a.jpg',
-            'Sony': '/images/f.jpg',
-            'Sony Headphones': '/images/f.jpg',
-            'Infinix': '/images/g.jpg',
-            'Infinix Smartphone': '/images/g.jpg',
-            'iPhone': '/images/p.jpg',
-            'iPhone Pro': '/images/p.jpg',
-            'Samsung': '/images/l.jpg',
-            'Samsung Galaxy': '/images/l.jpg'
-          }
-          
-          // Transform backend products to match admin format with real data
-          products.value = backendProducts.map(product => ({
-            id: product.id,
-            name: product.title || product.name,
-            title: product.title || product.name,
-            price: Number(product.price),
-            category: product.category?.name || 'Other',
-            image: product.image || imageMap[product.title] || imageMap[product.name] || '/images/placeholder.jpg',
-            description: product.description || 'No description available',
-            stock: product.stock || 0,
-            is_active: product.is_active,
-            condition: product.condition,
-            author: product.author,
-            images: product.images || [],
-            created_at: product.created_at,
-            updated_at: product.updated_at
-          }))
+          // Transform products to ensure unique names and proper image handling
+          products.value = backendProducts.map((product, index) => {
+            // Create unique title if missing or generic
+            let title = product.title || product.name || `Product ${index + 1}`
+            
+            // If title is too generic, make it unique
+            const genericTitles = ['Product', 'Item', 'Device', 'Gadget']
+            if (genericTitles.some(generic => title.toLowerCase().includes(generic.toLowerCase()))) {
+              title = `${title} - ${product.category?.name || 'General'} ${index + 1}`
+            }
+            
+            return {
+              id: product.id,
+              name: title,
+              title: title,
+              price: Number(product.price),
+              category: product.category?.name || 'Other',
+              image: product.image || '/images/placeholder.jpg',
+              description: product.description || `High-quality ${product.category?.name || 'product'} with excellent features.`,
+              stock: product.stock || 0,
+              is_active: product.is_active !== false,
+              condition: product.condition || 'new',
+              author: product.author,
+              images: product.images || [],
+              created_at: product.created_at,
+              updated_at: product.updated_at,
+              vendor_id: product.vendor_id,
+              is_approved: product.is_approved !== false
+            }
+          })
           
           console.log('Transformed products for admin:', products.value)
+          showNotificationMessage(`Loaded ${products.value.length} products from backend!`, 'success')
         } else {
-          console.log('Backend products failed, using fallback')
-          // Fallback to localStorage if API fails
-          const savedProducts = localStorage.getItem('adminProducts')
-          if (savedProducts) {
-            products.value = JSON.parse(savedProducts)
-          } else {
-            // Load default products with real images from home page
-            products.value = [
-              { id: 1, name: 'Mac Book', title: 'Mac Book', price: 1000000, category: 'laptops', image: '/images/w.jpg', description: 'High-performance laptop for professionals', stock: 10, is_active: true },
-              { id: 2, name: 'HP-Brand', title: 'HP-Brand', price: 150000, category: 'laptops', image: '/images/j.jpg', description: 'Reliable laptop for everyday use', stock: 15, is_active: true },
-              { id: 3, name: 'Dell', title: 'Dell', price: 200000, category: 'laptops', image: '/images/k.jpg', description: 'Business laptop with great performance', stock: 8, is_active: true },
-              { id: 4, name: 'Apple', title: 'Apple', price: 1000000, category: 'phones', image: '/images/d.jpg', description: 'Latest smartphone with advanced features', stock: 20, is_active: true },
-              { id: 5, name: 'HP-Elite', title: 'HP-Elite', price: 1500000, category: 'laptops', image: '/images/a.jpg', description: 'Premium laptop for power users', stock: 5, is_active: true },
-              { id: 6, name: 'Sony', title: 'Sony', price: 200000, category: 'accessories', image: '/images/f.jpg', description: 'High-quality wireless headphones', stock: 25, is_active: true },
-              { id: 7, name: 'Infinix', title: 'Infinix', price: 400000, category: 'phones', image: '/images/g.jpg', description: 'Budget-friendly smartphone with good features', stock: 30, is_active: true },
-              { id: 8, name: 'iPhone', title: 'iPhone', price: 1500000, category: 'phones', image: '/images/p.jpg', description: 'Professional smartphone with advanced camera', stock: 12, is_active: true },
-              { id: 9, name: 'Samsung', title: 'Samsung', price: 3000000, category: 'phones', image: '/images/l.jpg', description: 'Flagship smartphone with premium features', stock: 7, is_active: true }
-            ]
-          }
+          console.error('Failed to load products from backend')
+          showNotificationMessage('Failed to load products from backend', 'error')
         }
       } catch (error) {
-        console.error('Failed to load products:', error)
-        // Fallback to localStorage
-        const savedProducts = localStorage.getItem('adminProducts')
-        if (savedProducts) {
-          products.value = JSON.parse(savedProducts)
-        }
+        console.error('Error loading products:', error)
+        showNotificationMessage('Error loading products', 'error')
       }
       
-      orders.value = JSON.parse(localStorage.getItem('orders')) || []
+      // Load other data
+      await loadDashboardStats()
+      await loadAllOrders()
+      await loadAllUsers()
     }
 
     // Admin Dashboard API Functions
@@ -1640,6 +1636,7 @@ export default {
       getStatusClass,
       getRoleClass,
       getImageUrl,
+      getImageName,
       handleImageError,
       formatDate,
       resetProductForm,
