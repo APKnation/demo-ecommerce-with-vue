@@ -15,8 +15,8 @@ def category_list(request):
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def category_create(request):
-    if not request.user.is_author and not request.user.is_admin_user:
-        return Response({'error': 'Only authors and admins can create categories'}, 
+    if not request.user.is_staff and not request.user.is_admin_user:
+        return Response({'error': 'Only staff and admins can create categories'}, 
                        status=status.HTTP_403_FORBIDDEN)
     
     serializer = CategorySerializer(data=request.data)
@@ -46,8 +46,8 @@ def product_detail(request, pk):
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def product_create(request):
-    if not request.user.is_author and not request.user.is_admin_user:
-        return Response({'error': 'Only authors and admins can create products'}, 
+    if not request.user.is_staff and not request.user.is_admin_user:
+        return Response({'error': 'Only staff and admins can create products'}, 
                        status=status.HTTP_403_FORBIDDEN)
     
     serializer = ProductCreateSerializer(data=request.data)
@@ -63,14 +63,14 @@ def product_manage(request, pk):
     product = get_object_or_404(Product, pk=pk)
     
     if request.method == 'DELETE':
-        if product.author != request.user and not request.user.is_admin_user:
+        if product.author != request.user and not request.user.is_staff and not request.user.is_admin_user:
             return Response({'error': 'Permission denied'}, 
                            status=status.HTTP_403_FORBIDDEN)
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
     elif request.method == 'PUT':
-        if product.author != request.user and not request.user.is_admin_user:
+        if product.author != request.user and not request.user.is_staff and not request.user.is_admin_user:
             return Response({'error': 'Permission denied'}, 
                            status=status.HTTP_403_FORBIDDEN)
         

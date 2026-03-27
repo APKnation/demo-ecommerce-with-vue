@@ -58,6 +58,8 @@ class ProductCreateSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         images_data = validated_data.pop('images', [])
+        # Remove author from validated_data as it's passed separately
+        validated_data.pop('author', None)
         product = Product.objects.create(**validated_data)
         
         for image_data in images_data:
