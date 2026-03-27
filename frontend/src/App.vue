@@ -5,11 +5,9 @@
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <!-- Logo Section -->
         <router-link to="/" class="flex items-center space-x-3 rtl:space-x-reverse">
-          <img 
-            src="/images/IMG-20240518-WA0002.jpg" 
-            alt="KAFUKA Store Logo" 
-            class="w-8 h-8 rounded-lg object-cover shadow-md hover:shadow-lg transition-shadow duration-300"
-          >
+          <div class="w-8 h-8 bg-gradient-to-br from-orange-400 to-purple-600 rounded-lg flex items-center justify-center shadow-md hover:shadow-lg transition-shadow duration-300">
+            <span class="text-white font-bold text-lg">K</span>
+          </div>
           <span class="self-center text-xl text-white font-semibold whitespace-nowrap">KAFUKA Store</span>
         </router-link>
         
