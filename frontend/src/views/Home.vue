@@ -71,7 +71,7 @@
         <!-- Dynamic Product Image -->
         <div class="relative z-10 group">
           <img 
-            :src="getImageUrl('products/IMG-20240518-WA0002.jpg')" 
+            src="/images/Computer.jpeg" 
             alt="Electronics Products" 
             class="w-full h-auto max-w-2xl mx-auto rounded-3xl shadow-2xl transition-all duration-300 group-hover:scale-105"
             loading="lazy"
@@ -285,16 +285,43 @@
           
           <button
             @click="likeProduct(product)"
-            class="relative group btn-danger bg-gradient-to-br from-red-500 via-pink-500 to-pink-600 hover:from-red-600 hover:via-pink-600 hover:to-pink-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 px-3 py-2 rounded-lg border-2 border-pink-400 hover:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-300 overflow-hidden"
+            :class="[
+              'relative group transform hover:scale-105 transition-all duration-300 px-3 py-2 rounded-lg border-2 focus:outline-none focus:ring-4 overflow-hidden',
+              isProductLiked(product) 
+                ? 'bg-gradient-to-br from-red-600 via-pink-600 to-red-700 hover:from-red-700 hover:via-pink-700 hover:to-red-800 text-white shadow-lg hover:shadow-xl border-pink-500 focus:ring-pink-400' 
+                : 'bg-gradient-to-br from-red-500 via-pink-500 to-pink-600 hover:from-red-600 hover:via-pink-600 hover:to-pink-700 text-white shadow-lg hover:shadow-xl border-pink-400 hover:border-pink-500 focus:ring-pink-300'
+            ]"
           >
             <!-- Heart Animation Background -->
-            <div class="absolute inset-0 bg-gradient-to-br from-pink-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+            <div :class="[
+              'absolute inset-0 transition-opacity duration-300 rounded-lg',
+              isProductLiked(product) 
+                ? 'bg-gradient-to-br from-pink-700 to-red-700 opacity-100' 
+                : 'bg-gradient-to-br from-pink-600 to-red-600 opacity-0 group-hover:opacity-100'
+            ]"></div>
             
             <span class="relative z-10 flex items-center justify-center">
               <!-- Animated Heart Icon -->
-              <svg class="w-4 h-4 transform group-hover:scale-110 transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
+              <svg 
+                class="w-4 h-4 transform transition-all duration-300" 
+                :class="[
+                  'group-hover:scale-110',
+                  isProductLiked(product) ? 'scale-125' : ''
+                ]" 
+                :fill="isProductLiked(product) ? 'currentColor' : 'none'" 
+                viewBox="0 0 24 24"
+              >
                 <!-- Enhanced Heart Path -->
-                <path class="group-hover:fill-pink-200 transition-colors duration-300" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                <path 
+                  :class="[
+                    'transition-colors duration-300',
+                    isProductLiked(product) ? 'fill-pink-200' : 'group-hover:fill-pink-200'
+                  ]" 
+                  stroke-linecap="round" 
+                  stroke-linejoin="round" 
+                  stroke-width="1.5" 
+                  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                />
               </svg>
             </span>
           </button>
@@ -364,6 +391,7 @@ export default {
     const isLoading = ref(true)
     const notification = ref('')
     const showNotification = ref(false)
+    const likedProducts = ref([]) // Track liked products
     const showNotificationMessage = (message) => {
       notification.value = message
       showNotification.value = true
@@ -380,7 +408,21 @@ export default {
 
     // Like product function (not wishlist)
     const likeProduct = (product) => {
-      // Simple like without notification
+      const index = likedProducts.value.findIndex(p => p.id === product.id)
+      if (index === -1) {
+        // Add to liked products
+        likedProducts.value.push(product)
+        showNotificationMessage(`${product.name || product.title} added to liked products!`, 'success')
+      } else {
+        // Remove from liked products
+        likedProducts.value.splice(index, 1)
+        showNotificationMessage(`${product.name || product.title} removed from liked products!`, 'info')
+      }
+    }
+    
+    // Check if product is liked
+    const isProductLiked = (product) => {
+      return likedProducts.value.some(p => p.id === product.id)
     }
     
     // Load products from backend API
@@ -443,6 +485,9 @@ export default {
 
     // Cart total computed property
     const cartTotal = computed(() => {
+      if (!cart.value || !Array.isArray(cart.value)) {
+        return 0
+      }
       return cart.value.reduce((total, item) => total + (item.price * item.quantity), 0)
     })
 
@@ -607,9 +652,11 @@ export default {
       showNotification,
       cart,
       cartTotal,
+      likedProducts,
       addToCart,
       filteredProducts,
       likeProduct,
+      isProductLiked,
       getImageUrl,
       handleImageError,
       viewProduct,
