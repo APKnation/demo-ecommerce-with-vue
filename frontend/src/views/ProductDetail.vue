@@ -148,30 +148,45 @@ export default {
       }
     ]
     
-    const loadProduct = () => {
+    const loadProduct = async () => {
       loading.value = true
       
-      // Simulate API call
-      setTimeout(() => {
+      try {
         const productId = route.params.id
-        const foundProduct = sampleProducts.find(p => p.id === productId)
+        const response = await fetch(`http://localhost:8000/api/products/${productId}/`)
         
-        if (foundProduct) {
-          product.value = foundProduct
-          loadRelatedProducts(foundProduct)
+        if (response.ok) {
+          const productData = await response.json()
+          product.value = productData
+          loadRelatedProducts(productData)
+        } else {
+          console.error('Failed to load product')
+          product.value = null
         }
-        
+      } catch (error) {
+        console.error('Error loading product:', error)
+        product.value = null
+      } finally {
         loading.value = false
-      }, 500)
+      }
     }
     
-    const loadRelatedProducts = (currentProduct) => {
-      const category = getCategoryById(currentProduct.category)
-      if (category) {
-        relatedProducts.value = sampleProducts.filter(p => 
-          p.category === currentProduct.category && 
-          p.id !== currentProduct.id
-        ).slice(0, 4)
+    const loadRelatedProducts = async (currentProduct) => {
+      if (!currentProduct) return
+      
+      try {
+        const response = await fetch(`http://localhost:8000/api/products/?category=${currentProduct.category}`)
+        
+        if (response.ok) {
+          const allProducts = await response.json()
+          // Filter out current product and get related ones
+          relatedProducts.value = allProducts
+            .filter(p => p.category === currentProduct.category && p.id !== currentProduct.id)
+            .slice(0, 4)
+        }
+      } catch (error) {
+        console.error('Error loading related products:', error)
+        relatedProducts.value = []
       }
     }
     
