@@ -71,7 +71,7 @@
         <!-- Product Image -->
         <div class="relative z-10 group">
           <img 
-            src="http://localhost:8000/media/products/Computer.jpeg" 
+            :src="getImageUrl('products/Computer.jpeg')" 
             alt="Electronics Products" 
             class="w-full h-auto max-w-2xl mx-auto rounded-3xl shadow-2xl transform transition-all duration-500 group-hover:scale-105 group-hover:rotate-1"
           >
