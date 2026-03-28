@@ -49,7 +49,11 @@ export function useUnifiedCart() {
       if (!cartItems.value || !Array.isArray(cartItems.value)) {
         return 0
       }
-      return cartItems.value.reduce((total, item) => total + (item.quantity || 1), 0)
+      return cartItems.value.reduce((total, item) => {
+        const quantity = item?.quantity || 1
+        const safeQuantity = typeof quantity === 'number' ? quantity : Number(quantity) || 1
+        return total + safeQuantity
+      }, 0)
     } catch (error) {
       console.warn('Error in totalItems computed:', error)
       return 0
@@ -188,12 +192,14 @@ export function useUnifiedCart() {
       if (newValue && !oldValue) {
         // User just logged in
         console.log('User logged in, syncing carts...')
-        await loadCart()
+        if (loadCart && typeof loadCart === 'function') {
+          await loadCart()
+        }
       } else if (!newValue && oldValue) {
         // User just logged out
         console.log('User logged out, clearing authenticated cart data...')
         // Authenticated cart data will be cleared automatically
-        if (guestCart && guestCart.loadCart) {
+        if (guestCart && guestCart.loadCart && typeof guestCart.loadCart === 'function') {
           guestCart.loadCart()
         }
       }
