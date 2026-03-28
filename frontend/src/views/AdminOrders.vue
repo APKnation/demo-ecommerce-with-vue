@@ -6,9 +6,7 @@
         <div class="flex items-center justify-between py-6">
           <div class="flex items-center space-x-4">
             <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2 2v10a2 2 0 002 2h6a2 2 0 002-2V9a2 2 0 00-2-2H9z"></path>
-              </svg>
+              <span class="text-2xl text-white">📋</span>
             </div>
             <div>
               <h1 class="text-2xl font-bold">Admin Order Management</h1>
@@ -102,10 +100,8 @@
       <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-4">
           <h3 class="text-xl font-bold">Order #{{ selectedOrder.order_number || selectedOrder.id }}</h3>
-          <button @click="selectedOrder = null" class="text-gray-500 hover:text-gray-700">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
+          <button @click="selectedOrder = null" class="text-gray-500 hover:text-gray-700 text-2xl">
+            ×
           </button>
         </div>
         <div class="space-y-4">
