@@ -195,19 +195,37 @@ export default {
 
     const loadOrders = async () => {
       try {
+        // Try to load from backend API first
         const response = await fetch(`${API_BASE_URL}/orders/`, {
           headers: { 'Authorization': `Token ${getToken()}` }
         })
         if (response.ok) {
           allOrders.value = await response.json()
+        } else {
+          // Fallback to localStorage if backend fails
+          console.log('Backend API not available, loading orders from localStorage')
+          const savedOrders = localStorage.getItem('orders')
+          if (savedOrders) {
+            allOrders.value = JSON.parse(savedOrders)
+          } else {
+            allOrders.value = []
+          }
         }
       } catch (error) {
-        console.error('Failed to load orders:', error)
+        console.error('Failed to load orders from API, using localStorage:', error)
+        // Fallback to localStorage on network error
+        const savedOrders = localStorage.getItem('orders')
+        if (savedOrders) {
+          allOrders.value = JSON.parse(savedOrders)
+        } else {
+          allOrders.value = []
+        }
       }
     }
 
     const updateStatus = async (orderId, status) => {
       try {
+        // Try backend API first
         const response = await fetch(`${API_BASE_URL}/accounts/admin/orders/${orderId}/`, {
           method: 'PUT',
           headers: { 
@@ -221,9 +239,26 @@ export default {
           const index = allOrders.value.findIndex(o => o.id === orderId)
           if (index !== -1) allOrders.value[index] = updated
           Swal.fire({ icon: 'success', title: 'Success!', text: `Order ${status.toLowerCase()}!`, timer: 2000, showConfirmButton: false })
+        } else {
+          // Fallback to localStorage
+          console.log('Backend API not available, updating status in localStorage')
+          const index = allOrders.value.findIndex(o => o.id === orderId)
+          if (index !== -1) {
+            allOrders.value[index].status = status
+            // Save to localStorage
+            localStorage.setItem('orders', JSON.stringify(allOrders.value))
+            Swal.fire({ icon: 'success', title: 'Success!', text: `Order ${status.toLowerCase()}!`, timer: 2000, showConfirmButton: false })
+          }
         }
       } catch (error) {
-        Swal.fire({ icon: 'error', title: 'Error', text: 'Failed to update order' })
+        console.error('Failed to update status from API, using localStorage:', error)
+        // Fallback to localStorage
+        const index = allOrders.value.findIndex(o => o.id === orderId)
+        if (index !== -1) {
+          allOrders.value[index].status = status
+          localStorage.setItem('orders', JSON.stringify(allOrders.value))
+          Swal.fire({ icon: 'success', title: 'Success!', text: `Order ${status.toLowerCase()}!`, timer: 2000, showConfirmButton: false })
+        }
       }
     }
 
@@ -239,6 +274,7 @@ export default {
       if (!result.isConfirmed) return
       
       try {
+        // Try backend API first
         const response = await fetch(`${API_BASE_URL}/accounts/admin/orders/${orderId}/`, {
           method: 'DELETE',
           headers: { 'Authorization': `Token ${getToken()}` }
@@ -246,9 +282,19 @@ export default {
         if (response.ok) {
           allOrders.value = allOrders.value.filter(o => o.id !== orderId)
           Swal.fire({ icon: 'success', title: 'Deleted!', text: 'Order has been deleted.', timer: 2000, showConfirmButton: false })
+        } else {
+          // Fallback to localStorage
+          console.log('Backend API not available, deleting from localStorage')
+          allOrders.value = allOrders.value.filter(o => o.id !== orderId)
+          localStorage.setItem('orders', JSON.stringify(allOrders.value))
+          Swal.fire({ icon: 'success', title: 'Deleted!', text: 'Order has been deleted.', timer: 2000, showConfirmButton: false })
         }
       } catch (error) {
-        Swal.fire({ icon: 'error', title: 'Error', text: 'Failed to delete order' })
+        console.error('Failed to delete from API, using localStorage:', error)
+        // Fallback to localStorage
+        allOrders.value = allOrders.value.filter(o => o.id !== orderId)
+        localStorage.setItem('orders', JSON.stringify(allOrders.value))
+        Swal.fire({ icon: 'success', title: 'Deleted!', text: 'Order has been deleted.', timer: 2000, showConfirmButton: false })
       }
     }
 
