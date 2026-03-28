@@ -15,10 +15,10 @@ export function useUnifiedCart() {
   // Current cart items (switches based on auth state)
   const cartItems = computed(() => {
     try {
-      if (!isAuthenticated.value || !authenticatedCart || !guestCart) {
+      if (!isAuthenticated.value) {
         return guestCart?.cartItems?.value || []
       }
-      return isAuthenticated.value ? (authenticatedCart.cartItems?.value || []) : (guestCart.cartItems?.value || [])
+      return authenticatedCart?.cartItems?.value || []
     } catch (error) {
       console.warn('Error in cartItems computed:', error)
       return []
@@ -28,14 +28,13 @@ export function useUnifiedCart() {
   // Current total price
   const totalPrice = computed(() => {
     try {
-      // Add null check to prevent webextension errors
       if (!cartItems.value || !Array.isArray(cartItems.value)) {
         return 0
       }
-      if (!isAuthenticated.value || !authenticatedCart || !guestCart) {
+      if (!isAuthenticated.value) {
         return guestCart?.totalPrice?.value || 0
       }
-      return isAuthenticated.value ? (authenticatedCart.totalPrice?.value || 0) : (guestCart.totalPrice?.value || 0)
+      return authenticatedCart?.totalPrice?.value || 0
     } catch (error) {
       console.warn('Error in totalPrice computed:', error)
       return 0
@@ -45,14 +44,12 @@ export function useUnifiedCart() {
   // Calculate total items count
   const totalItems = computed(() => {
     try {
-      // Add null check to prevent webextension errors
       if (!cartItems.value || !Array.isArray(cartItems.value)) {
         return 0
       }
       return cartItems.value.reduce((total, item) => {
         const quantity = item?.quantity || 1
-        const safeQuantity = typeof quantity === 'number' ? quantity : Number(quantity) || 1
-        return total + safeQuantity
+        return total + (typeof quantity === 'number' ? quantity : Number(quantity) || 1)
       }, 0)
     } catch (error) {
       console.warn('Error in totalItems computed:', error)
@@ -192,14 +189,11 @@ export function useUnifiedCart() {
       if (newValue && !oldValue) {
         // User just logged in
         console.log('User logged in, syncing carts...')
-        if (loadCart && typeof loadCart === 'function') {
-          await loadCart()
-        }
+        await loadCart()
       } else if (!newValue && oldValue) {
         // User just logged out
         console.log('User logged out, clearing authenticated cart data...')
-        // Authenticated cart data will be cleared automatically
-        if (guestCart && guestCart.loadCart && typeof guestCart.loadCart === 'function') {
+        if (guestCart && guestCart.loadCart) {
           guestCart.loadCart()
         }
       }
