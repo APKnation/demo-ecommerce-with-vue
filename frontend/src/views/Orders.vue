@@ -182,19 +182,19 @@
                     <div class="flex items-center space-x-3">
                       <img
                         :src="getProductImageWithFallback(item.product)"
-                        :alt="item.product?.title || item.name || item.product_name || 'Unknown item'"
+                        :alt="item.product?.title || item.product?.name || 'Unknown item'"
                         class="w-16 h-16 object-cover rounded-lg shadow-md"
                         @error="handleImageError"
                       >
                       <div>
                         <!-- Debug: Show actual data structure -->
                         <div class="text-xs text-gray-500 mb-1">DEBUG: {{ JSON.stringify(item) }}</div>
-                        <span class="font-medium text-gray-800">{{ item.product?.title || item.name || item.product_name || 'Unknown item' }}</span>
+                        <span class="font-medium text-gray-800">{{ item.product?.title || item.product?.name || 'Unknown item' }}</span>
                         <span class="text-gray-600 ml-2">x{{ item.quantity || 0 }}</span>
                       </div>
                     </div>
                     <div class="text-right">
-                      <span class="font-semibold text-gray-700">Tsh {{ Number(item.price || item.product?.price || 0).toLocaleString() }}</span>
+                      <span class="font-semibold text-gray-700">Tsh {{ Number(item.price || 0).toLocaleString() }}</span>
                     </div>
                   </div>
                 </div>
