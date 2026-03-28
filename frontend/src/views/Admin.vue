@@ -1160,48 +1160,73 @@ export default {
         const mappedCategory = categoryMap[categoryValue] || 4
         console.log('DEBUG: Mapped category:', mappedCategory)
         
-        // Try different approaches for category
-        formData.append('category', mappedCategory)
-        // Also try as category_id in case backend expects that
-        formData.append('category_id', mappedCategory)
-        
-        // Debug FormData contents
-        console.log('DEBUG: FormData contents:')
-        for (let [key, value] of formData.entries()) {
-          console.log(`  ${key}:`, value, typeof value)
+        // Try JSON approach instead of FormData
+        const productData = {
+          title: editingProduct.value.name || editingProduct.value.title,
+          price: editingProduct.value.price,
+          category: mappedCategory,
+          description: editingProduct.value.description,
+          is_active: editingProduct.value.is_active !== false,
+          stock: editingProduct.value.stock || 0
         }
         
-        formData.append('description', editingProduct.value.description)
-        formData.append('is_active', editingProduct.value.is_active !== false)
-        formData.append('stock', editingProduct.value.stock || 0)
-        
-        // Add image if provided
+        // Only add image if there's a new file
         if (editingProduct.value.imageFile) {
+          // If there's a new image, use FormData
+          const formData = new FormData()
+          Object.keys(productData).forEach(key => {
+            formData.append(key, productData[key])
+          })
           formData.append('image', editingProduct.value.imageFile)
-        }
-
-        const response = await fetch(`${API_BASE_URL}/products/${editingProduct.value.id}/manage/`, {
-          method: 'PUT',
-          headers: { 'Authorization': `Token ${token}` },
-          body: formData
-        })
-        
-        console.log('DEBUG: Response status:', response.status)
-        console.log('DEBUG: Response headers:', response.headers)
-        
-        if (response.ok) {
-          const updatedProduct = await response.json()
-          const index = products.value.findIndex(p => p.id === editingProduct.value.id)
-          if (index !== -1) {
-            products.value[index] = updatedProduct
+          
+          console.log('DEBUG: Using FormData with image')
+          for (let [key, value] of formData.entries()) {
+            console.log(`  ${key}:`, value, typeof value)
           }
-          closeEditModal()
-          showNotificationMessage('Product updated successfully!')
+          
+          const response = await fetch(`${API_BASE_URL}/products/${editingProduct.value.id}/manage/`, {
+            method: 'PUT',
+            headers: { 'Authorization': `Token ${token}` },
+            body: formData
+          })
+          
+          await handleResponse(response)
         } else {
-          const error = await response.json()
-          console.error('Product update error details:', error)
-          showNotificationMessage('Failed to update product: ' + JSON.stringify(error), 'error')
+          // If no new image, use JSON
+          console.log('DEBUG: Using JSON without image')
+          console.log('DEBUG: Product data:', productData)
+          
+          const response = await fetch(`${API_BASE_URL}/products/${editingProduct.value.id}/manage/`, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Token ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(productData)
+          })
+          
+          await handleResponse(response)
         }
+        
+        async function handleResponse(response) {
+          console.log('DEBUG: Response status:', response.status)
+          console.log('DEBUG: Response headers:', response.headers)
+          
+          if (response.ok) {
+            const updatedProduct = await response.json()
+            const index = products.value.findIndex(p => p.id === editingProduct.value.id)
+            if (index !== -1) {
+              products.value[index] = updatedProduct
+            }
+            closeEditModal()
+            showNotificationMessage('Product updated successfully!')
+          } else {
+            const error = await response.json()
+            console.error('Product update error details:', error)
+            showNotificationMessage('Failed to update product: ' + JSON.stringify(error), 'error')
+          }
+        }
+        
       } catch (error) {
         console.error('Error updating product:', error)
         showNotificationMessage('Failed to update product', 'error')
