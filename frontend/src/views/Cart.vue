@@ -371,6 +371,7 @@ export default {
       cart: unifiedCart.cartItems,
       totalPrice: unifiedCart.totalPrice,
       totalItems,
+      unifiedCart,
       isProcessing,
       isAuthenticated,
       isLoading,
