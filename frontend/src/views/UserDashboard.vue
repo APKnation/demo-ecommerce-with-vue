@@ -24,12 +24,59 @@
         <div class="flex items-center justify-between">
           <div>
             <h2 class="text-2xl font-bold text-gray-800">Welcome back, {{ user?.username || 'User' }}! 👋</h2>
-            <p class="text-gray-600 mt-1">Manage your account and track your orders</p>
+            <p class="text-gray-600 mt-1">
+              <span v-if="user?.role === 'vendor'">Manage your products and track your sales</span>
+              <span v-else>Manage your account and track your orders</span>
+            </p>
+            <div class="mt-2">
+              <span :class="getRoleBadgeClass()" class="px-3 py-1 rounded-full text-xs font-medium">
+                {{ user?.role?.toUpperCase() || 'CUSTOMER' }}
+              </span>
+            </div>
           </div>
           <div class="text-right">
             <p class="text-sm text-gray-500">Member since</p>
-            <p class="font-semibold text-gray-700">{{ formatDate(user?.date_joined) }}</p>
+            <p class="text-lg font-bold text-purple-600">{{ formatDate(user?.date_joined) }}</p>
           </div>
+        </div>
+      </div>
+
+      <!-- Role-specific navigation -->
+      <div v-if="user?.role === 'vendor'" class="bg-purple-50 border border-purple-200 rounded-xl p-6 mb-8">
+        <h3 class="text-lg font-bold text-purple-800 mb-4">Vendor Actions</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <router-link to="/vendor-dashboard" class="flex items-center justify-between p-4 bg-white rounded-lg hover:bg-purple-100 transition-colors border border-purple-200">
+            <div class="flex items-center">
+              <span class="text-2xl mr-3">🏪</span>
+              <div>
+                <p class="font-medium text-purple-800">Vendor Dashboard</p>
+                <p class="text-xs text-purple-600">Manage products and sales</p>
+              </div>
+            </div>
+            <span class="text-purple-600">→</span>
+          </router-link>
+          
+          <router-link to="/product-register" class="flex items-center justify-between p-4 bg-white rounded-lg hover:bg-purple-100 transition-colors border border-purple-200">
+            <div class="flex items-center">
+              <span class="text-2xl mr-3">➕</span>
+              <div>
+                <p class="font-medium text-purple-800">Add Product</p>
+                <p class="text-xs text-purple-600">List new products</p>
+              </div>
+            </div>
+            <span class="text-purple-600">→</span>
+          </router-link>
+          
+          <router-link to="/admin?tab=products" class="flex items-center justify-between p-4 bg-white rounded-lg hover:bg-purple-100 transition-colors border border-purple-200">
+            <div class="flex items-center">
+              <span class="text-2xl mr-3">📦</span>
+              <div>
+                <p class="font-medium text-purple-800">My Products</p>
+                <p class="text-xs text-purple-600">Edit existing products</p>
+              </div>
+            </div>
+            <span class="text-purple-600">→</span>
+          </router-link>
         </div>
       </div>
 
@@ -241,6 +288,15 @@ export default {
       return statusClasses[status] || 'bg-gray-100 text-gray-800'
     }
 
+    const getRoleBadgeClass = () => {
+      const roleClasses = {
+        'customer': 'bg-blue-100 text-blue-800',
+        'vendor': 'bg-purple-100 text-purple-800',
+        'admin': 'bg-red-100 text-red-800'
+      }
+      return roleClasses[user.value?.role] || 'bg-gray-100 text-gray-800'
+    }
+
     const loadDashboardData = async () => {
       try {
         await orderManagement.loadOrderHistory()
@@ -287,6 +343,7 @@ export default {
       orderStats,
       formatDate,
       getStatusClass,
+      getRoleBadgeClass,
       handleLogout
     }
   }

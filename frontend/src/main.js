@@ -15,6 +15,7 @@ import Order from './views/Order.vue'
 import PlaceOrder from './views/PlaceOrder.vue'
 import OrderSuccess from './views/OrderSuccess.vue'
 import UserDashboard from './views/UserDashboard.vue'
+import VendorDashboard from './views/VendorDashboard.vue'
 import ProductDetail from './views/ProductDetail.vue'
 import Login from './views/Login.vue'
 import Register from './views/Register.vue'
@@ -80,7 +81,16 @@ const routes = [
     name: 'user-dashboard',
     meta: {
       title: 'User Dashboard - KAFUKA Electronics Store',
-      description: 'Manage your account and view orders'
+      description: 'Manage your account and track your orders'
+    }
+  },
+  { 
+    path: '/vendor-dashboard', 
+    component: VendorDashboard,
+    name: 'vendor-dashboard',
+    meta: {
+      title: 'Vendor Dashboard - KAFUKA Electronics Store',
+      description: 'Manage your products and track your sales'
     }
   },
   { 
