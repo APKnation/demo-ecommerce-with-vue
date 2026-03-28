@@ -88,9 +88,7 @@
           <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg p-4 transition-all duration-300 hover:scale-105">
             <div class="flex items-center space-x-3">
               <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                </svg>
+                <span class="text-lg">📝</span>
               </div>
               <div>
                 <div class="font-bold text-gray-900 text-sm">Fast</div>
@@ -103,9 +101,7 @@
           <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg p-4 transition-all duration-300 hover:scale-105">
             <div class="flex items-center space-x-3">
               <div class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center">
-                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2M7 13h10l4 8H5.4M7 13l2.293 2.293c.63.63.184 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                </svg>
+                <span class="text-lg">📝</span>
               </div>
               <div>
                 <div class="font-bold text-gray-900 text-sm">Premium</div>
@@ -118,9 +114,7 @@
           <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-4 transform hover:scale-110 transition-all duration-300 border">
             <div class="flex items-center space-x-3">
               <div class="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364z"></path>
-                </svg>
+                <span class="text-lg">📝</span>
               </div>
               <div>
                 <div class="font-bold text-gray-900 text-sm">Trusted</div>
@@ -158,9 +152,7 @@
                 @click="filterProducts"
                 class="px-6 py-3 bg-orange-500 text-white rounded-r-lg hover:bg-orange-600 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500"
               >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
+                <span class="text-lg">📝</span>
               </button>
             </div>
           </div>
@@ -210,9 +202,7 @@
           <button 
             class="btn btn-ghost text-error-600 hover:text-error-700 hover:bg-red-50 px-6 py-3 rounded-xl border-2 border-transparent hover:border-red-200 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-300"
           >
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-            </svg>
+            <span class="text-lg">📝</span>
             Clear Filters
           </button>
         </div>
@@ -230,9 +220,7 @@
       <!-- Empty State -->
       <div v-else-if="filteredProducts.length === 0" class="text-center py-12">
         <div class="mb-8">
-          <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 00-.293.707V17"></path>
-          </svg>
+          <span class="text-lg">📝</span>
           <p class="text-gray-500 text-lg">No products found matching your criteria.</p>
         </div>
       </div>
@@ -259,9 +247,7 @@
             <div class="flex items-center justify-between mb-4">
               <p class="text-lg sm:text-xl lg:text-2xl font-bold text-blue-600 group-hover:text-orange-500 transition-colors duration-300">Tsh {{ Number(product.price).toLocaleString() }}</p>
               <div class="w-6 sm:w-8 h-6 sm:h-8 lg:w-8 lg:h-8 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center group-hover:from-green-500 group-hover:to-green-600 transition-all duration-300">
-                <svg class="w-3 sm:w-4 sm:h-4 lg:w-4 lg:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 9"></path>
-                </svg>
+                <span class="text-lg">📝</span>
               </div>
             </div>
           </div>
@@ -276,9 +262,7 @@
             
             <span class="relative z-10 flex items-center justify-center">
               <!-- Enhanced Cart Icon -->
-              <svg class="w-4 h-4 mr-2 transform group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4 8H5.4M7 13l2.293 2.293c.63.63.184 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-              </svg>
+              <span class="text-lg">📝</span>
               <span class="font-bold text-xs sm:text-xs lg:text-sm uppercase">Add to Cart</span>
             </span>
           </button>
@@ -302,27 +286,7 @@
             
             <span class="relative z-10 flex items-center justify-center">
               <!-- Animated Heart Icon -->
-              <svg 
-                class="w-4 h-4 transform transition-all duration-300" 
-                :class="[
-                  'group-hover:scale-110',
-                  isProductLiked(product) ? 'scale-125' : ''
-                ]" 
-                :fill="isProductLiked(product) ? 'currentColor' : 'none'" 
-                viewBox="0 0 24 24"
-              >
-                <!-- Enhanced Heart Path -->
-                <path 
-                  :class="[
-                    'transition-colors duration-300',
-                    isProductLiked(product) ? 'fill-pink-200' : 'group-hover:fill-pink-200'
-                  ]" 
-                  stroke-linecap="round" 
-                  stroke-linejoin="round" 
-                  stroke-width="1.5" 
-                  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-                />
-              </svg>
+              <span class="text-lg">📝</span>
             </span>
           </button>
           
@@ -333,10 +297,7 @@
               class="btn btn-sm bg-blue-500 text-white hover:bg-blue-600 px-2 py-1 rounded text-xs"
               title="View Product"
             >
-              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-              </svg>
+              <span class="text-lg">📝</span>
             </button>
             
             <button
@@ -344,9 +305,7 @@
               class="btn btn-sm bg-yellow-500 text-white hover:bg-yellow-600 px-2 py-1 rounded text-xs"
               title="Edit Product"
             >
-              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-              </svg>
+              <span class="text-lg">📝</span>
             </button>
             
             <button
@@ -354,9 +313,7 @@
               class="btn btn-sm bg-red-500 text-white hover:bg-red-600 px-2 py-1 rounded text-xs"
               title="Delete Product"
             >
-              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-              </svg>
+              <span class="text-lg">📝</span>
             </button>
           </div>
         </div>

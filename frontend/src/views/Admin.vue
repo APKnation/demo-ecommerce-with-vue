@@ -54,9 +54,7 @@
                 <p class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mt-1">{{ stat.value }}</p>
               </div>
               <div :class="`w-10 h-10 sm:w-12 sm:h-12 ${stat.bgColor} rounded-xl flex items-center justify-center flex-shrink-0`">
-                <svg class="w-5 h-5 sm:w-6 sm:h-6" :class="stat.iconColor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="stat.icon"></path>
-                </svg>
+                <span class="text-lg">📝</span>
               </div>
             </div>
           </div>
@@ -72,9 +70,7 @@
                 <p class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mt-1">{{ stat.value }}</p>
               </div>
               <div :class="`w-10 h-10 sm:w-12 sm:h-12 ${stat.bgColor} rounded-xl flex items-center justify-center flex-shrink-0`">
-                <svg class="w-5 h-5 sm:w-6 sm:h-6" :class="stat.iconColor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="stat.icon"></path>
-                </svg>
+                <span class="text-lg">📝</span>
               </div>
             </div>
           </div>
@@ -668,9 +664,7 @@
       <div class="bg-white rounded-xl p-4 sm:p-6 max-w-md w-full mx-4">
         <div class="flex items-center mb-4">
           <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-            </svg>
+            <span class="text-lg">📝</span>
           </div>
           <div class="flex-1">
             <h3 class="text-lg font-bold text-gray-900">Confirm Delete</h3>
