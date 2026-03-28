@@ -144,7 +144,7 @@
                   <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 9"></path>
                   </svg>
-                  Proceed to Checkout • Tsh {{ displayTotalPrice.toLocaleString() }}
+                  Proceed to Checkout • Tsh {{ (totalPrice?.value || 0).toLocaleString() }}
                 </span>
                 <div class="absolute inset-0 bg-gradient-to-r from-green-600 to-green-700 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
               </router-link>
@@ -211,7 +211,6 @@ export default {
     const error = ref('')
 
     // Computed properties to handle both cart systems
-    const displayTotalPrice = computed(() => unifiedCart.totalPrice.value)
     const totalItems = computed(() => unifiedCart.totalItems.value)
 
     // SweetAlert notification system
@@ -380,7 +379,7 @@ export default {
 
     return {
       cart: unifiedCart.cartItems,
-      totalPrice: displayTotalPrice,
+      totalPrice: unifiedCart.totalPrice,
       totalItems,
       isProcessing,
       isAuthenticated,
