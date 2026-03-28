@@ -1145,7 +1145,14 @@ export default {
         const formData = new FormData()
         formData.append('title', editingProduct.value.name || editingProduct.value.title)
         formData.append('price', editingProduct.value.price)
-        formData.append('category', categoryMap[editingProduct.value.category] || 4)
+        
+        // Handle category properly - ensure it's a single value
+        let categoryValue = editingProduct.value.category
+        if (Array.isArray(categoryValue)) {
+          categoryValue = categoryValue[0] // Take first value if array
+        }
+        formData.append('category', categoryMap[categoryValue] || 4)
+        
         formData.append('description', editingProduct.value.description)
         formData.append('is_active', editingProduct.value.is_active !== false)
         formData.append('stock', editingProduct.value.stock || 0)
