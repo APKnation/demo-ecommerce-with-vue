@@ -34,9 +34,10 @@
                 <div v-for="(item, index) in cartItems" :key="index" class="flex justify-between items-center p-4 bg-gray-50 rounded-xl">
                   <div class="flex items-center space-x-4">
                     <img 
-                      :src="getProductImage(item.product || item)" 
+                      :src="getImageUrl(getProductImage(item.product || item))" 
                       :alt="item.product?.title || item.name || 'Product'" 
                       class="w-16 h-16 object-cover rounded-lg"
+                      @error="handleImageError"
                     >
                     <div>
                       <h4 class="font-semibold text-gray-800">{{ item.product?.title || item.name || 'Unknown Product' }}</h4>
@@ -174,10 +175,33 @@ export default {
     const totalPrice = computed(() => unifiedCart?.totalPrice?.value || 0)
 
     // Methods
+    const getImageUrl = (imagePath) => {
+      if (!imagePath) {
+        return 'http://localhost:8000/media/products/default-product.jpg'
+      }
+      
+      // If it's already a full URL, return as is
+      if (imagePath.startsWith('http')) {
+        return imagePath
+      }
+      
+      // If it starts with /media/, it's already correct
+      if (imagePath.startsWith('/media/')) {
+        return `http://localhost:8000${imagePath}`
+      }
+      
+      // If it's just a filename, construct full URL
+      return `http://localhost:8000/media/products/${imagePath}`
+    }
+
     const getProductImage = (item) => {
       if (item.product?.image) return item.product.image
       if (item.image) return item.image
       return '/images/placeholder.jpg'
+    }
+
+    const handleImageError = (event) => {
+      event.target.src = 'http://localhost:8000/media/products/default-product.jpg'
     }
 
     const handleSubmit = async () => {
@@ -250,7 +274,9 @@ export default {
       totalPrice,
       orderForm,
       isProcessing,
+      getImageUrl,
       getProductImage,
+      handleImageError,
       handleSubmit
     }
   }
