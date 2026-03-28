@@ -62,7 +62,7 @@
         <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
           <div class="divide-y divide-gray-200">
             <div
-              v-for="(item, index) in (displayCart?.value || [])"
+              v-for="(item, index) in (unifiedCart?.cartItems?.value || [])"
               :key="index"
               class="p-6 hover:bg-gradient-to-r from-orange-50 to-yellow-50 transition-colors duration-300 group"
             >
@@ -211,7 +211,6 @@ export default {
     const error = ref('')
 
     // Computed properties to handle both cart systems
-    const displayCart = computed(() => unifiedCart.cartItems.value)
     const displayTotalPrice = computed(() => unifiedCart.totalPrice.value)
     const totalItems = computed(() => unifiedCart.totalItems.value)
 
@@ -380,7 +379,7 @@ export default {
     }
 
     return {
-      cart: displayCart,
+      cart: unifiedCart.cartItems,
       totalPrice: displayTotalPrice,
       totalItems,
       isProcessing,
