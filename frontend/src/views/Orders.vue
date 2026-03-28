@@ -187,6 +187,8 @@
                         @error="handleImageError"
                       >
                       <div>
+                        <!-- Debug: Show actual data structure -->
+                        <div class="text-xs text-gray-500 mb-1">DEBUG: {{ JSON.stringify(item) }}</div>
                         <span class="font-medium text-gray-800">{{ item.product?.title || item.name || item.product_name || 'Unknown item' }}</span>
                         <span class="text-gray-600 ml-2">x{{ item.quantity || 0 }}</span>
                       </div>
