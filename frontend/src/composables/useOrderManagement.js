@@ -146,15 +146,39 @@ export function useOrderManagement() {
       })
 
       if (!response.ok) {
-        throw new Error('Failed to load orders')
+        // If backend fails, load from localStorage
+        console.warn('Backend API failed, loading orders from localStorage')
+        const savedOrders = localStorage.getItem('orders')
+        if (savedOrders) {
+          orders.value = JSON.parse(savedOrders)
+        }
+        return orders.value
       }
 
       const data = await response.json()
       orders.value = Array.isArray(data) ? data : (data.results || [])
-      return data
+      
+      // Also merge with localStorage orders for complete history
+      const savedOrders = localStorage.getItem('orders')
+      if (savedOrders) {
+        const localOrders = JSON.parse(savedOrders)
+        // Merge backend and local orders, avoiding duplicates
+        const allOrders = [...orders.value, ...localOrders]
+        const uniqueOrders = allOrders.filter((order, index, self) =>
+          index === self.findIndex((o) => o.id === order.id || o.order_number === order.order_number)
+        )
+        orders.value = uniqueOrders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+      }
+      
+      return orders.value
     } catch (err) {
-      error.value = err.message
-      throw err
+      console.warn('Backend API error, loading orders from localStorage:', err)
+      // Fallback to localStorage when network fails
+      const savedOrders = localStorage.getItem('orders')
+      if (savedOrders) {
+        orders.value = JSON.parse(savedOrders)
+      }
+      return orders.value
     } finally {
       isLoading.value = false
     }
