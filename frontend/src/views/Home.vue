@@ -376,6 +376,7 @@ import { useRouter } from 'vue-router'
 import Swal from 'sweetalert2'
 import { useAuth } from '../composables/useAuth'
 import { useAuthenticatedCart } from '../composables/useAuthenticatedCart'
+import { useUnifiedCart } from '../composables/useUnifiedCart'
 
 export default {
   name: 'Home',
