@@ -305,7 +305,12 @@ export function useOrderManagement() {
 
     const orderData = {
       items: cartItems.map(item => ({
-        product: item.product?.id || item.id,
+        product: {
+          id: item.product?.id || item.id,
+          title: item.product?.title || item.name || item.title || 'Unknown Product',
+          image: item.product?.image || item.image,
+          price: item.price || item.product?.price
+        },
         quantity: item.quantity,
         price: item.price || item.product?.price
       })),
