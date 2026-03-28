@@ -14,27 +14,46 @@ export function useUnifiedCart() {
 
   // Current cart items (switches based on auth state)
   const cartItems = computed(() => {
-    return isAuthenticated.value ? authenticatedCart.cartItems.value : guestCart.cartItems.value
+    try {
+      if (!isAuthenticated.value || !authenticatedCart || !guestCart) {
+        return guestCart?.cartItems?.value || []
+      }
+      return isAuthenticated.value ? (authenticatedCart.cartItems?.value || []) : (guestCart.cartItems?.value || [])
+    } catch (error) {
+      console.warn('Error in cartItems computed:', error)
+      return []
+    }
   })
 
   // Current total price
   const totalPrice = computed(() => {
-    // Add null check to prevent webextension errors
-    if (!cartItems.value || !Array.isArray(cartItems.value)) {
+    try {
+      // Add null check to prevent webextension errors
+      if (!cartItems.value || !Array.isArray(cartItems.value)) {
+        return 0
+      }
+      if (!isAuthenticated.value || !authenticatedCart || !guestCart) {
+        return guestCart?.totalPrice?.value || 0
+      }
+      return isAuthenticated.value ? (authenticatedCart.totalPrice?.value || 0) : (guestCart.totalPrice?.value || 0)
+    } catch (error) {
+      console.warn('Error in totalPrice computed:', error)
       return 0
     }
-    return isAuthenticated.value ? authenticatedCart.totalPrice.value : guestCart.totalPrice.value
   })
 
   // Calculate total items count
   const totalItems = computed(() => {
-    // Add null check to prevent webextension errors
-    if (!cartItems.value || !Array.isArray(cartItems.value)) {
+    try {
+      // Add null check to prevent webextension errors
+      if (!cartItems.value || !Array.isArray(cartItems.value)) {
+        return 0
+      }
+      return cartItems.value.reduce((total, item) => total + (item.quantity || 1), 0)
+    } catch (error) {
+      console.warn('Error in totalItems computed:', error)
       return 0
     }
-    return cartItems.value.reduce((total, item) => {
-      return total + (item?.quantity || 0)
-    }, 0)
   })
 
   // Sync guest cart to authenticated cart when user logs in
@@ -165,15 +184,21 @@ export function useUnifiedCart() {
 
   // Watch for authentication changes and sync carts
   watch(isAuthenticated, async (newValue, oldValue) => {
-    if (newValue && !oldValue) {
-      // User just logged in
-      console.log('User logged in, syncing carts...')
-      await loadCart()
-    } else if (!newValue && oldValue) {
-      // User just logged out
-      console.log('User logged out, clearing authenticated cart data...')
-      // Authenticated cart data will be cleared automatically
-      guestCart.loadCart()
+    try {
+      if (newValue && !oldValue) {
+        // User just logged in
+        console.log('User logged in, syncing carts...')
+        await loadCart()
+      } else if (!newValue && oldValue) {
+        // User just logged out
+        console.log('User logged out, clearing authenticated cart data...')
+        // Authenticated cart data will be cleared automatically
+        if (guestCart && guestCart.loadCart) {
+          guestCart.loadCart()
+        }
+      }
+    } catch (error) {
+      console.warn('Error in authentication watch:', error)
     }
   }, { immediate: true })
 
