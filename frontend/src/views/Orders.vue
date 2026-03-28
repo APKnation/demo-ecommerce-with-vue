@@ -390,16 +390,35 @@ export default {
       loadOrders()
     })
 
-    // Helper function to get order item image with better fallbacks
+    // Image handling functions
+    const getImageUrl = (imagePath) => {
+      if (!imagePath) {
+        return 'http://localhost:8000/media/products/default-product.jpg'
+      }
+      
+      // If it's already a full URL, return as is
+      if (imagePath.startsWith('http')) {
+        return imagePath
+      }
+      
+      // If it starts with /media/, it's already correct
+      if (imagePath.startsWith('/media/')) {
+        return `http://localhost:8000${imagePath}`
+      }
+      
+      // If it's just a filename, construct full URL
+      return `http://localhost:8000/media/products/${imagePath}`
+    }
+
     const getProductImageWithFallback = (product) => {
       // If product has an image, use it
       if (product?.image) {
-        return product.image
+        return getImageUrl(product.image)
       }
       
       // If product has images array with items, use first one
       if (product?.images && product.images.length > 0) {
-        return product.images[0]
+        return getImageUrl(product.images[0])
       }
       
       // Use category-based placeholder images
@@ -421,7 +440,7 @@ export default {
 
     // Handle image loading errors
     const handleImageError = (event) => {
-      event.target.src = '/images/placeholder.jpg'
+      event.target.src = 'http://localhost:8000/media/products/default-product.jpg'
     }
 
     return {
@@ -437,12 +456,14 @@ export default {
       cancelOrder,
       reorder,
       toggleOrderDetails,
+      getImageUrl,
       getProductImageWithFallback,
       handleImageError,
       updateOrderStatus,
       markOrderAsPaid,
       markOrderAsShipped,
-      markOrderAsDelivered
+      markOrderAsDelivered,
+      loadOrders
     }
   }
 }
