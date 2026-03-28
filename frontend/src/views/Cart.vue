@@ -31,8 +31,14 @@
     
     <!-- Main Content -->
     <div class="container py-8">
+      <!-- Loading State -->
+      <div v-if="isLoading" class="flex justify-center items-center py-12">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+        <span class="ml-4 text-gray-600">Loading cart...</span>
+      </div>
+      
       <!-- Empty State -->
-      <div v-if="totalItems?.value === 0" class="text-center py-16">
+      <div v-else-if="!unifiedCart?.cartItems?.value || unifiedCart.cartItems.value.length === 0" class="text-center py-16">
         <div class="card card-elevated p-8 max-w-md mx-auto">
           <div class="w-24 h-24 mx-auto bg-gradient-to-br from-orange-100 to-orange-200 rounded-full flex items-center justify-center mb-6">
             <svg class="w-12 h-12 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -48,12 +54,6 @@
             Continue Shopping
           </router-link>
         </div>
-      </div>
-      
-      <!-- Cart Items -->
-      <div v-else-if="isLoading" class="flex justify-center items-center py-12">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
-        <span class="ml-4 text-gray-600">Loading cart...</span>
       </div>
       
       <!-- Cart Items -->
