@@ -34,26 +34,21 @@ export function useAuthenticatedCart() {
     try {
       const response = await fetch(`${API_BASE_URL}/orders/cart/`, {
         headers: {
-          'Authorization': `Token ${token}`,
-          'Content-Type': 'application/json',
+          'Authorization': `Token ${token}`
         }
       })
 
-      if (!response.ok) {
-        throw new Error('Failed to load cart')
+      if (response.ok) {
+        const cartData = await response.json()
+        cartItems.value = cartData.items || []
+        console.log('Cart data received:', cartData)
+      } else {
+        console.warn('Failed to load cart from backend, using empty cart')
+        cartItems.value = []
       }
-
-      const data = await response.json()
-      console.log('Cart data received:', data) // Debug log
-      cartItems.value = data.items || [] // Try both data.items and data
-      // Also try direct data array if items doesn't exist
-      if (!data.items && Array.isArray(data)) {
-        cartItems.value = data
-      }
-      return data
-    } catch (err) {
-      error.value = err.message
-      throw err
+    } catch (error) {
+      console.error('Error loading cart:', error)
+      cartItems.value = []
     } finally {
       isLoading.value = false
     }
@@ -66,15 +61,12 @@ export function useAuthenticatedCart() {
       throw new Error('Not authenticated')
     }
 
-    isLoading.value = true
-    error.value = null
-
     try {
       const response = await fetch(`${API_BASE_URL}/orders/cart/add/`, {
         method: 'POST',
         headers: {
           'Authorization': `Token ${token}`,
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           product_id: productId,
@@ -82,57 +74,48 @@ export function useAuthenticatedCart() {
         })
       })
 
-      if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.error || 'Failed to add item to cart')
+      if (response.ok) {
+        await loadCart() // Reload cart to get updated items
+        return { success: true }
+      } else {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to add to cart')
       }
-
-      // Reload cart to get updated items
-      await loadCart()
-      return { success: true }
-    } catch (err) {
-      error.value = err.message
-      throw err
-    } finally {
-      isLoading.value = false
+    } catch (error) {
+      console.error('Error adding to cart:', error)
+      throw error
     }
   }
 
   // Update cart item quantity
-  const updateCartItem = async (itemId, quantity) => {
+  const updateQuantity = async (itemId, quantity) => {
     const token = localStorage.getItem('token')
     if (!token) {
       throw new Error('Not authenticated')
     }
-
-    isLoading.value = true
-    error.value = null
 
     try {
       const response = await fetch(`${API_BASE_URL}/orders/cart/items/${itemId}/`, {
         method: 'PUT',
         headers: {
           'Authorization': `Token ${token}`,
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           quantity: quantity
         })
       })
 
-      if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.error || 'Failed to update cart item')
+      if (response.ok) {
+        await loadCart() // Reload cart to get updated items
+        return { success: true }
+      } else {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to update cart')
       }
-
-      // Reload cart to get updated items
-      await loadCart()
-      return { success: true }
-    } catch (err) {
-      error.value = err.message
-      throw err
-    } finally {
-      isLoading.value = false
+    } catch (error) {
+      console.error('Error updating cart:', error)
+      throw error
     }
   }
 
@@ -143,31 +126,44 @@ export function useAuthenticatedCart() {
       throw new Error('Not authenticated')
     }
 
-    isLoading.value = true
-    error.value = null
-
     try {
       const response = await fetch(`${API_BASE_URL}/orders/cart/items/${itemId}/`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Token ${token}`,
-          'Content-Type': 'application/json',
+          'Authorization': `Token ${token}`
         }
       })
 
-      if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.error || 'Failed to remove item from cart')
+      if (response.ok) {
+        await loadCart() // Reload cart to get updated items
+        return { success: true }
+      } else {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to remove from cart')
       }
+    } catch (error) {
+      console.error('Error removing from cart:', error)
+      throw error
+    }
+  }
 
-      // Reload cart to get updated items
-      await loadCart()
+  // Clear cart
+  const clearCart = async () => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      throw new Error('Not authenticated')
+    }
+
+    try {
+      // Remove all items one by one
+      const itemsToRemove = [...cartItems.value]
+      for (const item of itemsToRemove) {
+        await removeFromCart(item.id)
+      }
       return { success: true }
-    } catch (err) {
-      error.value = err.message
-      throw err
-    } finally {
-      isLoading.value = false
+    } catch (error) {
+      console.error('Error clearing cart:', error)
+      throw error
     }
   }
 
@@ -179,7 +175,8 @@ export function useAuthenticatedCart() {
     totalItems,
     loadCart,
     addToCart,
-    updateCartItem,
-    removeFromCart
+    updateQuantity,
+    removeFromCart,
+    clearCart
   }
 }

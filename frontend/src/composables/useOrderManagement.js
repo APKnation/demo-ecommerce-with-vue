@@ -137,47 +137,36 @@ export function useOrderManagement() {
     error.value = null
 
     try {
+      // Try backend API first
       const response = await fetch(`${API_BASE_URL}/orders/`, {
         headers: {
-          'Authorization': `Token ${token}`,
-          'Content-Type': 'application/json',
+          'Authorization': `Token ${token}`
         }
       })
 
-      if (!response.ok) {
-        // If backend fails, load from localStorage
-        console.warn('Backend API failed, loading orders from localStorage')
+      if (response.ok) {
+        const ordersData = await response.json()
+        orders.value = ordersData
+        console.log('Orders loaded from backend:', ordersData)
+      } else {
+        // Fallback to localStorage
+        console.log('Backend API not available, loading orders from localStorage')
         const savedOrders = localStorage.getItem('orders')
         if (savedOrders) {
           orders.value = JSON.parse(savedOrders)
+        } else {
+          orders.value = []
         }
-        return orders.value
       }
-
-      const data = await response.json()
-      orders.value = Array.isArray(data) ? data : (data.results || [])
-      
-      // Also merge with localStorage orders for complete history
-      const savedOrders = localStorage.getItem('orders')
-      if (savedOrders) {
-        const localOrders = JSON.parse(savedOrders)
-        // Merge backend and local orders, avoiding duplicates
-        const allOrders = [...orders.value, ...localOrders]
-        const uniqueOrders = allOrders.filter((order, index, self) =>
-          index === self.findIndex((o) => o.id === order.id || o.order_number === order.order_number)
-        )
-        orders.value = uniqueOrders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-      }
-      
-      return orders.value
-    } catch (err) {
-      console.warn('Backend API error, loading orders from localStorage:', err)
-      // Fallback to localStorage when network fails
+    } catch (error) {
+      console.error('Failed to load orders from API, using localStorage:', error)
+      // Fallback to localStorage on network error
       const savedOrders = localStorage.getItem('orders')
       if (savedOrders) {
         orders.value = JSON.parse(savedOrders)
+      } else {
+        orders.value = []
       }
-      return orders.value
     } finally {
       isLoading.value = false
     }
