@@ -279,35 +279,25 @@ export default {
     // Image handling functions
     const getImageUrl = (imagePath) => {
       if (!imagePath) {
-        return '/images/placeholder.jpg'
+        return 'http://localhost:8000/media/products/default-product.jpg'
       }
       
       // If it's already a full URL, return as is
-      if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      if (imagePath.startsWith('http')) {
         return imagePath
       }
       
-      // If it's a backend media URL, return as is
+      // If it starts with /media/, it's already correct
       if (imagePath.startsWith('/media/')) {
-        return `http://localhost:8000${imagePath}` 
+        return `http://localhost:8000${imagePath}`
       }
       
-      // If it's a full URL from backend, return as is
-      if (imagePath.includes('localhost:8000')) {
-        return imagePath
-      }
-      
-      // If it's a relative path starting with /images/, use as is
-      if (imagePath.startsWith('/images/')) {
-        return imagePath
-      }
-      
-      // Otherwise, assume it's a relative path to products folder
+      // If it's just a filename, construct full URL
       return `http://localhost:8000/media/products/${imagePath}`
     }
 
     const handleImageError = (event) => {
-      event.target.src = '/images/placeholder.jpg'
+      event.target.src = 'http://localhost:8000/media/products/default-product.jpg'
     }
 
     // Load cart on mount
