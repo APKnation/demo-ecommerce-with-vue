@@ -383,6 +383,7 @@ export default {
     const router = useRouter()
     const { isAuthenticated, user } = useAuth()
     const { addToCart: addToAuthenticatedCart } = useAuthenticatedCart()
+    const unifiedCart = useUnifiedCart()
     const searchTerm = ref('')
     const categoryFilter = ref('')
     const priceFilter = ref('')
@@ -452,11 +453,7 @@ export default {
       loadProducts()
     })
 
-    // Inject parent data and methods
-    const cart = inject('cart', ref([]))
-    const guestAddToCart = inject('addToCart')
-
-    // Unified addToCart function for both authenticated and guest users
+    // Unified addToCart function using unified cart
     const addToCart = async (product) => {
       // Debug logging to see what we're getting
       console.log('addToCart called with product:', product)
@@ -464,31 +461,27 @@ export default {
       // Extract product name and price from the product object
       const productName = product.title || product.name || 'Unknown Product'
       const productPrice = Number(product.price)
-      // Always use guest cart first (localStorage)
-      if (guestAddToCart) {
-        guestAddToCart(product)
+      
+      try {
+        // Use unified cart for both authenticated and guest users
+        await unifiedCart.addToCart(product, 1)
         showNotificationMessage(`${productName} added to cart!`, 'success')
         
-        // If user is authenticated and has token, also try to add to backend cart
-        if (isAuthenticated.value && localStorage.getItem('token')) {
-          try {
-            if (product && product.id) {
-              await addToAuthenticatedCart(product.id, 1)
-            }
-          } catch (error) {
-            // Silently ignore backend cart errors, guest cart already worked
-            console.log('Backend cart not available, using guest cart')
-          }
-        }
+        // Refresh cart display
+        await unifiedCart.loadCart()
+        
+      } catch (error) {
+        console.error('Error adding to cart:', error)
+        showNotificationMessage('Failed to add item to cart', 'error')
       }
     }
 
     // Cart total computed property
     const cartTotal = computed(() => {
-      if (!cart.value || !Array.isArray(cart.value)) {
+      if (!unifiedCart.cartItems.value || !Array.isArray(unifiedCart.cartItems.value)) {
         return 0
       }
-      return cart.value.reduce((total, item) => total + (item.price * item.quantity), 0)
+      return unifiedCart.cartItems.value.reduce((total, item) => total + (item.price * item.quantity), 0)
     })
 
     // Filter and sort products
@@ -650,7 +643,7 @@ export default {
       isLoading,
       notification,
       showNotification,
-      cart,
+      cart: unifiedCart.cartItems,
       cartTotal,
       likedProducts,
       addToCart,
