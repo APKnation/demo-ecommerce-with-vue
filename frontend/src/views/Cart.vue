@@ -7,9 +7,7 @@
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
-              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4 8H5.4M7 13l2.293 2.293c.63.63.184 1.707 0.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-              </svg>
+              <span class="text-white text-xl">🛒</span>
             </div>
             <h1 class="text-3xl font-bold text-gradient">Shopping Cart</h1>
           </div>
@@ -41,16 +39,12 @@
       <div v-else-if="!unifiedCart?.cartItems?.value || unifiedCart.cartItems.value.length === 0" class="text-center py-16">
         <div class="card card-elevated p-8 max-w-md mx-auto">
           <div class="w-24 h-24 mx-auto bg-gradient-to-br from-orange-100 to-orange-200 rounded-full flex items-center justify-center mb-6">
-            <svg class="w-12 h-12 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4 8H5.4M7 13l2.293 2.293c.63.63.184 1.707 0.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-            </svg>
+            <span class="text-6xl text-orange-500">🛒</span>
           </div>
           <h2 class="text-2xl font-bold text-neutral-800 mb-4">Your cart is empty</h2>
           <p class="text-neutral-600 mb-6">Start shopping to add some amazing products to your cart!</p>
           <router-link to="/" class="btn btn-primary">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4 8H5.4M7 13l2.293 2.293c.63.63.184 1.707 0.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-            </svg>
+            <span class="mr-2">🛒</span>
             Continue Shopping
           </router-link>
         </div>
@@ -89,18 +83,14 @@
                     @click="updateQuantity(index, -1)"
                     class="w-8 h-8 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center justify-center"
                   >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
-                    </svg>
+                    <span class="text-lg font-bold">−</span>
                   </button>
                   <span class="px-3 font-semibold text-gray-700">{{ item.quantity }}</span>
                   <button
                     @click="updateQuantity(index, 1)"
                     class="w-8 h-8 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors duration-300 flex items-center justify-center"
                   >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 6v6m0 6V6"></path>
-                    </svg>
+                    <span class="text-lg font-bold">+</span>
                   </button>
                 </div>
                 
@@ -111,9 +101,7 @@
                     @click="removeFromCart(index)"
                     class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center"
                   >
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 01-2.828 0H5a2 2 0 00-2.828 0l5.694 11.656a1 1 0 00.707.707 1.707z"></path>
-                    </svg>
+                    <span class="mr-2">🗑️</span>
                     Remove
                   </button>
                 </div>
@@ -141,9 +129,7 @@
                 class="w-full relative overflow-hidden bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-4 rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-xl text-center flex items-center justify-center"
               >
                 <span class="relative z-10 flex items-center justify-center">
-                  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 9"></path>
-                  </svg>
+                  <span class="mr-2">✅</span>
                   Proceed to Checkout • Tsh {{ (totalPrice?.value || 0).toLocaleString() }}
                 </span>
                 <div class="absolute inset-0 bg-gradient-to-r from-green-600 to-green-700 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
@@ -157,9 +143,7 @@
                   to="/login"
                   class="flex-1 bg-blue-500 text-white font-semibold py-3 rounded-xl hover:bg-blue-600 transition-colors duration-300 text-center flex items-center justify-center"
                 >
-                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
-                  </svg>
+                  <span class="mr-2">🔑</span>
                   Login for Better Checkout
                 </router-link>
                 
@@ -168,9 +152,7 @@
                   to="/"
                   class="flex-1 bg-orange-500 text-white font-semibold py-3 rounded-xl hover:bg-orange-600 transition-colors duration-300 text-center flex items-center justify-center"
                 >
-                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4 8H5.4M7 13L5.4 5M7 13l2.293 2.293c.63.63.184 1.707 0.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                  </svg>
+                  <span class="mr-2">🛒</span>
                   Continue Shopping
                 </router-link>
               </div>
@@ -180,9 +162,7 @@
                 @click="clearCart"
                 class="w-full bg-gray-200 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-300 transition-colors duration-300"
               >
-                <svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 01-2.828 0H5a2 2 0 00-2.828 0l5.694 11.656a1 1 0 00.707.707 1.707z"></path>
-                </svg>
+                <span class="mr-2">🗑️</span>
                 Clear Cart
               </button>
             </div>
