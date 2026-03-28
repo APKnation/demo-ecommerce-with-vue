@@ -1159,12 +1159,16 @@ export default {
         
         const mappedCategory = categoryMap[categoryValue] || 4
         console.log('DEBUG: Mapped category:', mappedCategory)
+        
+        // Try different approaches for category
         formData.append('category', mappedCategory)
+        // Also try as category_id in case backend expects that
+        formData.append('category_id', mappedCategory)
         
         // Debug FormData contents
         console.log('DEBUG: FormData contents:')
         for (let [key, value] of formData.entries()) {
-          console.log(`  ${key}:`, value)
+          console.log(`  ${key}:`, value, typeof value)
         }
         
         formData.append('description', editingProduct.value.description)
@@ -1181,6 +1185,9 @@ export default {
           headers: { 'Authorization': `Token ${token}` },
           body: formData
         })
+        
+        console.log('DEBUG: Response status:', response.status)
+        console.log('DEBUG: Response headers:', response.headers)
         
         if (response.ok) {
           const updatedProduct = await response.json()
