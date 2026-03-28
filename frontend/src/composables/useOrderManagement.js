@@ -81,8 +81,8 @@ export function useOrderManagement() {
 
       if (!response.ok) {
         const data = await response.json()
-        // If backend fails, fallback to localStorage
-        console.warn('Backend API failed, using localStorage fallback:', data.error || 'API Error')
+        // If backend fails, fallback to localStorage (expected behavior)
+        console.log('Backend API not available, using localStorage fallback:', data.error || 'API Error')
         return createOrderInLocalStorage(orderData)
       }
 
@@ -92,8 +92,7 @@ export function useOrderManagement() {
       
       return { success: true, order: newOrder }
     } catch (err) {
-      console.warn('Backend API error, using localStorage fallback:', err)
-      // Fallback to localStorage when network fails
+      console.log('Network error, using localStorage fallback:', err)
       return createOrderInLocalStorage(orderData)
     } finally {
       isLoading.value = false
