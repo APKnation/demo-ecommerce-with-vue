@@ -1171,6 +1171,7 @@ export default {
           showNotificationMessage('Product updated successfully!')
         } else {
           const error = await response.json()
+          console.error('Product update error details:', error)
           showNotificationMessage('Failed to update product: ' + JSON.stringify(error), 'error')
         }
       } catch (error) {

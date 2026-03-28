@@ -15,6 +15,10 @@ export function useUnifiedCart() {
   // Current cart items (switches based on auth state)
   const cartItems = computed(() => {
     try {
+      // Prevent webextension errors by checking if we're in browser context
+      if (typeof window === 'undefined') {
+        return []
+      }
       if (!isAuthenticated.value) {
         return guestCart?.cartItems?.value || []
       }
