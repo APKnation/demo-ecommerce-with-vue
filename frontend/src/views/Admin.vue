@@ -1148,10 +1148,24 @@ export default {
         
         // Handle category properly - ensure it's a single value
         let categoryValue = editingProduct.value.category
+        console.log('DEBUG: Original category value:', categoryValue)
+        console.log('DEBUG: Category type:', typeof categoryValue)
+        console.log('DEBUG: Is array?', Array.isArray(categoryValue))
+        
         if (Array.isArray(categoryValue)) {
           categoryValue = categoryValue[0] // Take first value if array
+          console.log('DEBUG: Extracted category value:', categoryValue)
         }
-        formData.append('category', categoryMap[categoryValue] || 4)
+        
+        const mappedCategory = categoryMap[categoryValue] || 4
+        console.log('DEBUG: Mapped category:', mappedCategory)
+        formData.append('category', mappedCategory)
+        
+        // Debug FormData contents
+        console.log('DEBUG: FormData contents:')
+        for (let [key, value] of formData.entries()) {
+          console.log(`  ${key}:`, value)
+        }
         
         formData.append('description', editingProduct.value.description)
         formData.append('is_active', editingProduct.value.is_active !== false)
