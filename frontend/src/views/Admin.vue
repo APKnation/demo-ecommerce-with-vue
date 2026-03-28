@@ -1164,7 +1164,7 @@ export default {
         const productData = {
           title: editingProduct.value.name || editingProduct.value.title,
           price: editingProduct.value.price,
-          category: mappedCategory,
+          category_id: mappedCategory,  // Use category_id to match backend serializer
           description: editingProduct.value.description,
           is_active: editingProduct.value.is_active !== false,
           stock: editingProduct.value.stock || 0
