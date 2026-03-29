@@ -74,7 +74,7 @@
             </label>
             <div class="relative">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <span class="text-lg">📝</span>
+                <span class="text-lg">�</span>
               </div>
               <input
                 id="username"
