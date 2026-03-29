@@ -124,7 +124,7 @@
                 <option value="vendor">Vendor - Sell products</option>
               </select>
               <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                <span class="text-lg">📝</span>
+                <span class="text-lg">�</span>
               </div>
             </div>
             <p class="mt-2 text-xs text-gray-600">
@@ -161,7 +161,7 @@
                 @click="showPassword = !showPassword"
                 class="absolute inset-y-0 right-0 pr-3 flex items-center"
               >
-                <span class="text-lg">📝</span>
+                <span class="text-lg">�</span>
               </button>
             </div>
           </div>
@@ -187,7 +187,7 @@
                 @click="showConfirmPassword = !showConfirmPassword"
                 class="absolute inset-y-0 right-0 pr-3 flex items-center"
               >
-                <span class="text-lg">📝</span>
+                <span class="text-lg">�</span>
               </button>
             </div>
           </div>
@@ -217,7 +217,7 @@
           <!-- Error Message -->
           <div v-if="error" class="bg-red-50 border border-red-200 rounded-lg p-4">
             <div class="flex items-center">
-              <span class="text-lg">📝</span>
+              <span class="text-lg">❌</span>
               <span class="text-red-700 text-sm">{{ error }}</span>
             </div>
           </div>
