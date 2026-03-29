@@ -115,7 +115,7 @@
         <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-shadow duration-300">
           <div class="text-center">
             <div class="w-12 h-12 mx-auto bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-4">
-              <span class="text-purple-500 text-xl">🎯</span>
+              <span class="text-purple-500 text-xl">🛍️</span>
             </div>
             <h3 class="text-lg font-semibold text-gray-600 mb-2">Completed</h3>
             <p class="text-3xl font-bold text-purple-600">{{ orderStats.completedOrders }}</p>
@@ -187,7 +187,7 @@
                 to="/place-order"
                 class="flex flex-col items-center p-4 bg-purple-50 rounded-xl hover:bg-purple-100 transition-colors duration-300"
               >
-                <span class="text-3xl mb-2">🚀</span>
+                <span class="text-3xl mb-2">�</span>
                 <span class="text-sm font-medium text-purple-800">Place Order</span>
               </router-link>
               

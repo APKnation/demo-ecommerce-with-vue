@@ -149,7 +149,7 @@
           </div>
           
           <div class="warranty-item">
-            <div class="warranty-icon">🔧</div>
+            <div class="warranty-icon">�️</div>
             <div class="warranty-content">
               <h5>Service Centers</h5>
               <p>Authorized service centers available nationwide for repairs and maintenance.</p>

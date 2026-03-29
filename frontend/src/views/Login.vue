@@ -58,7 +58,7 @@
                 @click="showPassword = !showPassword"
                 class="absolute inset-y-0 right-0 pr-3 flex items-center"
               >
-                <span class="text-lg">📝</span>
+                <span class="text-lg">�</span>
               </button>
             </div>
           </div>
