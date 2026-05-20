@@ -15,7 +15,10 @@ def category_list(request):
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def category_create(request):
-    if not request.user.is_staff and not request.user.is_admin_user:
+    # Allow staff, admin, or approved vendors to create products
+    if not (request.user.is_staff or request.user.is_admin_user or (request.user.is_vendor and request.user.is_vendor_approved)):
+        return Response({'error': 'Only staff, admins, or approved vendors can create products'}, 
+                       status=status.HTTP_403_FORBIDDEN)
         return Response({'error': 'Only staff and admins can create categories'}, 
                        status=status.HTTP_403_FORBIDDEN)
     
@@ -33,6 +36,9 @@ def product_list(request):
     if category_id:
         products = products.filter(category_id=category_id)
     
+    # Filter out unapproved vendor products for non‑admin users
+    if not request.user.is_staff and not request.user.is_admin_user:
+        products = products.filter(is_approved=True)
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
 
@@ -46,7 +52,8 @@ def product_detail(request, pk):
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def product_create(request):
-    if not request.user.is_staff and not request.user.is_admin_user:
+    # Allow staff, admin, or approved vendors to create products
+    if not (request.user.is_staff or request.user.is_admin_user or (request.user.is_vendor and request.user.is_vendor_approved)):
         return Response({'error': 'Only staff and admins can create products'}, 
                        status=status.HTTP_403_FORBIDDEN)
     
@@ -103,6 +110,10 @@ def product_manage(request, pk):
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
 def my_products(request):
-    products = Product.objects.filter(author=request.user)
+    # Only vendor owners can view their products (author field)
+    if request.user.is_vendor:
+        products = Product.objects.filter(vendor=request.user)
+    else:
+        products = Product.objects.filter(author=request.user)
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
