@@ -5,9 +5,8 @@ from django.shortcuts import get_object_or_404
 from .models import Category, Product, ProductImage
 from .serializers import CategorySerializer, ProductSerializer, ProductCreateSerializer
 
-@api_view(['GET'])
-@permission_classes([permissions.AllowAny])
-def category_list(request):
+    @permission_classes([permissions.IsAuthenticated])
+    def category_list(request):
     categories = Category.objects.all()
     serializer = CategorySerializer(categories, many=True)
     return Response(serializer.data)
@@ -28,9 +27,8 @@ def category_create(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET'])
-@permission_classes([permissions.AllowAny])
-def product_list(request):
+    @permission_classes([permissions.IsAuthenticated])
+    def product_list(request):
     products = Product.objects.filter(is_active=True)
     category_id = request.GET.get('category')
     if category_id:
@@ -42,9 +40,8 @@ def product_list(request):
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
 
-@api_view(['GET'])
-@permission_classes([permissions.AllowAny])
-def product_detail(request, pk):
+    @permission_classes([permissions.IsAuthenticated])
+    def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk, is_active=True)
     serializer = ProductSerializer(product)
     return Response(serializer.data)
