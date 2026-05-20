@@ -225,7 +225,7 @@
           <!-- Success Message -->
           <div v-if="successMessage" class="bg-green-50 border border-green-200 rounded-lg p-4">
             <div class="flex items-center">
-              <span class="text-lg">📝</span>
+              <span class="text-lg">✅</span>
               <span class="text-green-700 text-sm">{{ successMessage }}</span>
             </div>
           </div>
@@ -237,7 +237,7 @@
             class="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold py-3 px-4 rounded-lg hover:from-orange-600 hover:to-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.02]"
           >
             <span v-if="isLoading" class="flex items-center justify-center">
-              <span class="text-lg">📝</span>
+              <span class="text-lg">⏳</span>
               Creating account...
             </span>
             <span v-else>Create Account</span>
@@ -272,7 +272,7 @@
           to="/"
           class="inline-flex items-center text-gray-600 hover:text-gray-800 text-sm"
         >
-          <span class="text-lg">📝</span>
+          <span class="text-lg">🏠</span>
           Back to Home
         </router-link>
       </div>
